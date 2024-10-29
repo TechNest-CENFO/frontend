@@ -10,8 +10,8 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { GuestGuard } from './guards/guest.guard';
 import { IRoleType } from './interfaces';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { GamesComponent } from './pages/games/games.component';
 import { OrdersComponent } from './pages/orders/orders.component';
+import { ProductsComponent } from './pages/products/products.component';
 
 export const routes: Routes = [
   {
@@ -44,19 +44,6 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: 'users',
-        component: UsersComponent,
-        canActivate:[AdminRoleGuard],
-        data: { 
-          authorities: [
-            IRoleType.admin, 
-            IRoleType.superAdmin
-          ],
-          name: 'Users',
-          showInSidebar: true
-        }
-      },
-      {
         path: 'dashboard',
         component: DashboardComponent,
         data: { 
@@ -66,6 +53,84 @@ export const routes: Routes = [
             IRoleType.user
           ],
           name: 'Dashboard',
+          showInSidebar: true
+        }
+      },
+      {
+        path: 'tendencias',
+        component: UsersComponent,
+        canActivate:[AdminRoleGuard],
+        data: { 
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin
+          ],
+          name: 'Tendencias',
+          showInSidebar: true
+        }
+      },
+      {
+        path: 'colecciones',
+        component: OrdersComponent,
+        data: { 
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin,
+            IRoleType.user,
+          ],
+          name: 'Colecciones',
+          showInSidebar: true
+        }
+      },
+      {
+        path: 'outfits',
+        component: ProductsComponent,
+        data: { 
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin,
+            IRoleType.user,
+          ],
+          name: 'Outfits',
+          showInSidebar: true
+        }
+      },
+      {
+        path: 'prendas',
+        component: ProductsComponent,
+        data: { 
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin,
+            IRoleType.user,
+          ],
+          name: 'Prendas',
+          showInSidebar: true
+        }
+      },
+      {
+        path: 'recomendaciones',
+        component: ProductsComponent,
+        data: { 
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin,
+            IRoleType.user,
+          ],
+          name: 'Recomendaciones',
+          showInSidebar: true
+        }
+      },
+      {
+        path: 'prestamos',
+        component: ProductsComponent,
+        data: { 
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin,
+            IRoleType.user,
+          ],
+          name: 'Préstamos',
           showInSidebar: true
         }
       },
@@ -80,32 +145,6 @@ export const routes: Routes = [
           ],
           name: 'profile',
           showInSidebar: false
-        }
-      },
-      {
-        path: 'games',
-        component: GamesComponent,
-        data: { 
-          authorities: [
-            IRoleType.admin, 
-            IRoleType.superAdmin,
-            IRoleType.user,
-          ],
-          name: 'games',
-          showInSidebar: true
-        }
-      },
-      {
-        path: 'orders',
-        component: OrdersComponent,
-        data: { 
-          authorities: [
-            IRoleType.admin, 
-            IRoleType.superAdmin,
-            IRoleType.user,
-          ],
-          name: 'orders',
-          showInSidebar: true
         }
       }
     ],

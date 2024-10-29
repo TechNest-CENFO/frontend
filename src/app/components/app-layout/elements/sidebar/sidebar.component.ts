@@ -16,6 +16,7 @@ import { routes } from '../../../../app.routes';
     SvgIconComponent
   ],
   templateUrl: './sidebar.component.html',
+  styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent {
   public width: any = window.innerWidth;

@@ -49,16 +49,6 @@ export interface IRole {
   updatedAt: string;
 }
 
-export interface IGame {
-  id?: number;
-  name?: string;
-  imgURL?: string;
-  status?: string;
-  description?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
 export interface IOrder {
   id?: number;
   description?: string;
@@ -72,4 +62,11 @@ export interface ISearch {
   pageSize?: number;
   totalElements?: number;
   totalPages?:number;
+}
+
+export interface IProduct{
+  id: number;
+  name: string;
+  description: string;
+  price: number;
 }
