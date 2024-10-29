@@ -1,0 +1,5 @@
+@import "../themes/vcloset-theme";
+
+@function vcloset-color($key) {
+  @return map-get($vcloset, $key);
+}

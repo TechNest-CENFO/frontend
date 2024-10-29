@@ -1,0 +1,57 @@
+@import "../themes/vcloset-theme.scss";
+
+.button-disabled {
+  background-color: vcloset-color(accent-disabled);
+  color: white;
+  outline: none;
+  &:hover {color: snow}
+}
+
+.button-default {
+  background-color: vcloset-color(accent-default);
+  color: white;
+  outline: none;
+  &:hover {
+    background-color: vcloset-color(accent-hovered);
+    color: white;
+  }
+  &:active {
+    background-color: vcloset-color(accent-active);
+  }
+}
+
+.button-secondary {
+  background-color: transparent;
+  border-color: vcloset-color(accent-default);
+  color: vcloset-color(accent-default);
+  border-width: 1px;
+  outline: none;
+  &:hover {
+    color: vcloset-color(accent-hovered);
+    border-color: vcloset-color(accent-hovered);
+  }
+}
+
+.button-cancel {
+  background-color: transparent;
+  color: vcloset-color(accent-hovered);
+  outline: none;
+  &:hover {
+    color: vcloset-color(accent-hovered);
+    border-width: 1px;
+    border-color: vcloset-color(accent-hovered);
+  }
+  &:active {color: vcloset-color(accent-active);}
+}
+
+.button-cancel-two {
+  background-color: transparent;
+  color: vcloset-color(accent-hovered);
+  outline: none;
+  &:hover {
+    color: vcloset-color(accent-hovered);
+    border-width: 1px;
+    border-color: vcloset-color(accent-hovered);
+  }
+  &:active {color: vcloset-color(accent-active);}
+}

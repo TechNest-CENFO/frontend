@@ -1,0 +1,12 @@
+//bg
+$bg-primary: #ffffff; // Para fondos generales. Como el dashboard.
+$bg-secondary: #FAFAFB; // Para fondos que requieran ligero contraste con el fondo general. Como el sidebar.
+$bg-tertiary: #F3F4F6; // Para fondes que requieran ligero contraste tanto del fondo general, como del secundario. Como el footer.
+//text
+$text-primary: #000000; // Para textos sobre fondos primarios.
+$text-secondary: #333; // Para textos sobre fondos secundarios.
+//accent
+$accent-default: #FF6F61; // Para botones o elementos interactivos en estado base.
+$accent-hovered: #FF4C3C; // Hover para botones.
+$accent-active: #F21400; // Color al presionar un botón, estado active.
+$accent-disabled: #FFC5C0; // Para botones, elementos deshabilitados, o fondos claros de elementos.

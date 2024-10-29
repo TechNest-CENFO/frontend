@@ -1,0 +1,13 @@
+@import "../variables/variables.scss";
+
+$vcloset: (
+        bg-primary: $bg-primary,
+        bg-secondary: $bg-secondary,
+        bg-tertiary: $bg-tertiary,
+        text-primary: $text-primary,
+        text-secondary: $text-secondary,
+        accent-default: $accent-default,
+        accent-hovered: $accent-hovered,
+        accent-active: $accent-active,
+        accent-disabled: $accent-disabled,
+);
