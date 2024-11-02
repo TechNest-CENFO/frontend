@@ -13,6 +13,10 @@ export interface IUser {
   lastname?: string;
   email?: string;
   password?: string;
+  confirmPassword?: string;
+  dateOfBirth?: string;
+  picture?: string;
+  direction?:string;
   active?: boolean;
   createdAt?: string;
   updatedAt?: string;
