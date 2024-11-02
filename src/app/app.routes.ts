@@ -53,7 +53,8 @@ export const routes: Routes = [
             IRoleType.user
           ],
           name: 'Dashboard',
-          showInSidebar: true
+          showInSidebar: true,
+          icon: 'fa fa-home'
         }
       },
       {
@@ -66,7 +67,8 @@ export const routes: Routes = [
             IRoleType.superAdmin
           ],
           name: 'Tendencias',
-          showInSidebar: true
+          showInSidebar: true,
+          icon: 'fa fa-line-chart'
         }
       },
       {
@@ -79,7 +81,8 @@ export const routes: Routes = [
             IRoleType.user,
           ],
           name: 'Colecciones',
-          showInSidebar: true
+          showInSidebar: true,
+          icon: 'fa fa-object-group'
         }
       },
       {
@@ -92,7 +95,8 @@ export const routes: Routes = [
             IRoleType.user,
           ],
           name: 'Outfits',
-          showInSidebar: true
+          showInSidebar: true,
+          icon: 'fa fa-camera'
         }
       },
       {
@@ -105,7 +109,8 @@ export const routes: Routes = [
             IRoleType.user,
           ],
           name: 'Prendas',
-          showInSidebar: true
+          showInSidebar: true,
+          icon: 'fa fa-camera'
         }
       },
       {
@@ -118,7 +123,8 @@ export const routes: Routes = [
             IRoleType.user,
           ],
           name: 'Recomendaciones',
-          showInSidebar: true
+          showInSidebar: true,
+          icon: 'fa fa-lightbulb'
         }
       },
       {
@@ -131,13 +137,42 @@ export const routes: Routes = [
             IRoleType.user,
           ],
           name: 'Préstamos',
-          showInSidebar: true
+          showInSidebar: true,
+          icon: 'fa fa-handshake'
+        }
+      },
+      {
+        path: 'reportes',
+        component: ProductsComponent,
+        data: {
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin,
+            IRoleType.user,
+          ],
+          name: 'Reportes',
+          showInSidebar: true,
+          icon: 'fa fa-database'
+        }
+      },
+      {
+        path: 'administrador',
+        component: ProductsComponent,
+        data: {
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin,
+            IRoleType.user,
+          ],
+          name: 'Administrador',
+          showInSidebar: true,
+          icon: 'fa fa-cogs'
         }
       },
       {
         path: 'profile',
         component: ProfileComponent,
-        data: { 
+        data: {
           authorities: [
             IRoleType.admin, 
             IRoleType.superAdmin,

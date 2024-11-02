@@ -5,12 +5,14 @@ import { AuthService } from '../../../../services/auth.service';
 import { IUser } from '../../../../interfaces';
 import { LayoutService } from '../../../../services/layout.service';
 import { MyAccountComponent } from '../../../my-account/my-account.component';
+import { ButtonComponent } from "../button/button.component";
 
 @Component({
   selector: 'app-topbar',
   standalone: true,
-  imports: [CommonModule, RouterLink, MyAccountComponent],
+  imports: [CommonModule, RouterLink, MyAccountComponent, ButtonComponent],
   templateUrl: './topbar.component.html',
+  styleUrl: './topbar.component.scss'
 })
 export class TopbarComponent implements OnInit {
   public user?: IUser;
