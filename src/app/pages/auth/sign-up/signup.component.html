@@ -1,7 +1,11 @@
 <div class="login-container">
   <div class="d-flex align-items-center justify-content-center h-100">
+    
     <div class="login-card">
       <div class="w-100">
+        <div class="float-right d-flex justify-content-end mt-2">
+        <a href="/login"><i class="fa-solid fa-xmark fa-2x" style="color:black; margin-right: 25px;"></i></a>
+        </div>
         <div class="text-center">
           <a class="logo text-center" routerLink="/">
             <img width="500" class="img-fluid" src="../../../../assets/icons/logo.jpg" alt="Logo" />
@@ -45,7 +49,8 @@
                       placeholder="Correo electrónico*" [(ngModel)]="user.email" [ngClass]="{
                       'is-invalid': email.invalid && email.touched,
                       'is-valid': email.valid && email.touched
-                    }" required />
+                    }" required 
+                       email/>
                     <div *ngIf="email.invalid" class="invalid-feedback">
                       El correo electrónico es requerido
                     </div>
@@ -89,7 +94,7 @@
                     'is-valid': direction.valid && direction.touched
                   }" required />
                     <div *ngIf="direction.invalid" class="invalid-feedback">
-                      El apellido es requerido
+                      El dirección es requerida
                     </div>
                   </div>
                   <!--FIN de la direccion-->
@@ -105,13 +110,25 @@
                     </label>
                   </div>
                   <div class="col-md-3">
-                    <input #password="ngModel" type="password" class="form-control text-center" id="password"
-                      name="password" placeholder="******" [(ngModel)]="user.password" [ngClass]="{
-                    'is-invalid': password.invalid && password.touched,
-                    'is-valid': password.valid && password.touched
-                  }" required />
-                    <div *ngIf="password.invalid" class="invalid-feedback">
-                      La contraseña es requerida
+                    <input maxlength="16" #password="ngModel" type="password" class="form-control text-center" 
+                      id="password" name="password" placeholder="******" 
+                      [(ngModel)]="user.password" (keyup)="validatePassword()"
+                      [ngClass]="{
+                        'is-invalid': password.invalid && password.touched,
+                        'is-valid': password.valid && password.touched
+                  }"  required 
+                      minlength="8"
+                    customValidator/>
+                    <div *ngIf="password.errors?.['pattern']" class="invalid-feedback padding-bottom-md">
+                      hola soy tom
+                    </div>
+                    <div *ngIf="password.invalid" class="invalid-feedback padding-bottom-md">
+                      
+                    </div>
+                    <div  class="invalid-feedback">
+                      <ul>
+                        <li *ngFor="let message of validationMessages">{{ message }}</li>
+                      </ul>
                     </div>
                   </div>
                   <!--FIN de la contraseña-->
@@ -145,14 +162,19 @@
                     </label>
                   </div>
                   <div class="col-md-3">
-                    <input #dateOfBirth="ngModel" type="text" class="form-control text-center" id="dateOfBirth"
-                      name="dateOfBirth" placeholder="Fecha de nacimiento*" [(ngModel)]="user.dateOfBirth" [ngClass]="{
+                    <input #dateOfBirth="ngModel" type="date" class="form-control text-center"
+                      
+                      id="dateOfBirth" name="dateOfBirth" placeholder="Fecha de nacimiento*"
+                      (change)="validateDate()" [(ngModel)]="user.dateOfBirth" [ngClass]="{
                     'is-invalid': dateOfBirth.invalid && dateOfBirth.touched,
                     'is-valid': dateOfBirth.valid && dateOfBirth.touched
                   }" required />
                     <div *ngIf="dateOfBirth.invalid" class="invalid-feedback">
-                      La fecha de nacimiento es requerida
+                      <ul>
+                        <li *ngFor="let message of validationMessages">{{ message }}</li>
+                      </ul>
                     </div>
+
                   </div>
                   <!--FIN de la fecha de nacimiento-->
 
@@ -181,10 +203,11 @@
                 @if(signUpError) {
                 <p class="text-danger">{{signUpError}}</p>
                 } @else if (validSignup){
-                <p class="text-success">User registered, please go to login</p>
+                <p class="text-success" (change)="redirectToLogin()">Usuario registrado con exito</p>
+                
                 }
               </div>
-              <a href="/login">Go Login</a>
+              
             </div>
           </form>
         </div>
