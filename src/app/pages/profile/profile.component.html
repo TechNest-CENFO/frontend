@@ -5,24 +5,38 @@
       <div>
         <i class="fa-solid fa-user-tie"></i>
       </div>
-      <div class="border-bottom my-3">
-        <label>Name:</label>
-        <p>{{profileService.user$().name}}</p>
+      <div class="my-3">
+        <img src="{{profileService.user$().picture}}" alt="foto de perfil" class="profile-picture"/>
+
+        <div class="col-md-3">        
+          <ngx-dropzone (change)="onSelect($event)">
+            <ngx-dropzone-label>Click para subir la imagen</ngx-dropzone-label>
+            <ngx-dropzone-image-preview style="width: 100%;" ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">     
+            </ngx-dropzone-image-preview>
+          </ngx-dropzone>
+      
+        </div>
       </div>
       <div class="border-bottom my-3">
-        <label>Lastname:</label>
-        <p>{{profileService.user$().lastname}}</p>
+        <label>Nombre:</label>
+        <input type="text" value={{profileService.user$().name}} />
       </div>
       <div class="border-bottom my-3">
-        <label>email:</label>
-        <p>{{profileService.user$().email}}</p>
+        <label>Apellido:</label>
+        <input type="text" value={{profileService.user$().lastname}}/>
+      </div>
+      <div class="border-bottom my-3">
+        <label>Email:</label>
+        <input type="text" value={{profileService.user$().email}}/>
       </div>
       <div class=" my-3">
-        <label>Last update:</label>
+        <label>Última Actualización:</label>
         <p>{{profileService.user$().updatedAt | date:'dd/MM/YYYY'}}</p>
       </div>
+      <app-button></app-button>
     </div>
   </div>
+
   <div class="col-6">
     <div class="row">
       <div class="col-12 shadow-sm bg-body rounded px-4 py-4 mb-3">
