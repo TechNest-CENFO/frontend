@@ -3,12 +3,8 @@
     <app-topbar></app-topbar>
 
     <div class="page-body-wrapper">
-      <div
-        class="sidebar-wrapper"
-        sidebar-layout="default-sidebar"
-        icon="stroke-svg"
-        [ngClass]="{ close_icon: !layoutService.sidebarOpen }"
-      >
+      <div class="sidebar-wrapper" sidebar-layout="default-sidebar" icon="stroke-svg"
+        [ngClass]="{ close_icon: !layoutService.sidebarOpen }">
         <app-sidebar></app-sidebar>
       </div>
 

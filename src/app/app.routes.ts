@@ -12,6 +12,7 @@ import { IRoleType } from './interfaces';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { ProductsComponent } from './pages/products/products.component';
+import { PrendasComponent } from './pages/prendas/prendas.component';
 
 export const routes: Routes = [
   {
@@ -101,7 +102,7 @@ export const routes: Routes = [
       },
       {
         path: 'prendas',
-        component: ProductsComponent,
+        component: PrendasComponent,
         data: { 
           authorities: [
             IRoleType.admin, 
