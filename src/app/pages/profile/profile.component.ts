@@ -1,8 +1,12 @@
+import { IUser } from './../../interfaces/index';
 import { Component, inject } from '@angular/core';
 import { ProfileService } from '../../services/profile.service';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../../components/app-layout/elements/button/button.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { FormsModule } from '@angular/forms';
+import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -10,15 +14,29 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
   imports: [
     CommonModule,
     ButtonComponent,
-    NgxDropzoneModule
+    NgxDropzoneModule,
+    FormsModule,
   ],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss'
+  styleUrl: './profile.component.scss',
+  providers: [UserService]
 })
 export class ProfileComponent {
+  public updateError!: string;
   public profileService = inject(ProfileService);
+  public updateForm: {picture: string, name: string; lastname: string; email:string; dateOfBirth:string; direction:string } = {
+    picture: '',
+    name: '',
+    lastname: '',
+    email: '',
+    dateOfBirth: '',
+    direction: ''
+  };
 
-  constructor() {
+  constructor(private router: Router,
+    private userService: UserService,
+    private _userService: UserService) {
+
     this.profileService.getUserInfoSignal();
   }
 
@@ -35,6 +53,20 @@ export class ProfileComponent {
     console.log(event);
     this.files.splice(this.files.indexOf(event), 1);
   }
+
+  handleUpdate(event: Event) {
+    let user = {
+      picture: this.updateForm.picture,
+      name: this.updateForm.name,
+      lastname: this.updateForm.lastname,
+      email: this.updateForm.email,
+      dateOfBirth: this.updateForm.dateOfBirth,
+      direction: this.updateForm.direction
+    }
+    this.updateUserInfo(user);
+  }
+
+  updateUserInfo (user: IUser){
+    this.profileService.updateUserInfo(user);
+  }
 }
-
-

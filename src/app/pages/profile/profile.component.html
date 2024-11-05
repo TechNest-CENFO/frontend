@@ -1,19 +1,14 @@
-
-<div class="row info-container">
-  <div class=" ">
-    <div class="shadow-sm bg-body rounded px-4 py-4 h-100 profile-container">
-      <div class="profile-title mx-4">
-        <i class="fa-solid fa-user-tie mx-2 my-2"></i>
-        <h2>Perfil de Usuario</h2>
-      </div>
-        <div class="form-container shadow-sm bg-body rounded">
-          <div class="col-md-6">
-          <h5 class="mx-5">Datos Personales</h5>
-
-          
-          <div class="profile-picture-container mx-5 col-md-3">
+<div class="shadow-sm bg-body rounded px-4 py-4 h-100 profile-container">
+  <div class="profile-title mx-3 my-3">
+    <h3>Perfil de Usuario</h3>
+  </div>
+    <div class="form-container shadow-sm bg-body rounded">
+      <div class="col-md-6">
+        <h5 class="mx-3">Datos Personales</h5>
+        <form #form="ngForm" (ngSubmit)="handleUpdate($event)" autocomplete="off" class="shadow-sm">
+          <!-- <div class="profile-picture-container mx-3 col-md-3">
             <img src="{{profileService.user$().picture}}" alt="foto de perfil" class="profile-picture" />
-            <!--
+  
             IMPLEMENTACION DEL DROPZONE PARA LA IMAGEN DE PERFIL TBD
             <div class="col-md-3">
               <ngx-dropzone (change)="onSelect($event)">
@@ -21,50 +16,131 @@
                 <ngx-dropzone-image-preview style="width: 100%;" ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
                 </ngx-dropzone-image-preview>
               </ngx-dropzone>
-            </div>-->
+            </div>
+          </div> -->
+
+          <div class="profile-picture-container mx-3 col-md-3">
+            <ngx-dropzone (change)="onSelect($event)">
+              <ngx-dropzone-label>
+                <img src="{{profileService.user$().picture}}" alt="foto de perfil" class="profile-picture" />
+              </ngx-dropzone-label>
+              <ngx-dropzone-image-preview 
+                *ngFor="let f of files" 
+                [file]="f" 
+                [removable]="true" 
+                (removed)="onRemove(f)">
+              </ngx-dropzone-image-preview>
+            </ngx-dropzone>
           </div>
 
-          <div class="my-3 mx-5 col-md-6 profile-input">
+          <!-- <div class="mx-3 col-md-3 position-relative">
+            <img src="{{profileService.user$().picture}}" alt="foto de perfil" class="profile-picture" />
+
+            <ngx-dropzone (change)="onSelect($event)" class="dropzone-overlay">
+              <ngx-dropzone-label>
+                <i class="fa-solid fa fa-camera profile-picture-container2"></i>
+              </ngx-dropzone-label>
+              <ngx-dropzone-image-preview 
+                *ngFor="let f of files" 
+                [file]="f" 
+                [removable]="true" 
+                (removed)="onRemove(f)">
+              </ngx-dropzone-image-preview>
+            </ngx-dropzone>
+          </div> -->
+         
+
+          <div class="my-3 mx-3 col-md-6 profile-input">
             <label class="py-1">Nombre:</label>
-            <input type="text" value={{profileService.user$().name}} style="border-radius: 6PX;" class="form-control" />
+            <input #name="ngModel"
+              type="text" 
+              id="name"
+              name="name"
+              value={{profileService.user$().name}} 
+              style="border-radius: 6PX;"
+              class="form-control"
+              [(ngModel)]="updateForm.name"
+            />
           </div>
-          <div class="my-3 mx-5 col-md-6 profile-input">
-            <label class="py-1">Apellido:</label>
-            <input type="text" value={{profileService.user$().lastname}} style="border-radius: 6PX;" class="form-control"/>
-          </div>
-          <div class="my-3 mx-5 col-md-6 profile-input">
-            <label class="py-1">Email:</label>
-            <input type="text" value={{profileService.user$().email}} style="border-radius: 6PX;" class="form-control"/>
-          </div>
-          <div class="my-3 mx-5 col-md-6 profile-input">
-            <label class="py-1">Fecha de Nacimiento:</label>
-            <input type="date" value={{profileService.user$().dateOfBirth}} style="border-radius: 6PX;" class="form-control"/>
-          </div>
-          <div class="my-3 mx-5 col-md-6 profile-input">
-            <label class="py-1">Dirección:</label>
-            <input type="text" value={{profileService.user$().direction}} style="border-radius: 6PX;" class="form-control"/>
-          </div>
-          <app-button class="update-button"></app-button>
-        </div>
 
-        <div class="shadow-sm bg-body rounded col-md-6">
-          <h5 class="mx-5 my-2">Administración de Cuenta</h5>
-          <div class="my-3 mx-5 col-md-6 profile-input">
-            <label>Desactivar Cuenta:</label>
-            <input type="button" value={{profileService.user$().active}}/>
+          <div class="my-3 mx-3 col-md-6 profile-input">
+            <label class="py-1">Apellido:</label>
+            <input #lastname="ngModel"
+              type="text" 
+              id="lastname"
+              name="lastname"
+              value={{profileService.user$().lastname}} 
+              style="border-radius: 6PX;"
+              class="form-control"
+              [(ngModel)]="updateForm.lastname"
+            />
           </div>
-          <div class="my-3 mx-5 col-md-6 profile-input">
-            <label>Perfil Privado:</label>
-            <input type="button" value={{profileService.user$().blocked}}/>
+          <div class="my-3 mx-3 col-md-6 profile-input">
+            <label class="py-1">Email:</label>
+            <input #email="ngModel"
+              type="text" 
+              id="email"
+              name="email"
+              value={{profileService.user$().email}} 
+              style="border-radius: 6PX;"
+              class="form-control"
+              [(ngModel)]="updateForm.email"
+            />
           </div>
-          <div class="my-3 mx-5 col-md-6 profile-input">
-            <a href="#">Cambiar Contraseña</a>
+          <div class="my-3 mx-3 col-md-6 profile-input">
+            <label class="py-1">Fecha de Nacimiento:</label>
+            <input #dateOfBirth="ngModel"
+              type="date" 
+              id="dateOfBirth"
+              name="dateOfBirth"
+              value={{profileService.user$().dateOfBirth}} 
+              style="border-radius: 6PX;"
+              class="form-control"
+              [(ngModel)]="updateForm.dateOfBirth"
+            />
           </div>
-          <div class="my-3 mx-5">
-            <label>Última Actualización:</label>
-            <p>{{profileService.user$().updatedAt | date:'dd/MM/YYYY'}}</p>
+          <div class="my-3 mx-3 col-md-6 profile-input">
+            <label class="py-1">Dirección:</label>
+            <input #direction="ngModel"
+              type="text" 
+              id="direction"
+              name="direction"
+              value={{profileService.user$().direction}} 
+              style="border-radius: 6PX;"
+              class="form-control"
+              [(ngModel)]="updateForm.direction"
+            />
           </div>
-        </div>
+          <div class="form-group mb-0">
+            <button (click)="handleUpdate($event)"  class="btn button-default mx-3 my-3" type="button">Guardar</button>
+          </div>
+
+        </form>
+    </div>
+
+    <div class="shadow-sm bg-body rounded col-md-6">
+      <h5 class="mx-3 my-2">Administración de Cuenta</h5>
+
+      <div class="my-4 mx-3 col-md-6 profile-input privacy-container">
+        <label>Perfil Privado:</label>
+        <input class="mx-3" type="checkbox" [checked]="profileService.user$().blocked === true" />
+      </div>
+      <div class="my-4 mx-3 col-md-6 profile-input">
+        <a href="#">Cambiar Contraseña</a>
+        <!-- <input type="button" value="Cambiar Contraseña" class="btn btn-light"/> -->
+      </div>
+      <!-- <div class="my-4 mx-3 col-md-3 profile-input">
+        <input type="button" value="Eliminar Cuenta" class="btn btn-danger"/>
+      </div> -->
+
+      <div class="my-4 mx-3 col-md-3 profile-input">
+        <a href="#" class="text-danger">Eliminar Cuenta</a>
+        <!-- <input type="button" value="Eliminar Cuenta" class="btn btn-danger"/> -->
+      </div>
+      
+      <div class="my-4 mx-3">
+        <label>Última Actualización:</label>
+        <p>{{profileService.user$().updatedAt | date:'dd/MM/YYYY'}}</p>
       </div>
     </div>
   </div>
