@@ -24,6 +24,7 @@ import { Router } from '@angular/router';
 export class ProfileComponent {
   public updateError!: string;
   public profileService = inject(ProfileService);
+  public editMode = false;
   public updateForm: {picture: string, name: string; lastname: string; email:string; dateOfBirth:string; direction:string } = {
     picture: '',
     name: '',
@@ -33,11 +34,45 @@ export class ProfileComponent {
     direction: ''
   };
 
-  constructor(private router: Router,
-    private userService: UserService,
-    private _userService: UserService) {
+  // public editMode = {
+  //   name: false,
+  //   lastname: false,
+  //   email: false,
+  //   dateOfBirth: false,
+  //   direction: false
+  // };
 
-    this.profileService.getUserInfoSignal();
+  constructor(private router: Router, private userService: UserService, private _userService: UserService) {
+    this.profileService.getUserInfoSignal().subscribe((user: IUser) => {
+      this.updateForm = {
+        picture: user.picture || '',
+        name: user.name || '',
+        lastname: user.lastname || '',
+        email: user.email || '',
+        dateOfBirth: user.dateOfBirth || '',
+        direction: user.direction || ''
+      };
+    });
+  }
+
+
+  toggleEditMode() {
+    this.editMode = !this.editMode;
+  }
+
+  cancelEdit() {
+    this.editMode = false; 
+  
+    this.profileService.getUserInfoSignal().subscribe((user: IUser) => {
+      this.updateForm = {
+        picture: user.picture || '',
+        name: user.name || '',
+        lastname: user.lastname || '',
+        email: user.email || '',
+        dateOfBirth: user.dateOfBirth || '',
+        direction: user.direction || ''
+      };
+    });
   }
 
   files: File[] = [];
@@ -64,6 +99,7 @@ export class ProfileComponent {
       direction: this.updateForm.direction
     }
     this.updateUserInfo(user);
+    this.editMode = false; 
   }
 
   updateUserInfo (user: IUser){

@@ -22,7 +22,7 @@
           <div class="profile-picture-container mx-3 col-md-3">
             <ngx-dropzone (change)="onSelect($event)">
               <ngx-dropzone-label>
-                <img src="{{profileService.user$().picture}}" alt="foto de perfil" class="profile-picture" />
+                <img src="{{updateForm.picture}}" alt="foto de perfil" class="profile-picture" />
               </ngx-dropzone-label>
               <ngx-dropzone-image-preview 
                 *ngFor="let f of files" 
@@ -50,69 +50,75 @@
           </div> -->
          
 
-          <div class="my-3 mx-3 col-md-6 profile-input">
+          <!-- <div class="my-3 mx-3 col-md-6 profile-input">
             <label class="py-1">Nombre:</label>
             <input #name="ngModel"
               type="text" 
               id="name"
               name="name"
-              value={{profileService.user$().name}} 
               style="border-radius: 6PX;"
               class="form-control"
               [(ngModel)]="updateForm.name"
             />
+          </div> -->
+
+          <div *ngIf="!editMode" class="edit-pen mx-3 my-3">
+            <button (click)="toggleEditMode()" class=" btn button-default">
+              <i class="fas fa-pen"></i>
+              <span>Editar Perfil</span>
+            </button>
+          </div>
+          
+          <div class="my-3 mx-3 col-md-6 profile-input">
+            <label class="py-1">Nombre:</label>
+            <p *ngIf="!editMode" >{{ updateForm.name }} </p>
+            <input *ngIf="editMode"
+              [(ngModel)]="updateForm.name"
+              [ngModelOptions]="{standalone: true}"
+              class="form-control"/>
           </div>
 
           <div class="my-3 mx-3 col-md-6 profile-input">
             <label class="py-1">Apellido:</label>
-            <input #lastname="ngModel"
-              type="text" 
-              id="lastname"
-              name="lastname"
-              value={{profileService.user$().lastname}} 
-              style="border-radius: 6PX;"
-              class="form-control"
+            <p *ngIf="!editMode" >{{ updateForm.lastname }} </p>
+            <input *ngIf="editMode"
               [(ngModel)]="updateForm.lastname"
-            />
+              [ngModelOptions]="{standalone: true}"
+              class="form-control"/>
           </div>
+
           <div class="my-3 mx-3 col-md-6 profile-input">
             <label class="py-1">Email:</label>
-            <input #email="ngModel"
-              type="text" 
-              id="email"
-              name="email"
-              value={{profileService.user$().email}} 
-              style="border-radius: 6PX;"
-              class="form-control"
+            <p *ngIf="!editMode" >{{ updateForm.email }} </p>
+            <input *ngIf="editMode"
               [(ngModel)]="updateForm.email"
-            />
+              [ngModelOptions]="{standalone: true}"
+              class="form-control"/>
           </div>
+
           <div class="my-3 mx-3 col-md-6 profile-input">
             <label class="py-1">Fecha de Nacimiento:</label>
-            <input #dateOfBirth="ngModel"
-              type="date" 
-              id="dateOfBirth"
-              name="dateOfBirth"
-              value={{profileService.user$().dateOfBirth}} 
-              style="border-radius: 6PX;"
-              class="form-control"
+            <p *ngIf="!editMode" >{{ updateForm.dateOfBirth }} </p>
+            <input *ngIf="editMode"
               [(ngModel)]="updateForm.dateOfBirth"
-            />
+              [ngModelOptions]="{standalone: true}"
+              class="form-control"/>
           </div>
+          
           <div class="my-3 mx-3 col-md-6 profile-input">
             <label class="py-1">Dirección:</label>
-            <input #direction="ngModel"
-              type="text" 
-              id="direction"
-              name="direction"
-              value={{profileService.user$().direction}} 
-              style="border-radius: 6PX;"
-              class="form-control"
+            <p *ngIf="!editMode" >{{ updateForm.direction }} </p>
+            <input *ngIf="editMode"
               [(ngModel)]="updateForm.direction"
-            />
+              [ngModelOptions]="{standalone: true}"
+              class="form-control"/>
           </div>
+
+
           <div class="form-group mb-0">
-            <button (click)="handleUpdate($event)"  class="btn button-default mx-3 my-3" type="button">Guardar</button>
+            <button *ngIf="editMode" (click)="handleUpdate($event)"  class="btn button-default mx-3 my-3" type="button">Actualizar</button>
+            <button *ngIf="editMode" (click)="cancelEdit()"  class="btn btn-outline-primary mx-3 my-3" type="button">Cancelar</button>
+
           </div>
 
         </form>

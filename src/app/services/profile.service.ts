@@ -4,6 +4,7 @@ import { IUser } from '../interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertService } from './alert.service';
 import { AuthService } from './auth.service';
+import { Observable } from 'rxjs';
 
 
 
@@ -22,23 +23,27 @@ export class ProfileService extends BaseService<IUser> {
     return  this.userSignal;
   }
 
-  getUserInfoSignal() {
-    this.findAll().subscribe({
-      next: (response: any) => {
-        this.userSignal.set(response);
-      },
-      error: (error: any) => {
-        this.snackBar.open(
-          `Error getting user profile info ${error.message}`,
-           'Close', 
-          {
-            horizontalPosition: 'right', 
-            verticalPosition: 'top',
-            panelClass: ['error-snackbar']
-          }
-        )
-      }
-    })
+  // getUserInfoSignal(): Observable<IUser> {
+  //   this.findAll().subscribe({
+  //     next: (response: any) => {
+  //       this.userSignal.set(response);
+  //     },
+  //     error: (error: any) => {
+  //       this.snackBar.open(
+  //         `Error getting user profile info ${error.message}`,
+  //          'Close', 
+  //         {
+  //           horizontalPosition: 'right', 
+  //           verticalPosition: 'top',
+  //           panelClass: ['error-snackbar']
+  //         }
+  //       )
+  //     }
+  //   })
+  // }
+
+  getUserInfoSignal(): Observable<IUser> {
+    return this.http.get<IUser>('users/me'); 
   }
 
   updateUserInfo(user: IUser){
