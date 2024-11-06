@@ -5,9 +5,12 @@ import {ActivatedRoute} from '@angular/router';
 import {IPasswordResetEntity} from "../../../interfaces";
 import * as Aos from 'aos';
 import {NgClass, NgIf, NgOptimizedImage} from "@angular/common";
-import { Router, RouterLink } from '@angular/router';
-import {finalize} from "rxjs";
+import {Router, RouterLink} from '@angular/router';
 import {AlertService} from "../../../services/alert.service";
+import {LottieComponent} from "ngx-lottie";
+import {LottieComponentComponent} from "../../lottie-component/lottie-component.component";
+import {HttpErrorResponse} from "@angular/common/http";
+import {NotyfService} from "../../../services/notyf.service";
 
 
 @Component({
@@ -19,6 +22,8 @@ import {AlertService} from "../../../services/alert.service";
         RouterLink,
         NgIf,
         NgClass,
+        LottieComponent,
+        LottieComponentComponent,
     ],
     templateUrl: './password-reset.component.html',
     styleUrl: './password-reset.component.scss'
@@ -45,7 +50,13 @@ export class PasswordResetComponent {
 
     private alertService: AlertService = inject(AlertService);
 
-    constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router) {
+    lottieOptions = {
+        path: './assets/lottie/success.json',
+        autoplay: true,
+        loop: false
+    };
+
+    constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private notyfService: NotyfService) {
 
         this.form = this.fb.group({
             password: ['', [Validators.required, Validators.pattern('^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$')]],
@@ -71,6 +82,14 @@ export class PasswordResetComponent {
         return password === passwordConfirmation ? null : {mismatch: true};
     }
 
+    delayedRedirect() {
+        const delayInMilliseconds = 3000;
+
+        setTimeout(() => {
+            this.router.navigate(['/login']);
+        }, delayInMilliseconds);
+    }
+
     public callResetPassword() {
         if (this.token && this.form.valid) {
             this.showErrorMessage = false;
@@ -81,28 +100,24 @@ export class PasswordResetComponent {
             }
 
             //Esto necesita arreglarse
-            this.passwordResetService.resetPassword(passwordResetEntity)
-                .pipe(finalize(() => {
+            this.passwordResetService.resetPassword(passwordResetEntity).subscribe({
+                next: () => {
+                    this.delayedRedirect();
                     this.showLottie = true;
-                    setTimeout(() => {
-                        this.router.navigateByUrl('/app/dashboard');
-                    }, 2000);
-                }))
-                .subscribe({
-                    next: () => {
-                        this.alertService.displayAlert('success', 'La contraseña se modificó exitosamente.', 'center', 'top', ['success-snackbar']);
-                    },
-                    error: (err: any) => {
-                        this.alertService.displayAlert('error', 'Error al modificar la conntraseña.', 'center', 'top', ['success-snackbar']);
-                    },
-                });
+                    this.notyfService.success('Tu contraseña ha sido modificada.');
+                },
+                //Esta tomando el código 200 como error
+                error: (err: HttpErrorResponse) => {
+                    this.notyfService.error('El enlace ha expirado.');
+                },
+            });
 
         } else if (this.token && this.form.controls['password'].invalid) {
             this.showErrorMessage = true;
             this.errorMessage = "Al menos: 8 carateres, una letra, un número y un caracter especial.";
 
         } else {
-            this.showErrorMessage = this.showErrorMessage=false
+            this.showErrorMessage = this.showErrorMessage = false
             this.showMissmatchErrorMessage = true;
             this.missmatchErrorMessage = 'Las contraseñas no coinciden.';
         }
