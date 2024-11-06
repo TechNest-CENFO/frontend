@@ -74,3 +74,15 @@ export interface IProduct{
   description: string;
   price: number;
 }
+
+export interface IToAddress{
+  id?: number;
+  toAddress: string;
+}
+
+export interface IPasswordResetEntity{
+  id?: number;
+  token: string;
+  expirationDate?: Date;
+  newPassword: string;
+}

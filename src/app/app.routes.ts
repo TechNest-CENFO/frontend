@@ -12,6 +12,8 @@ import { IRoleType } from './interfaces';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { ProductsComponent } from './pages/products/products.component';
+import {PasswordRecoveryComponent} from "./pages/auth/password-recovery/password-recovery.component";
+import {PasswordResetComponent} from "./pages/auth/password-reset/password-reset.component";
 
 export const routes: Routes = [
   {
@@ -22,6 +24,16 @@ export const routes: Routes = [
   {
     path: 'signup',
     component: SigUpComponent,
+    canActivate: [GuestGuard],
+  },
+  {
+    path: 'passwordRecovery',
+    component: PasswordRecoveryComponent,
+    canActivate: [GuestGuard],
+  },
+  {
+    path: 'password-reset/:token',
+    component: PasswordResetComponent,
     canActivate: [GuestGuard],
   },
   {
