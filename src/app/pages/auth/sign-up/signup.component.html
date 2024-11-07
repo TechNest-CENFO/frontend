@@ -115,7 +115,6 @@
                         'is-invalid': password.invalid && password.touched,
                         'is-valid': password.valid && password.touched
                   }" required minlength="8" />
-
                     <div *ngIf="!validatePassword()" class="invalid-feedback">
                       <ul>
                         <li *ngFor="let message of passwordValidationMessages">{{ message }}</li>
@@ -142,13 +141,13 @@
                     <input #dateOfBirth="ngModel" type="date" class="form-control text-center" id="dateOfBirth"
                       name="dateOfBirth" placeholder="Fecha de nacimiento*" (change)="validateDate()"
                       [(ngModel)]="user.dateOfBirth" [ngClass]="{
-                        'is-invalid': dateOfBirth.invalid && dateOfBirth.touched,
-                        'is-valid': dateOfBirth.valid && dateOfBirth.touched
+                        'is-invalid': dateOfBirth.invalid && dateOfBirth.touched && !validateDate(), 
+                        'is-valid': dateOfBirth.valid && dateOfBirth.touched && validateDate()
                       }" required />
                     <div *ngIf="dateOfBirth.invalid" class="invalid-feedback">
                       La fecha de nacimiento es requerida
                     </div>
-                    <div *ngIf="validateDate() === false" class="invalid-feedback">
+                    <div *ngIf="!validateDate()" class="text-danger">
                       {{ validationMessageDate }}
                     </div>
                   </div>
@@ -172,10 +171,10 @@
                       [type]="showConfirmPassword ? 'text' : 'password'" class="form-control text-center"
                       id="confirmPassword" name="confirmPassword" placeholder="********"
                       [(ngModel)]="user.confirmPassword" [ngClass]="{
-                    'is-invalid': confirmPassword.invalid && confirmPassword.touched,
-                    'is-valid': confirmPassword.valid && confirmPassword.touched
+                    'is-invalid': confirmPassword.invalid && confirmPassword.touched && !validateConfirmPassword(),
+                    'is-valid': confirmPassword.valid && confirmPassword.touched && validateConfirmPassword()
                   }" required minlength="8" (change)="!validateConfirmPassword()" />
-                    <div *ngIf="!validateConfirmPassword() || confirmPassword.invalid" class="invalid-feedback">
+                    <div *ngIf="validatePassword() && (!validateConfirmPassword() || confirmPassword.invalid)" class="text-danger mt-1">
                       {{differentPassword}}
                     </div>
 
@@ -215,9 +214,10 @@
                 @if(signUpError) {
                 <p class="text-danger">{{signUpError}}</p>
                 } @else if (validSignup){
+
                 <p class="text-success success-snackbar" (click)="redirectToLogin()">Usuario registrado con exito</p>
 
-                }
+                }  
               </div>
 
             </div>

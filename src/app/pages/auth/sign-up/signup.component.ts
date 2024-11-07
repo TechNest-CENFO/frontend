@@ -9,12 +9,13 @@ import { UploadService } from "../../../services/upload.service";
 import { HttpClientModule } from '@angular/common/http';
 import { CustomValidators } from '../../../customValidators/custom-validators';
 import { AlertService } from '../../../services/alert.service';
+import { LoaderComponent } from "../../../components/loader/loader.component";
 
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, HttpClientModule, NgxDropzoneModule],
+  imports: [CommonModule, FormsModule, RouterLink, HttpClientModule, NgxDropzoneModule, LoaderComponent],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
   providers: [UploadService]
@@ -46,6 +47,7 @@ export class SigUpComponent {
   public isValidConfirmPassword:boolean = true;
   private alertService: AlertService = inject(AlertService);
 
+
   constructor(private router: Router, 
     private authService: AuthService,
     private _uploadService: UploadService,
@@ -53,22 +55,26 @@ export class SigUpComponent {
 
 
   //VALIDAR LA FECHA ACTUAL INGRESA PERO SE DEBE BUSCAR LA FORMA DE HACER UN VALIDATOR
-  validateDate() : boolean{
-    const selectedDate= this.dateOfBirthModel?.value;
-    const today = CustomValidators.formatDate(new Date());
+  validateDate(): boolean {   
+    if (this.user.dateOfBirth) {
+        const selectedDate = new Date(this.user.dateOfBirth); // Convierte a objeto Date
+        const today = new Date(); // Obtiene la fecha actual
 
-    this.validationMessageDate= "";
+        this.validationMessageDate = "";
 
-    if(!CustomValidators.validateDate(selectedDate,today)){
-      this.validationMessageDate= 'La fecha de nacimiento no puede ser mayor al actual.';
-      this.isValidDate = false;
-    }else{
-      this.isValidDate = true;
+        // Compara las fechas
+        if (selectedDate > today) {
+            this.validationMessageDate = 'La fecha de nacimiento no puede ser mayor a la actual.';
+            this.isValidDate = false;
+        } else {
+            this.isValidDate = true;
+        }
+
+        this.updateFormValidity();
     }
     
-    this.updateFormValidity();
     return this.isValidDate;
-  }
+}
 
 
 
@@ -196,7 +202,7 @@ export class SigUpComponent {
     });
   }
 
-  private singUploadUser() {
+  private singUploadUser() { 
     this.authService.signup(this.user).subscribe({
       next: () => {
         this.alertService.displayAlert('success', "Usuario registrado con exito", 'center', 'top', ['success-snackbar']);
@@ -210,6 +216,7 @@ export class SigUpComponent {
   
     setTimeout(()=>{
       this.redirectToLogin();
+      
     }, 3000);
     
   }
