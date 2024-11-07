@@ -74,3 +74,10 @@ export interface IProduct{
   description: string;
   price: number;
 }
+
+export interface IClothing {
+  is_favorite: boolean;
+  is_public: boolean;
+  image_url: string;
+  name: string;
+}
