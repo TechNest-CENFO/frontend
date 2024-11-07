@@ -1,0 +1,38 @@
+@import '../../../../../assets/variables/variables.scss';
+
+.icon {
+    margin-right: 10px;
+}
+
+.simplebar-content > li {
+    padding: 0.8em;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    list-style: none;
+    &.active, &:has(.sidebar-link.active) {
+        background-color: $accent-disabled;
+
+        .sidebar-link{
+            color: $accent-active;
+        }
+    }
+
+    &:hover {
+        background-color: lighten($accent-disabled, 5%);
+
+        .sidebar-link{
+            color: $accent-active;
+        }
+    }
+
+    .sidebar-link {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        color: $text-sidebar;
+    }
+}
+
+.custom-sidebar{
+    height: 100vh;
+}
