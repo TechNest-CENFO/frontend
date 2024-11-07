@@ -18,7 +18,7 @@ export interface IUser {
   picture?: string;
   direction?:string;
   active?: boolean;
-  blocked?: boolean;
+  isProfileBlocked?: boolean;
   createdAt?: string;
   updatedAt?: string;
   authorities?: IAuthority[];

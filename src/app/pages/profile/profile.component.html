@@ -130,7 +130,7 @@
 
       <div class="my-4 mx-3 col-md-6 profile-input privacy-container">
         <label>Perfil Privado:</label>
-        <input class="mx-3" type="checkbox" [checked]="profileService.user$().blocked === true" />
+        <input class="mx-3" type="checkbox" [checked]="profileService.user$().isProfileBlocked === true" />
       </div>
       <div class="my-4 mx-3 col-md-6 profile-input">
         <a (click)="modalService.displayModal('md', changePasswordModal)" class="text-default change-password" >Cambiar Contraseña</a>
@@ -142,7 +142,7 @@
       </div> -->
 
       <div class="my-4 mx-3 col-md-3 profile-input">
-        <a (click)="modalService.displayModal('md', deleteAccountModal)" class="text-danger">Eliminar Cuenta</a>
+        <a (click)="modalService.displayModal('md', deleteAccountModal)" class="text-danger delete-account">Eliminar Cuenta</a>
         <!-- <input type="button" value="Eliminar Cuenta" class="btn btn-danger"/> -->
       </div>
       
@@ -160,7 +160,9 @@
     [hideFooter]="true"
   >
     <div>
-      <app-password-form/>
+      <app-password-form
+        [changePasswordForm] = "changePasswordForm"
+      />
     </div>
   </app-modal>
 </ng-template>
@@ -171,7 +173,9 @@
     [hideFooter]="true"
   >
     <div>
-      <app-confirmation-form/>
+      <app-confirmation-form
+        [confirmationForm] = "confirmationForm"
+      />
     </div>
   </app-modal>
 </ng-template>

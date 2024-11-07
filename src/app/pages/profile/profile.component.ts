@@ -4,7 +4,7 @@ import { ProfileService } from '../../services/profile.service';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../../components/app-layout/elements/button/button.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { ModalService } from '../../services/modal.service';
@@ -32,6 +32,18 @@ export class ProfileComponent {
   public updateError!: string;
   public profileService = inject(ProfileService);
   public modalService: ModalService = inject(ModalService);
+
+  public fb: FormBuilder = inject(FormBuilder);
+  confirmationForm = this.fb.group({
+    id: [''],
+    blocked: ['', Validators.required],
+  })
+
+  changePasswordForm = this.fb.group({
+    id: [''],
+    password: ['', Validators.required],
+  })
+  
 
   public editMode = false;
   public updateForm: {picture: string, name: string; lastname: string; email:string; dateOfBirth:string; direction:string } = {

@@ -132,6 +132,7 @@ ngx-dropzone {
   }
 }
 
-.change-password{
+.change-password, .delete-account{
   cursor: pointer;
+  max-width: auto;
 }

@@ -1,7 +1,8 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { IUser } from '../../interfaces';
 import { CommonModule } from '@angular/common';
+import { ProfileService } from '../../services/profile.service';
 
 @Component({
   selector: 'app-confirmation-form',
@@ -15,4 +16,20 @@ import { CommonModule } from '@angular/common';
 })
 export class ConfirmationFormComponent {
   @Input() confirmationForm!: FormGroup;
+  public profileService: ProfileService = inject(ProfileService);
+
+
+  deleteAccount(event: Event){
+    let user = {
+
+      active: false
+      //cambiar a isActive que es el nuevo nombre de la variable
+      //isActive: true
+    }
+    this.deleteUser(user)
+  }
+
+  deleteUser(user: IUser){
+    this.profileService.deleteUser(user);
+  }
 }

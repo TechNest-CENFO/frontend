@@ -7,7 +7,7 @@
     </div>
       
     <div class="d-flex justify-content-end">
-      <button  [disabled]="confirmationForm.invalid" class="btn btn-outline-primary mx-3" type="button">Sí</button>
-      <button  [disabled]="confirmationForm.invalid" class="btn button-default" type="button">No</button>
+      <button (click)="deleteAccount($event)" class="btn btn-outline-primary mx-3" type="button">Sí</button>
+      <button [disabled]="confirmationForm.invalid" class="btn button-default" type="button">No</button>
     </div>
   </form>
