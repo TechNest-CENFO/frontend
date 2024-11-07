@@ -17,7 +17,8 @@
     <div class="col-md-6 mb-3">
         <label for="category">Categoría</label>
         <select formControlName="category" class="form-control" id="category">
-            <option value="Accesorio">Accesorio</option>
+            <!-- <option value="Accesorio">Accesorio</option> -->
+            
             <!-- Agrega más opciones según sea necesario -->
         </select>
     </div>
@@ -26,7 +27,8 @@
     <div class="col-md-6 mb-3">
         <label for="subcategory">Subcategoría</label>
         <select formControlName="subcategory" class="form-control" id="subcategory">
-            <option value="Corbata">Corbata</option>
+            <!-- <option value="Corbata">Corbata</option> -->
+            
             <!-- Agrega más opciones según sea necesario -->
         </select>
     </div>
@@ -35,7 +37,8 @@
     <div class="col-md-6 mb-3">
         <label for="material">Material</label>
         <select formControlName="material" class="form-control" id="material">
-            <option value="Estampado">Estampado</option>
+            <!-- <option value="Estampado">Estampado</option> -->
+            
             <!-- Agrega más opciones según sea necesario -->
         </select>
     </div>
@@ -44,8 +47,9 @@
     <div class="col-md-6 mb-3">
         <label for="season">Temporada</label>
         <select formControlName="season" class="form-control" id="season">
-            <option value="Cualquiera">Cualquiera</option>
+            <!-- <option value="Cualquiera">Cualquiera</option> -->
             <!-- Agrega más opciones según sea necesario -->
+             
         </select>
     </div>
 
@@ -53,33 +57,31 @@
     <div class="col-md-6 mb-3">
         <label for="color">Color</label>
         <select formControlName="color" class="form-control" id="color">
-            <option value="Azul">Azul</option>
+            <!-- <option value="Azul">Azul</option> -->
+            
             <!-- Agrega más opciones según sea necesario -->
         </select>
-    </div>
-
-    <!-- Descripción -->
-    <div class="col-md-12 mb-3">
-        <label for="description">Descripción (Opcional)</label>
-        <textarea formControlName="description" class="form-control" id="description" rows="3"></textarea>
     </div>
 
     <!-- Imagen -->
     <div class="col-md-3 text-end">
         <label for="picture" class="col-form-label">
-            Foto de perfil del usuario:
+            Foto de la prenda:
         </label>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-6">
         <ngx-dropzone (change)="onSelect($event)">
             <ngx-dropzone-label>Click para subir la imagen</ngx-dropzone-label>
             <ngx-dropzone-image-preview style="width: 100%;" ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files"
                 [file]="f" [removable]="true" (removed)="onRemove(f)">
             </ngx-dropzone-image-preview>
         </ngx-dropzone>
-    
+
     </div>
 
-<!-- Botón de envío -->
-<button type="submit" class="btn btn-danger">Agregar Prenda</button>
+    <!-- Botón de envío -->
+    
+        <button (click)="callSave()" [disabled]="clothingForm.invalid" type="submit" class="btn btn-primary" >Guardar</button>
+        
+    
 </form>

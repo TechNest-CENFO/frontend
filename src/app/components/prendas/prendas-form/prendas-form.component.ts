@@ -5,11 +5,12 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { IClothing } from '../../../interfaces';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { ButtonComponent } from "../../app-layout/elements/button/button.component";
 
 @Component({
   selector: 'app-prendas-form',
   standalone: true,
-  imports: [NgxDropzoneModule, ReactiveFormsModule, CommonModule, FormsModule, RouterLink, NgxDropzoneModule],
+  imports: [NgxDropzoneModule, ReactiveFormsModule, CommonModule, FormsModule, RouterLink, NgxDropzoneModule, ButtonComponent],
   //CommonModule, FormsModule, RouterLink, HttpClientModule, NgxDropzoneModule
   templateUrl: './prendas-form.component.html',
   styleUrls: ['./prendas-form.component.scss']
