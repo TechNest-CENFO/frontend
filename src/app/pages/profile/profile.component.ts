@@ -7,6 +7,10 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+import { ModalService } from '../../services/modal.service';
+import { PasswordFormComponent } from '../../components/password-form/password-form.component';
+import { ConfirmationFormComponent } from '../../components/confirmation-form/confirmation-form.component';
+import { ModalComponent } from '../../components/modal/modal.component';
 
 @Component({
   selector: 'app-profile',
@@ -16,6 +20,9 @@ import { Router } from '@angular/router';
     ButtonComponent,
     NgxDropzoneModule,
     FormsModule,
+    PasswordFormComponent,
+    ModalComponent,
+    ConfirmationFormComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
@@ -24,6 +31,8 @@ import { Router } from '@angular/router';
 export class ProfileComponent {
   public updateError!: string;
   public profileService = inject(ProfileService);
+  public modalService: ModalService = inject(ModalService);
+
   public editMode = false;
   public updateForm: {picture: string, name: string; lastname: string; email:string; dateOfBirth:string; direction:string } = {
     picture: '',

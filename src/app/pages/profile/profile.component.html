@@ -5,7 +5,7 @@
     <div class="form-container shadow-sm bg-body rounded">
       <div class="col-md-6">
         <h5 class="mx-3">Datos Personales</h5>
-        <form #form="ngForm" (ngSubmit)="handleUpdate($event)" autocomplete="off" class="shadow-sm">
+        <form #form="ngForm" (ngSubmit)="handleUpdate($event)" autocomplete="off" >
           <!-- <div class="profile-picture-container mx-3 col-md-3">
             <img src="{{profileService.user$().picture}}" alt="foto de perfil" class="profile-picture" />
   
@@ -102,7 +102,8 @@
             <input *ngIf="editMode"
               [(ngModel)]="updateForm.dateOfBirth"
               [ngModelOptions]="{standalone: true}"
-              class="form-control"/>
+              class="form-control"
+              type="date"/>
           </div>
           
           <div class="my-3 mx-3 col-md-6 profile-input">
@@ -132,15 +133,16 @@
         <input class="mx-3" type="checkbox" [checked]="profileService.user$().blocked === true" />
       </div>
       <div class="my-4 mx-3 col-md-6 profile-input">
-        <a href="#">Cambiar Contraseña</a>
+        <a (click)="modalService.displayModal('md', changePasswordModal)" class="text-default change-password" >Cambiar Contraseña</a>
         <!-- <input type="button" value="Cambiar Contraseña" class="btn btn-light"/> -->
+        <!-- <button (click)="modalService.displayModal('md', addOrdersModal)" type="button" class="btn btn-primary"><i class="fas fa-plus"></i></button> -->
       </div>
       <!-- <div class="my-4 mx-3 col-md-3 profile-input">
         <input type="button" value="Eliminar Cuenta" class="btn btn-danger"/>
       </div> -->
 
       <div class="my-4 mx-3 col-md-3 profile-input">
-        <a href="#" class="text-danger">Eliminar Cuenta</a>
+        <a (click)="modalService.displayModal('md', deleteAccountModal)" class="text-danger">Eliminar Cuenta</a>
         <!-- <input type="button" value="Eliminar Cuenta" class="btn btn-danger"/> -->
       </div>
       
@@ -151,3 +153,25 @@
     </div>
   </div>
 </div>
+
+
+<ng-template #changePasswordModal>
+  <app-modal
+    [hideFooter]="true"
+  >
+    <div>
+      <app-password-form/>
+    </div>
+  </app-modal>
+</ng-template>
+
+
+<ng-template #deleteAccountModal>
+  <app-modal
+    [hideFooter]="true"
+  >
+    <div>
+      <app-confirmation-form/>
+    </div>
+  </app-modal>
+</ng-template>
