@@ -46,22 +46,21 @@ export class ProfileComponent {
   
 
   public editMode = false;
-  public updateForm: {picture: string, name: string; lastname: string; email:string; dateOfBirth:string; direction:string } = {
+  public updateForm: {picture: string, name: string; lastname: string; email:string; dateOfBirth:string; direction:string; isUserActive: boolean, updatedAt: Date } = {
     picture: '',
     name: '',
     lastname: '',
     email: '',
     dateOfBirth: '',
-    direction: ''
+    direction: '',
+    isUserActive: false,
+    updatedAt: new Date('2024-04-04')
   };
 
-  // public editMode = {
-  //   name: false,
-  //   lastname: false,
-  //   email: false,
-  //   dateOfBirth: false,
-  //   direction: false
-  // };
+  public deleteForm: { } = {
+    isUserActive: false,
+
+  };
 
   constructor(private router: Router, private userService: UserService, private _userService: UserService) {
     this.profileService.getUserInfoSignal().subscribe((user: IUser) => {
@@ -71,7 +70,9 @@ export class ProfileComponent {
         lastname: user.lastname || '',
         email: user.email || '',
         dateOfBirth: user.dateOfBirth || '',
-        direction: user.direction || ''
+        direction: user.direction || '',
+        isUserActive: user.isUserActive || false,
+        updatedAt: user.updatedAt ? new Date(user.updatedAt) : new Date('2024-04-04')
       };
     });
   }
@@ -91,7 +92,9 @@ export class ProfileComponent {
         lastname: user.lastname || '',
         email: user.email || '',
         dateOfBirth: user.dateOfBirth || '',
-        direction: user.direction || ''
+        direction: user.direction || '',
+        isUserActive: user.isUserActive || false,
+        updatedAt: user.updatedAt ? new Date(user.updatedAt) : new Date('2024-04-04')
       };
     });
   }
@@ -117,7 +120,8 @@ export class ProfileComponent {
       lastname: this.updateForm.lastname,
       email: this.updateForm.email,
       dateOfBirth: this.updateForm.dateOfBirth,
-      direction: this.updateForm.direction
+      direction: this.updateForm.direction,
+      isUserActive: this.updateForm.isUserActive
     }
     this.updateUserInfo(user);
     this.editMode = false; 
@@ -125,5 +129,19 @@ export class ProfileComponent {
 
   updateUserInfo (user: IUser){
     this.profileService.updateUserInfo(user);
+  }
+
+
+  handleDelete(event: Event) {
+    let user = {
+     isUserActive: this.updateForm.isUserActive
+     
+    }
+    this.deleteUserInfo(user);
+    this.editMode = false; 
+  }
+
+  deleteUserInfo (user: IUser){
+    this.profileService.deleteUser(user);
   }
 }

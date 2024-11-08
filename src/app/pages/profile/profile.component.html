@@ -130,25 +130,19 @@
 
       <div class="my-4 mx-3 col-md-6 profile-input privacy-container">
         <label>Perfil Privado:</label>
-        <input class="mx-3" type="checkbox" [checked]="profileService.user$().isProfileBlocked === true" />
+        <input class="mx-3" type="checkbox" [checked]="profileService.user$().isProfileBlocked === false" />
       </div>
       <div class="my-4 mx-3 col-md-6 profile-input">
         <a (click)="modalService.displayModal('md', changePasswordModal)" class="text-default change-password" >Cambiar Contraseña</a>
-        <!-- <input type="button" value="Cambiar Contraseña" class="btn btn-light"/> -->
-        <!-- <button (click)="modalService.displayModal('md', addOrdersModal)" type="button" class="btn btn-primary"><i class="fas fa-plus"></i></button> -->
       </div>
-      <!-- <div class="my-4 mx-3 col-md-3 profile-input">
-        <input type="button" value="Eliminar Cuenta" class="btn btn-danger"/>
-      </div> -->
-
+    
       <div class="my-4 mx-3 col-md-3 profile-input">
         <a (click)="modalService.displayModal('md', deleteAccountModal)" class="text-danger delete-account">Eliminar Cuenta</a>
-        <!-- <input type="button" value="Eliminar Cuenta" class="btn btn-danger"/> -->
       </div>
       
       <div class="my-4 mx-3">
         <label>Última Actualización:</label>
-        <p>{{profileService.user$().updatedAt | date:'dd/MM/YYYY'}}</p>
+        <p>{{updateForm.updatedAt | date:'dd/MM/YYYY'}}</p>
       </div>
     </div>
   </div>

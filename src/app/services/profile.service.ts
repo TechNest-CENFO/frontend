@@ -62,7 +62,7 @@ export class ProfileService extends BaseService<IUser> {
   }
 
   deleteUser(user: IUser){
-    this.http.put<IUser>(`users/profile/${this.authService.getUser()?.id}`, user).subscribe({
+    this.http.patch<IUser>(`users/profile/${this.authService.getUser()?.id}`, user).subscribe({
       next: (response: any) => {
         this.userSignal.set(response);
         const message = response?.message ?? 'Usuario eliminado exitosamente';
