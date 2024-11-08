@@ -75,6 +75,18 @@ export interface IProduct{
   price: number;
 }
 
+export interface IToAddress{
+  id?: number;
+  toAddress: string;
+}
+
+export interface IPasswordResetEntity{
+  id?: number;
+  token: string;
+  expirationDate?: Date;
+  newPassword: string;
+}
+
 export interface IClothing {
   is_favorite: boolean;
   is_public: boolean;
