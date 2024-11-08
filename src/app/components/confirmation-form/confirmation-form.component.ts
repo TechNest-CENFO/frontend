@@ -21,10 +21,7 @@ export class ConfirmationFormComponent {
 
   deleteAccount(event: Event){
     let user = {
-
-      active: false
-      //cambiar a isActive que es el nuevo nombre de la variable
-      //isActive: true
+      isUserActive: false
     }
     this.deleteUser(user)
   }
