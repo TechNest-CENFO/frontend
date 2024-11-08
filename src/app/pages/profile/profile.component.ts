@@ -44,47 +44,37 @@ export class ProfileComponent {
     password: ['', Validators.required],
   })
   
+  // public deleteForm: { } = {
+  //   isUserActive: false
+  // };
 
   public editMode = false;
-  public updateForm: {picture: string, name: string; lastname: string; email:string; dateOfBirth:string; direction:string; isUserActive: boolean, updatedAt: Date } = {
-    picture: '',
-    name: '',
-    lastname: '',
-    email: '',
-    dateOfBirth: '',
-    direction: '',
-    isUserActive: false,
-    updatedAt: new Date('2024-04-04')
-  };
-
-  public deleteForm: { } = {
-    isUserActive: false,
-
-  };
-
-  constructor(private router: Router, private userService: UserService, private _userService: UserService) {
-    this.profileService.getUserInfoSignal().subscribe((user: IUser) => {
-      this.updateForm = {
-        picture: user.picture || '',
-        name: user.name || '',
-        lastname: user.lastname || '',
-        email: user.email || '',
-        dateOfBirth: user.dateOfBirth || '',
-        direction: user.direction || '',
-        isUserActive: user.isUserActive || false,
-        updatedAt: user.updatedAt ? new Date(user.updatedAt) : new Date('2024-04-04')
-      };
-    });
-  }
-
-
   toggleEditMode() {
     this.editMode = !this.editMode;
   }
-
-  cancelEdit() {
-    this.editMode = false; 
   
+  public updateForm: {picture: string,
+                      name: string,
+                      lastname: string,
+                      email:string,
+                      dateOfBirth:string,
+                      direction:string,
+                      isUserActive: boolean,
+                      updatedAt: Date
+                     } = 
+      {
+        picture: '',
+        name: '',
+        lastname: '',
+        email: '',
+        dateOfBirth: '',
+        direction: '',
+        isUserActive: false,
+        updatedAt: new Date('2024-04-04')
+      };
+
+
+  private getUserInfo (){
     this.profileService.getUserInfoSignal().subscribe((user: IUser) => {
       this.updateForm = {
         picture: user.picture || '',
@@ -99,6 +89,19 @@ export class ProfileComponent {
     });
   }
 
+
+  constructor(private router: Router, private userService: UserService, private _userService: UserService) {
+    this.getUserInfo();
+  }
+
+
+  cancelEdit() {
+    this.editMode = false; 
+    this.getUserInfo();
+  }
+
+
+  //Inicio Imagen de perfil
   files: File[] = [];
 
   onSelect(event: any) {
@@ -112,6 +115,8 @@ export class ProfileComponent {
     console.log(event);
     this.files.splice(this.files.indexOf(event), 1);
   }
+  //Fin Imagen de perfil
+
 
   handleUpdate(event: Event) {
     let user = {
@@ -127,21 +132,39 @@ export class ProfileComponent {
     this.editMode = false; 
   }
 
+
   updateUserInfo (user: IUser){
     this.profileService.updateUserInfo(user);
   }
 
+  // setProfilePrivate(){
+  //   this.profileService.setProfilePrivate()
+  // }
 
-  handleDelete(event: Event) {
+  isProfileBlocked: boolean = false;
+
+  setProfilePrivacy() {
     let user = {
-     isUserActive: this.updateForm.isUserActive
-     
-    }
-    this.deleteUserInfo(user);
-    this.editMode = false; 
+      isProfileBlocked: this.isProfileBlocked
+    };
+    this.setProfilePrivate(user);
   }
 
-  deleteUserInfo (user: IUser){
-    this.profileService.deleteUser(user);
+  setProfilePrivate(user: IUser){
+    this.profileService.setProfilePrivate(user);
   }
+
+
+  // handleDelete(event: Event) {
+  //   let user = {
+  //     isUserActive: this.updateForm.isUserActive
+  //   }
+  //   this.deleteUserInfo(user);
+  //   this.editMode = false; 
+  // }
+
+
+  // deleteUserInfo (user: IUser){
+  //   this.profileService.deleteUser(user);
+  // }
 }

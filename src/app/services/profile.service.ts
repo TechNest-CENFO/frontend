@@ -76,4 +76,19 @@ export class ProfileService extends BaseService<IUser> {
     });
   }
 
+  setProfilePrivate(user: IUser){
+    this.http.patch<IUser>(`users/profile/privacy/${this.authService.getUser()?.id}`, user).subscribe({
+      next: (response: any) => {
+        this.userSignal.set(response);
+        const message = response?.message ?? 'Se modificó la privacidad del perfil';
+        this.alertService.displayAlert('success', message, 'center', 'top', ['success-snackbar']);
+        this.getUserInfoSignal();
+
+      },
+      error: (err: any) => {
+        this.alertService.displayAlert('error', 'Ocurrió un error al modificar la privacidad del perfil', 'center', 'top', ['error-snackbar']);
+      }
+    });
+  }
+
 }

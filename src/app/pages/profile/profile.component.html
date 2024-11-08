@@ -130,7 +130,7 @@
 
       <div class="my-4 mx-3 col-md-6 profile-input privacy-container">
         <label>Perfil Privado:</label>
-        <input class="mx-3" type="checkbox" [checked]="profileService.user$().isProfileBlocked === false" />
+        <input class="mx-3" [(ngModel)]="isProfileBlocked" (change)="setProfilePrivacy()" type="checkbox"/>
       </div>
       <div class="my-4 mx-3 col-md-6 profile-input">
         <a (click)="modalService.displayModal('md', changePasswordModal)" class="text-default change-password" >Cambiar Contraseña</a>
