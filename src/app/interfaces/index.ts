@@ -17,7 +17,7 @@ export interface IUser {
   dateOfBirth?: string;
   picture?: string;
   direction?:string;
-  active?: boolean;
+  isUserActive?: boolean;
   isProfileBlocked?: boolean;
   createdAt?: string;
   updatedAt?: string;
