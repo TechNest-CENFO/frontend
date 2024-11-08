@@ -12,6 +12,9 @@ import { IRoleType } from './interfaces';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { ProductsComponent } from './pages/products/products.component';
+import {PasswordRecoveryComponent} from "./pages/auth/password-recovery/password-recovery.component";
+import {PasswordResetComponent} from "./pages/auth/password-reset/password-reset.component";
+import { PrendasComponent } from './pages/prendas/prendas.component';
 
 export const routes: Routes = [
   {
@@ -22,6 +25,16 @@ export const routes: Routes = [
   {
     path: 'signup',
     component: SigUpComponent,
+    canActivate: [GuestGuard],
+  },
+  {
+    path: 'passwordRecovery',
+    component: PasswordRecoveryComponent,
+    canActivate: [GuestGuard],
+  },
+  {
+    path: 'password-reset/:token',
+    component: PasswordResetComponent,
     canActivate: [GuestGuard],
   },
   {
@@ -101,7 +114,7 @@ export const routes: Routes = [
       },
       {
         path: 'prendas',
-        component: ProductsComponent,
+        component: PrendasComponent,
         data: { 
           authorities: [
             IRoleType.admin, 

@@ -1,7 +1,11 @@
 <div class="login-container">
   <div class="d-flex align-items-center justify-content-center h-100">
+
     <div class="login-card">
       <div class="w-100">
+        <div class="float-right d-flex justify-content-end mt-2">
+          <a href="/login"><i class="fa-solid fa-xmark fa-2x" style="color:black; margin-right: 25px;"></i></a>
+        </div>
         <div class="text-center">
           <a class="logo text-center" routerLink="/">
             <img width="500" class="img-fluid" src="../../../../assets/icons/logo.jpg" alt="Logo" />
@@ -13,18 +17,18 @@
               <h2>Registro de usuarios</h2>
             </div>
 
-            <div style="background-color: #F4F4F4; padding:2% 4%;" >
+            <div style="background-color: #F4F4F4; padding:2% 4%;">
               <div class="form-group px-1 mb-4">
                 <div class="row  align-items-center">
                   <!--INICIO Nombre del usuario-->
-                  <div class="col-md-3 text-end">
+                  <div class="col-md-2 text-end">
                     <label for="name" class="col-form-label">
-                      Nombre del usuario:
+                      Nombre:
                     </label>
                   </div>
                   <div class="col-md-3">
-                    <input #name="ngModel" style="border-radius: 6PX;" type="text" class="form-control text-center" id="name" name="name"
-                      placeholder="Nombre*" [(ngModel)]="user.name" [ngClass]="{
+                    <input #name="ngModel" style="border-radius: 6PX;" type="text" class="form-control text-center"
+                      id="name" name="name" placeholder="Nombre*" [(ngModel)]="user.name" [ngClass]="{
                       'is-invalid': name.invalid && name.touched,
                       'is-valid': name.valid && name.touched
                     }" required />
@@ -37,7 +41,7 @@
                   <!--INICIO del correo electronico-->
                   <div class="col-md-3 text-end">
                     <label for="email" class="col-form-label">
-                      Correo electrónico del usuario:
+                      Correo electrónico:
                     </label>
                   </div>
                   <div class="col-md-3">
@@ -45,7 +49,7 @@
                       placeholder="Correo electrónico*" [(ngModel)]="user.email" [ngClass]="{
                       'is-invalid': email.invalid && email.touched,
                       'is-valid': email.valid && email.touched
-                    }" required />
+                    }" required email />
                     <div *ngIf="email.invalid" class="invalid-feedback">
                       El correo electrónico es requerido
                     </div>
@@ -59,9 +63,9 @@
               <div class="form-group px-1 mb-4">
                 <div class="row  align-items-center">
                   <!--INICIO de los apellidos-->
-                  <div class="col-md-3 text-end">
+                  <div class="col-md-2 text-end">
                     <label for="lastname" class="col-form-label">
-                      Apellidos del usuario:
+                      Apellidos:
                     </label>
                   </div>
                   <div class="col-md-3">
@@ -79,7 +83,7 @@
                   <!--INICIO de la direccion-->
                   <div class="col-md-3 text-end">
                     <label for="direction" class="col-form-label">
-                      Dirección del usuario:
+                      Dirección:
                     </label>
                   </div>
                   <div class="col-md-3">
@@ -89,7 +93,7 @@
                     'is-valid': direction.valid && direction.touched
                   }" required />
                     <div *ngIf="direction.invalid" class="invalid-feedback">
-                      El apellido es requerido
+                      El dirección es requerida
                     </div>
                   </div>
                   <!--FIN de la direccion-->
@@ -99,92 +103,123 @@
               <div class="form-group px-1 mb-3">
                 <div class="row align-items-center">
                   <!--INICIO de la contraseña-->
-                  <div class="col-md-3 text-end">
+                  <div class="col-md-2 text-end">
                     <label for="password" class="col-form-label text-end">
                       Contraseña:
                     </label>
                   </div>
                   <div class="col-md-3">
-                    <input #password="ngModel" type="password" class="form-control text-center" id="password"
-                      name="password" placeholder="******" [(ngModel)]="user.password" [ngClass]="{
-                    'is-invalid': password.invalid && password.touched,
-                    'is-valid': password.valid && password.touched
-                  }" required />
-                    <div *ngIf="password.invalid" class="invalid-feedback">
-                      La contraseña es requerida
+                    <input maxlength="16" #password="ngModel" [type]="showPassword ? 'text' : 'password'"
+                      class="form-control text-center" id="password" name="password" placeholder="******"
+                      [(ngModel)]="user.password" (keyup)="validatePassword()" [ngClass]="{
+                        'is-invalid': password.invalid && password.touched,
+                        'is-valid': password.valid && password.touched
+                  }" required minlength="8" />
+                    <div *ngIf="!validatePassword()" class="invalid-feedback">
+                      <ul>
+                        <li *ngFor="let message of passwordValidationMessages">{{ message }}</li>
+                      </ul>
                     </div>
                   </div>
                   <!--FIN de la contraseña-->
 
+                  <div class="col-1">
+                    <button type="button" (click)="showPassword = !showPassword" class="eye-button">
+                      <i *ngIf="!showPassword" class="fa fa-eye"></i>
+                      <i *ngIf="showPassword" class="fa fa-eye-slash"></i>
+                    </button>
+                  </div>
+
+
+                  <!--INICIO de la fecha de nacimiento-->
+                  <div class="col-md-2 text-end">
+                    <label for="dateOfBirth" class="col-form-label">
+                      Fecha de nacimiento:
+                    </label>
+                  </div>
+                  <div class="col-md-3">
+                    <input #dateOfBirth="ngModel" type="date" class="form-control text-center" id="dateOfBirth"
+                      name="dateOfBirth" placeholder="Fecha de nacimiento*" (change)="validateDate()"
+                      [(ngModel)]="user.dateOfBirth" [ngClass]="{
+                        'is-invalid': dateOfBirth.invalid && dateOfBirth.touched && !validateDate(), 
+                        'is-valid': dateOfBirth.valid && dateOfBirth.touched && validateDate()
+                      }" required />
+                    <div *ngIf="dateOfBirth.invalid" class="invalid-feedback">
+                      La fecha de nacimiento es requerida
+                    </div>
+                    <div *ngIf="!validateDate()" class="text-danger">
+                      {{ validationMessageDate }}
+                    </div>
+                  </div>
+                  <!--FIN de la fecha de nacimiento-->
+                </div>
+              </div>
+              <div class="form-group px-1 mb-3">
+                <div class="row align-items-center">
+                </div>
+              </div>
+              <div class="form-group px-1 mb-3">
+                <div class="row align-items-center">
                   <!--INICIO de la confirmacion de la contarseña-->
-                  <div class="col-md-3 text-end">
+                  <div class="col-md-2 text-end">
                     <label for="confirmPassword" class="col-form-label">
                       Confirmación de la contraseña:
                     </label>
                   </div>
                   <div class="col-md-3">
-                    <input #confirmPassword="ngModel" type="password" class="form-control text-center"
+                    <input [disabled]="!validatePassword()" maxlength="16" #confirmPassword="ngModel"
+                      [type]="showConfirmPassword ? 'text' : 'password'" class="form-control text-center"
                       id="confirmPassword" name="confirmPassword" placeholder="********"
                       [(ngModel)]="user.confirmPassword" [ngClass]="{
-                    'is-invalid': confirmPassword.invalid && confirmPassword.touched,
-                    'is-valid': confirmPassword.valid && confirmPassword.touched
-                  }" required />
-                    <div *ngIf="confirmPassword.invalid" class="invalid-feedback">
-                      La confirmación de la contraseña es requerida
+                    'is-invalid': confirmPassword.invalid && confirmPassword.touched && !validateConfirmPassword(),
+                    'is-valid': confirmPassword.valid && confirmPassword.touched && validateConfirmPassword()
+                  }" required minlength="8" (change)="!validateConfirmPassword()" />
+                    <div *ngIf="validatePassword() && (!validateConfirmPassword() || confirmPassword.invalid)" class="text-danger mt-1">
+                      {{differentPassword}}
                     </div>
-                  </div>
-                </div>
-              </div>
 
-              <div class="form-group px-1 mb-3">
-                <div class="row align-items-center">
-                  <!--INICIO de la fecha de nacimiento-->
-                  <div class="col-md-3 text-end">
-                    <label for="dateOfBirth" class="col-form-label">
-                      Fecha de nacimiento del usuario:
-                    </label>
                   </div>
-                  <div class="col-md-3">
-                    <input #dateOfBirth="ngModel" type="text" class="form-control text-center" id="dateOfBirth"
-                      name="dateOfBirth" placeholder="Fecha de nacimiento*" [(ngModel)]="user.dateOfBirth" [ngClass]="{
-                    'is-invalid': dateOfBirth.invalid && dateOfBirth.touched,
-                    'is-valid': dateOfBirth.valid && dateOfBirth.touched
-                  }" required />
-                    <div *ngIf="dateOfBirth.invalid" class="invalid-feedback">
-                      La fecha de nacimiento es requerida
-                    </div>
+                  <div class="col-1">
+                    <button type="button" (click)="showConfirmPassword = !showConfirmPassword" class="eye-button">
+                      <i *ngIf="!showConfirmPassword" class="fa fa-eye"></i>
+                      <i *ngIf="showConfirmPassword" class="fa fa-eye-slash"></i>
+                    </button>
                   </div>
-                  <!--FIN de la fecha de nacimiento-->
+
 
                   <!--INICIO de la foto de perfil-->
-                  <div class="col-md-3 text-end">
+                  <div class="col-md-2 text-end">
                     <label for="picture" class="col-form-label">
                       Foto de perfil del usuario:
                     </label>
                   </div>
-                  <div class="col-md-3">        
+                  <div class="col-md-3">
                     <ngx-dropzone (change)="onSelect($event)">
                       <ngx-dropzone-label>Click para subir la imagen</ngx-dropzone-label>
-                      <ngx-dropzone-image-preview style="width: 100%;" ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">     
+                      <ngx-dropzone-image-preview style="width: 100%;" ngProjectAs="ngx-dropzone-preview"
+                        *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
                       </ngx-dropzone-image-preview>
                     </ngx-dropzone>
-                
+
                   </div>
                 </div>
               </div>
 
 
               <div class="form-group mb-0 text-center">
-                <button class="btn button-default" style="padding-right:60px; padding-left:60px"type="submit">
+                <button [disabled]="!isFormValid" class="btn button-default"
+                  style="padding-right:60px; padding-left:60px" type="submit">
                   Registrarse
                 </button>
                 @if(signUpError) {
                 <p class="text-danger">{{signUpError}}</p>
                 } @else if (validSignup){
-                <p class="text-success">User registered, please go to login</p>
-                }
+
+                <p class="text-success success-snackbar" (click)="redirectToLogin()">Usuario registrado con exito</p>
+
+                }  
               </div>
-              <a href="/login">Go Login</a>
+
             </div>
           </form>
         </div>
