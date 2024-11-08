@@ -7,13 +7,15 @@ import { IUser } from '../../../interfaces';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { UploadService } from "../../../services/upload.service";
 import { HttpClientModule } from '@angular/common/http';
-import { customValidator } from '../../../customValidators/custom-validators';
+import { CustomValidators } from '../../../customValidators/custom-validators';
+import { AlertService } from '../../../services/alert.service';
+import { LoaderComponent } from "../../../components/loader/loader.component";
 
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, HttpClientModule, NgxDropzoneModule],
+  imports: [CommonModule, FormsModule, RouterLink, HttpClientModule, NgxDropzoneModule, LoaderComponent],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
   providers: [UploadService]
@@ -30,101 +32,117 @@ export class SigUpComponent {
   @ViewChild('confirmPassword') confirmPasswordModel!: NgModel;
   @ViewChild('dateOfBirth') dateOfBirthModel!: NgModel;
   @ViewChild('picture') pictureModel!: NgModel;
+  public istrue = false;
   
-  validationMessages: string[] = [];
-  dateError: string | null = null;
- 
-  formBuilder = inject(FormBuilder);
-  formGroup : FormGroup = this.formBuilder.group({
-    password: ['', [customValidator]]
-  })
-
-
+  passwordValidationMessages: string[] = [];
+  validationMessageDate:string = "";
+  differentPassword:string = "";
+  passwordValue: string = "";
+  showPassword:boolean = false;
+  showConfirmPassword:boolean=false;
   public user: IUser = {};
+  public isFormValid: boolean | null = null;
+  public isValidDate:boolean = true;
+  public isValidPassword:boolean = true;
+  public isValidConfirmPassword:boolean = true;
+  private alertService: AlertService = inject(AlertService);
 
-
-  validateDate(){
-    const selectedDate= new Date(this.dateOfBirthModel.value);
-    const today = new Date(this.getFormattedDate());
-    this.validationMessages = [];
-
-    if (selectedDate === null || selectedDate === undefined ) {
-      this.validationMessages.push('La fecha de nacimiento es requerida.');
-      return ;
-    }else if(selectedDate >= today){
-      this.validationMessages.push('La fecha de nacimiento no puede ser mayor al actual.');
-      return ;
-    }
-    
-  }
-
-  getFormattedDate(): Date {
-    const today = new Date();
-    
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // Los meses son base 0
-    const day = String(today.getDate()).padStart(2, '0');
-  
-    return new Date(`${year}/${month}/${day}`); // Devuelve la fecha en formato "YYYY/MM/DD"
-  }
-
-  validatePassword()  {    
-    console.log(this.passwordModel.errors);
-    let passwordValue: string = this.passwordModel.value;
-    this.validationMessages = []; // Reiniciar mensajes de validación
-
-    if (passwordValue === null || passwordValue === undefined || passwordValue === "") {
-      this.validationMessages.push('La contraseña es requerida.');
-      return ;
-    }
-    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
-
-
-   
-    if (!passwordPattern.test(passwordValue)) {
-      this.validationMessages.push('La contraseña debe cumplir con los siguientes requisitos:');
-      
-      
-      if (!/(?=.*[a-z])/.test(passwordValue)) {
-        this.validationMessages.push('- Al menos una letra minúscula');
-
-      }
-      if (!/(?=.*[A-Z])/.test(passwordValue)) {
-        this.validationMessages.push('- Al menos una letra mayúscula');
-
-      }
-      if (!/(?=.*\d)/.test(passwordValue)) {
-        this.validationMessages.push('- Al menos un número');
-
-      }
-      if (!/(?=.*[@$!%*?&])/.test(passwordValue)) {
-        this.validationMessages.push('- Al menos un carácter especial');
-
-      }
-      if(this.passwordModel.validator?.length.toString){
-        if (this.passwordModel.validator?.length < 8 || this.passwordModel.validator?.length > 16) {
-          this.validationMessages.push('- Longitud de entre 8 y 16 caracteres');
-  
-        }
-      }
-
-      if(this.validationMessages.length > 0){
-        this.passwordModel.control.markAsTouched();
-        this.passwordModel.validator
-
-      }
-
-
-      
-    }
-
-   
-  }
 
   constructor(private router: Router, 
     private authService: AuthService,
     private _uploadService: UploadService,
   ) { }
+
+
+  //VALIDAR LA FECHA ACTUAL INGRESA PERO SE DEBE BUSCAR LA FORMA DE HACER UN VALIDATOR
+  validateDate(): boolean {   
+    if (this.user.dateOfBirth) {
+        const selectedDate = new Date(this.user.dateOfBirth); // Convierte a objeto Date
+        const today = new Date(); // Obtiene la fecha actual
+
+        this.validationMessageDate = "";
+
+        // Compara las fechas
+        if (selectedDate > today) {
+            this.validationMessageDate = 'La fecha de nacimiento no puede ser mayor a la actual.';
+            this.isValidDate = false;
+        } else {
+            this.isValidDate = true;
+        }
+
+        this.updateFormValidity();
+    }
+    
+    return this.isValidDate;
+}
+
+
+
+  //FUNCIÓN QUE REGULA LAS EXPRESIONES REGULARES DEL PASSWORD 
+  //Mapea los mensajes aenviar y consulta al validator para confirmar si es valido o no
+  validatePassword(): boolean  {
+    if(this.passwordModel && this.passwordModel.value){
+      this.passwordValue = this.passwordModel.value;
+    }      
+    
+    this.passwordValidationMessages = []; // Reiniciar mensajes de validación
+    
+    if (!CustomValidators.passwordIsNull(this.passwordValue)) {
+      this.passwordValidationMessages.push('La contraseña es requerida.');
+    }
+    
+    if (!CustomValidators.passwordPatternValid(this.passwordValue)) {
+      this.passwordValidationMessages.push('La contraseña debe cumplir con los siguientes requisitos:');
+      
+      
+      if (!CustomValidators.containsLowercase(this.passwordValue)) {
+        this.passwordValidationMessages.push('- Al menos una letra minúscula');
+      }
+
+      if (!CustomValidators.containsUppercase(this.passwordValue)) {
+        this.passwordValidationMessages.push('- Al menos una letra mayúscula');
+
+      }
+      if (!CustomValidators.containsNumbers(this.passwordValue)) {
+        this.passwordValidationMessages.push('- Al menos un número');
+
+      }
+      if (!CustomValidators.containsSpecialCharacter(this.passwordValue)) {
+        this.passwordValidationMessages.push('- Al menos un carácter especial');
+      }
+      
+      if (!CustomValidators.minimunRequired(this.passwordValue) || 
+          !CustomValidators.maximunRequired(this.passwordValue)) {
+          this.passwordValidationMessages.push('- Longitud de entre 8 y 16 caracteres');
+      }
+      
+    }
+
+    if(this.passwordValidationMessages.length > 0){
+      this.isValidPassword = false;
+    }else{
+      this.isValidPassword = true;
+    }
+
+    this.updateFormValidity();
+    return this.isValidPassword;
+   
+  }
+
+  validateConfirmPassword():boolean{
+
+    if (!CustomValidators.isPasswordEqualsConfirm(this.passwordModel?.value, 
+      this.confirmPasswordModel?.value)) {
+      this.differentPassword ='Las contraseñas no coinciden';
+      this.isValidConfirmPassword = false;
+    }else{
+      this.isValidConfirmPassword = true;
+    }
+   
+
+    this.updateFormValidity();
+    return this.isValidConfirmPassword;
+  }
 
 
 
@@ -151,8 +169,7 @@ export class SigUpComponent {
     if (!this.confirmPasswordModel.valid) {
       this.confirmPasswordModel.control.markAsTouched();
     }
-    if (!this.dateOfBirthModel.valid) {
-      this.validateDate();
+    if (!this.dateOfBirthModel.valid) {      
       this.dateOfBirthModel.control.markAsTouched();
     }
     //confirmPasswordModel
@@ -165,9 +182,11 @@ export class SigUpComponent {
 
 
   files: File[] = [];
-
+  
   private uploadImage() {
+    
     const file_data = this.files[0];
+    this.updateFormValidity();
     const data = new FormData();
     data.append('file', file_data);
     data.append('upload_preset', 'angular_cloudinary');
@@ -183,21 +202,27 @@ export class SigUpComponent {
     });
   }
 
-  private singUploadUser() {
+  private singUploadUser() { 
     this.authService.signup(this.user).subscribe({
-      next: () => this.validSignup = true ,
-      error: (err: any) => (this.signUpError = err.description),
+      next: () => {
+        this.alertService.displayAlert('success', "Usuario registrado con exito", 'center', 'top', ['success-snackbar']);
+        
+      },
+      error: (err: any) => {
+        this.alertService.displayAlert('error', 'An error occurred adding the user','center', 'top', ['error-snackbar']);
+        console.error('error', err);
+      }
     });
-
-    if(this.validSignup){
+  
+    setTimeout(()=>{
       this.redirectToLogin();
-    }
+      
+    }, 3000);
+    
   }
 
-  redirectToLogin() {
-    console.log("ingresó");
-    this.router.navigate(['/login']);
-    
+  redirectToLogin() {    
+    this.router.navigate(['/login']);    
   }
 
   onSelect(event: any) {
@@ -207,26 +232,26 @@ export class SigUpComponent {
     this.files.push(...event.addedFiles);
   }
 
-  pass(password:string, confirmpass:string){
-    if(password !== confirmpass){
-      console.log("diferente");
-    }
-  }
-
-  onRemove(event: any) {
-    console.log(event);
+  onRemove(event: any) {    
     this.files.splice(this.files.indexOf(event), 1);
+    this.updateFormValidity();
+  }
+
+  updateFormValidity() {
+ 
+    // Verificamos que todos los campos estén válidos
+    this.isFormValid = this.nameModel?.valid && this.emailModel?.valid &&
+                       this.lastnameModel?.valid && this.directionModel?.valid &&
+                       this.passwordModel?.valid && this.confirmPasswordModel?.valid &&
+                       this.dateOfBirthModel?.valid &&
+                       this.passwordValidationMessages.length === 0 &&
+                       this.files.length !== 0 && this.isValidDate && this.isValidPassword && this.isValidConfirmPassword; // También chequeamos las validaciones de contraseñas
   }
 
 
 }
 
 
-export const otra : ValidatorFn = (control : AbstractControl, ): ValidationErrors | null =>{
-  return null;
-  
-
-}
 
 
 

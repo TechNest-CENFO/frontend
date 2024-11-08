@@ -86,3 +86,10 @@ export interface IPasswordResetEntity{
   expirationDate?: Date;
   newPassword: string;
 }
+
+export interface IClothing {
+  is_favorite: boolean;
+  is_public: boolean;
+  image_url: string;
+  name: string;
+}

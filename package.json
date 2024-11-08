@@ -23,6 +23,7 @@
     "@ctrl/ngx-emoji-mart": "^9.2.0",
     "@ng-bootstrap/ng-bootstrap": "^16.0.0",
     "aos": "^2.3.4",
+    "font-awesome": "^4.7.0",
     "ngx-dropzone": "^3.1.0",
     "ngx-lottie": "^11.0.2",
     "notyf": "^3.10.0",
