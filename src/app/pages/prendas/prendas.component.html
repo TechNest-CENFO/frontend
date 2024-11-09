@@ -22,9 +22,8 @@
     <app-modal [hideFooter]="true"> 
         <div>
             <app-prendas-form 
-            [clothingForm]="clothingForm"
+            [clothingForm]="clothingForm" (callSaveMethod)="saveClothing($event)" 
             [clothingType]="clothingData"  
-           
             
                         
             />
