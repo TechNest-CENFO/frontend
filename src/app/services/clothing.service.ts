@@ -45,6 +45,30 @@ export class ClothingService extends BaseService<IClothing> {
 
   ngOnInit() {
     this.getAll();
+    this.getAllByUser();
+  }
+
+  getAllByUser() {
+    this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/clothing`, {
+      page: this.search.page,
+      size: this.search.size
+    }).subscribe({
+      next: (response: any) => {
+        this.search = {...this.search, ...response.meta};
+        this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
+        this.clothingListSignal.set(response.data);
+        this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
+        console.log('prendas: ', response)
+      },
+      error: (err: any) => {
+        this.alertService.displayAlert('error', 'An error occurred retrieving the clothings', 'center', 'top', ['error-snackbar']);
+        console.error('error', err);
+      }
+    });
+  }
+
+  delete(clothing : IClothing) {
+    this.delCustomSource(`${clothing.id}`)
   }
 }
 

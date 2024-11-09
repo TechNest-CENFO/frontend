@@ -1,0 +1,46 @@
+@import "../../../assets/functions/functions.scss";
+
+.custom-underline {
+  position: relative;
+  cursor: pointer;
+  padding: 7px 25px;
+  color: black;
+  text-decoration: none;
+
+  &:hover,
+  &:active {
+    color: vcloset-color(accent-hovered);
+  }
+
+  &:hover::after,
+  &:active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background-color: vcloset-color(accent-default);
+    border-radius: 5px 5px 0 0;
+  }
+}
+
+
+.custom-divider {
+  border-top: 1px solid;
+  border-color: #e6e4e4;
+}
+
+.text-bold{
+  font-weight: bolder;
+}
+
+.info-quantity{
+  color: gray;
+}
+
+.btn-custom{
+  color: gray;
+  border: none;
+  background-color: transparent;
+}

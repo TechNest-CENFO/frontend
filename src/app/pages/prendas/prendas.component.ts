@@ -9,12 +9,14 @@ import { ModalComponent } from "../../components/modal/modal.component";
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LoaderComponent } from '../../components/loader/loader.component';
 import { IClothing } from '../../interfaces';
+import {NgClass} from "@angular/common";
+import {ClothingListComponent} from "../../components/prendas/clothing-list/clothing-list.component";
 
 
 @Component({
   selector: 'app-prendas',
   standalone: true,
-  imports: [PrendasFormComponent, ModalComponent, LoaderComponent],
+  imports: [PrendasFormComponent, ModalComponent, LoaderComponent, NgClass, ClothingListComponent],
   templateUrl: './prendas.component.html',
   styleUrls: ['./prendas.component.scss']
 })
@@ -39,10 +41,10 @@ export class PrendasComponent {
 
   });
   clothingData: IClothing[] = []; // Almacenar los datos de las prendas
+  gridSelected: boolean = true;
+  totalClothes!: number;
 
-  constructor(){
-   
-  }
+  constructor(){}
 
   saveClothing(clothing : IClothing) {
     this.clothingService.save(clothing);
@@ -74,9 +76,13 @@ export class PrendasComponent {
         err = "Ocurrió un error al cargar los datos.";
       }
     });
+    this.clothingService.getAllByUser()
+    this.totalClothes = this.clothingService.clothing$().length;
+    console.log(this.totalClothes)
   }
 
 
-
-
+  toggleGirdSelected() {
+    this.gridSelected = !this.gridSelected;
+  }
 }

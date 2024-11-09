@@ -88,6 +88,7 @@ export interface IPasswordResetEntity{
 }
 
 export interface IClothing {
+  id?:number;
   is_favorite: boolean;
   is_public: boolean;
   image_url: string;

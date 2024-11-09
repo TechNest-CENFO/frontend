@@ -1,37 +1,87 @@
-@defer{
 
-    <div class="row p-4">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center">
-                <button (click)="ModalService.displayModal('md',
-                    AddClothingModal)" type="button" class="btn btn-primary">
-    
-                </button>
+@defer{
+    <section id="clothing-section">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 px-4 py-5 d-flex justify-content-between">
+                <h2>Prendas</h2>
+                <div>
+                    <button class="btn button-tertiary me-4"><i class="bi bi-download"></i></button>
+                    <button (click)="ModalService.displayModal('md', AddClothingModal)" type="button"
+                            class="btn button-default"><i class="bi bi-plus-lg"></i> Agregar Prenda
+                    </button>
+                </div>
             </div>
         </div>
-    
+        <div class="row">
+            <div class="col-12 d-flex justify-content-between px-4">
+                <div class="d-flex align-items-center">
+                    <a class="custom-underline" aria-current="true">Todos</a>
+                    <a class="custom-underline">Favoritos</a>
+                    <div class="ms-2 p-1 dropdown">
+                        <button class="btn button-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            Estilo
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <button [ngClass]="{'btn button-secondary':gridSelected, 'btn-custom': !gridSelected, 'me-4': true}"
+                            (click)="toggleGirdSelected()"><i class="bi bi-grid"></i></button>
+                    <button [ngClass]="{'btn button-secondary':!gridSelected, 'btn-custom': gridSelected}"
+                            (click)="toggleGirdSelected()"><i class="bi bi-list-ul"></i></button>
+                </div>
+            </div>
+            <div class="col-12 px-4 mt-1">
+                <div class="custom-divider"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-between px-4 mt-4">
+                <p class="info-quantity"><span class="text-bold">{{ totalClothes }}</span>
+                    @if (totalClothes > 1 || totalClothes === 0) {
+                        <span> prendas</span>
+                    } @else {
+                        <span> prenda</span>
+                    }</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center mt-4">
+                <app-clothing-list
+                        (callDeleteAction)="clothingService.delete($event)"
+                        [clothing]="clothingService.clothing$()"
+                />
+            </div>
+        </div>
     </div>
+    </section>
 } @loading (minimum 1.5s) {
-<app-loader 
-    
+<app-loader
+
     />
 }
 
 
 <ng-template #AddClothingModal>
-    <app-modal [hideFooter]="true"> 
+    <app-modal [hideFooter]="true">
         <div>
-            <app-prendas-form 
+            <app-prendas-form
             [clothingForm]="clothingForm"
-            [clothingType]="clothingData"  
-           
-            
-                        
+            [clothingType]="clothingData"
+
+
+
             />
-            
+
         </div>
     </app-modal>
-        
+
 </ng-template>
 
 
