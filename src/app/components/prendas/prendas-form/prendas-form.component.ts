@@ -46,7 +46,10 @@ export class PrendasFormComponent {
 
   callSave() {
     this.callSaveMethod.emit(this.clothingForm.value);
+    console.log(this.clothingForm.value);
   }
+
+
 
   callGetSubTypes():void{
     this.callGetNames();
