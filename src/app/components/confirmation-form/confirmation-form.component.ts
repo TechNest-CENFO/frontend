@@ -24,8 +24,7 @@ export class ConfirmationFormComponent {
   public modalService: ModalService = inject(ModalService);
   public authService: AuthService = inject(AuthService);
 
-  constructor(private router: Router
-  ) { }
+  constructor(private router: Router) { }
 
   deleteAccount(){
     let user = {
