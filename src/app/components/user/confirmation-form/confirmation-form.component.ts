@@ -1,10 +1,10 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { IUser } from '../../interfaces';
+import { IUser } from '../../../interfaces';
 import { CommonModule } from '@angular/common';
-import { ProfileService } from '../../services/profile.service';
-import { ModalService } from '../../services/modal.service';
-import { AuthService } from '../../services/auth.service';
+import { ProfileService } from '../../../services/profile.service';
+import { ModalService } from '../../../services/modal.service';
+import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({

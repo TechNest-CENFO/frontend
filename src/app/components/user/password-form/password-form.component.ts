@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IUser } from '../../interfaces';
-import { ProfileService } from '../../services/profile.service';
+import { IUser } from '../../../interfaces';
+import { ProfileService } from '../../../services/profile.service';
 
 
 @Component({

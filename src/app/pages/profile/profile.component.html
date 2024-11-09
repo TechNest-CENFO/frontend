@@ -1,4 +1,4 @@
-<div class="shadow-sm bg-body rounded px-4 py-4 h-100 profile-container">
+<div class="shadow-sm bg-body rounded px-4 py-4 h-100 profile-container custom-container">
   <div class="profile-title mx-3 my-3">
     <h3>Perfil de Usuario</h3>
   </div>
@@ -6,23 +6,13 @@
       <div class="col-md-6">
         <h5 class="mx-3">Datos Personales</h5>
         <form #form="ngForm" (ngSubmit)="handleUpdate($event)" autocomplete="off" >
-          <!-- <div class="profile-picture-container mx-3 col-md-3">
-            <img src="{{profileService.user$().picture}}" alt="foto de perfil" class="profile-picture" />
-  
-            IMPLEMENTACION DEL DROPZONE PARA LA IMAGEN DE PERFIL TBD
-            <div class="col-md-3">
-              <ngx-dropzone (change)="onSelect($event)">
-                <ngx-dropzone-label>Click para subir la imagen</ngx-dropzone-label>
-                <ngx-dropzone-image-preview style="width: 100%;" ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
-                </ngx-dropzone-image-preview>
-              </ngx-dropzone>
-            </div>
-          </div> -->
-
           <div class="profile-picture-container mx-3 col-md-3">
             <ngx-dropzone (change)="onSelect($event)">
               <ngx-dropzone-label>
-                <img src="{{updateForm.picture}}" alt="foto de perfil" class="profile-picture" />
+                <div *ngIf="!updateForm.picture">
+                  <i class="fa fa-user fa-5x profile-default-image"></i>
+                </div>
+                <img *ngIf="updateForm.picture" [src]="updateForm.picture" alt="User Profile" class="profile-picture">
               </ngx-dropzone-label>
               <ngx-dropzone-image-preview 
                 *ngFor="let f of files" 
@@ -32,35 +22,6 @@
               </ngx-dropzone-image-preview>
             </ngx-dropzone>
           </div>
-
-          <!-- <div class="mx-3 col-md-3 position-relative">
-            <img src="{{profileService.user$().picture}}" alt="foto de perfil" class="profile-picture" />
-
-            <ngx-dropzone (change)="onSelect($event)" class="dropzone-overlay">
-              <ngx-dropzone-label>
-                <i class="fa-solid fa fa-camera profile-picture-container2"></i>
-              </ngx-dropzone-label>
-              <ngx-dropzone-image-preview 
-                *ngFor="let f of files" 
-                [file]="f" 
-                [removable]="true" 
-                (removed)="onRemove(f)">
-              </ngx-dropzone-image-preview>
-            </ngx-dropzone>
-          </div> -->
-         
-
-          <!-- <div class="my-3 mx-3 col-md-6 profile-input">
-            <label class="py-1">Nombre:</label>
-            <input #name="ngModel"
-              type="text" 
-              id="name"
-              name="name"
-              style="border-radius: 6PX;"
-              class="form-control"
-              [(ngModel)]="updateForm.name"
-            />
-          </div> -->
 
           <div *ngIf="!editMode" class="edit-pen mx-3 my-3">
             <button (click)="toggleEditMode()" class=" btn button-default">
@@ -130,7 +91,7 @@
 
       <div class="my-4 mx-3 col-md-6 profile-input privacy-container">
         <label>Perfil Privado:</label>
-        <input class="mx-3" [(ngModel)]="isProfileBlocked" (change)="setProfilePrivacy()" type="checkbox"/>
+        <input class="mx-3" [(ngModel)]="isProfileBlocked" (change)="setProfilePrivacy(); modalService.displayModal('md', changePrivacyModal)" type="checkbox"/>
       </div>
       <div class="my-4 mx-3 col-md-6 profile-input">
         <a (click)="modalService.displayModal('md', changePasswordModal)" class="text-default change-password" >Cambiar Contraseña</a>
@@ -169,6 +130,19 @@
     <div>
       <app-confirmation-form
         [confirmationForm] = "confirmationForm"
+      />
+    </div>
+  </app-modal>
+</ng-template>
+
+<ng-template #changePrivacyModal>
+  <app-modal
+    [hideFooter]="true"
+  >
+    <div>
+      <app-privacy-confirmation
+        [privacyConfirmationForm] = "privacyConfirmationForm"
+        [isProfileBlocked] = "isProfileBlocked"
       />
     </div>
   </app-modal>

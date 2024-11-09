@@ -6,10 +6,10 @@ import { ButtonComponent } from '../../components/app-layout/elements/button/but
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { FormBuilder, FormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
-import { Router } from '@angular/router';
 import { ModalService } from '../../services/modal.service';
-import { PasswordFormComponent } from '../../components/password-form/password-form.component';
-import { ConfirmationFormComponent } from '../../components/confirmation-form/confirmation-form.component';
+import { PasswordFormComponent } from '../../components/user/password-form/password-form.component';
+import { ConfirmationFormComponent } from '../../components/user/confirmation-form/confirmation-form.component';
+import { PrivacyConfirmationComponent } from '../../components/user/privacy-confirmation/privacy-confirmation.component';
 import { ModalComponent } from '../../components/modal/modal.component';
 
 @Component({
@@ -22,7 +22,8 @@ import { ModalComponent } from '../../components/modal/modal.component';
     FormsModule,
     PasswordFormComponent,
     ModalComponent,
-    ConfirmationFormComponent
+    ConfirmationFormComponent,
+    PrivacyConfirmationComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
@@ -43,10 +44,12 @@ export class ProfileComponent {
     id: [''],
     password: ['', Validators.required],
   })
-  
-  // public deleteForm: { } = {
-  //   isUserActive: false
-  // };
+
+  privacyConfirmationForm = this.fb.group({
+    id: [''],
+    blocked: ['', Validators.required],
+  })
+
 
   public editMode = false;
   toggleEditMode() {
@@ -90,7 +93,7 @@ export class ProfileComponent {
   }
 
 
-  constructor(private router: Router, private userService: UserService, private _userService: UserService) {
+  constructor() {
     this.getUserInfo();
   }
 
@@ -137,11 +140,19 @@ export class ProfileComponent {
     this.profileService.updateUserInfo(user);
   }
 
-  // setProfilePrivate(){
-  //   this.profileService.setProfilePrivate()
-  // }
 
   isProfileBlocked: boolean = false;
+
+  ngOnInit(): void {
+    this.loadProfilePrivacy();
+  }
+
+  loadProfilePrivacy() {
+    this.profileService.getUserInfoSignal().subscribe((user: IUser) => {
+      this.isProfileBlocked = user.isProfileBlocked ?? false;
+    });
+  }
+
 
   setProfilePrivacy() {
     let user = {
@@ -153,18 +164,4 @@ export class ProfileComponent {
   setProfilePrivate(user: IUser){
     this.profileService.setProfilePrivate(user);
   }
-
-
-  // handleDelete(event: Event) {
-  //   let user = {
-  //     isUserActive: this.updateForm.isUserActive
-  //   }
-  //   this.deleteUserInfo(user);
-  //   this.editMode = false; 
-  // }
-
-
-  // deleteUserInfo (user: IUser){
-  //   this.profileService.deleteUser(user);
-  // }
 }
