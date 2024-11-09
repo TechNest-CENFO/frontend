@@ -1,3 +1,4 @@
+@import 'notyf/notyf.min.css';
 :root {
   --theme-default: #A80E00FF;
   --theme-secondary: #f73164;
@@ -69,14 +70,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   text-decoration: none;
 }
 
-
 .page-wrapper.compact-wrapper .page-body-wrapper div.sidebar-wrapper .sidebar-main .sidebar-links {
   height: calc(93vh - 115px) !important;
   left: -300px;
   z-index: 99;
-  transition: color 1s ease;
-  /* overflow: auto; */
-  /* color: rgba(0, 0, 0, 0); */
+  transition: color 0.5s ease;
   margin-top: 20px;
   margin-bottom: 30px;
 }

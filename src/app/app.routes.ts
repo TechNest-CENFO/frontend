@@ -12,6 +12,9 @@ import { IRoleType } from './interfaces';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { ProductsComponent } from './pages/products/products.component';
+import {PasswordRecoveryComponent} from "./pages/auth/password-recovery/password-recovery.component";
+import {PasswordResetComponent} from "./pages/auth/password-reset/password-reset.component";
+import { PrendasComponent } from './pages/prendas/prendas.component';
 
 export const routes: Routes = [
   {
@@ -22,6 +25,16 @@ export const routes: Routes = [
   {
     path: 'signup',
     component: SigUpComponent,
+    canActivate: [GuestGuard],
+  },
+  {
+    path: 'passwordRecovery',
+    component: PasswordRecoveryComponent,
+    canActivate: [GuestGuard],
+  },
+  {
+    path: 'password-reset/:token',
+    component: PasswordResetComponent,
     canActivate: [GuestGuard],
   },
   {
@@ -53,7 +66,8 @@ export const routes: Routes = [
             IRoleType.user
           ],
           name: 'Dashboard',
-          showInSidebar: true
+          showInSidebar: true,
+          icon: 'fa fa-home'
         }
       },
       {
@@ -66,7 +80,8 @@ export const routes: Routes = [
             IRoleType.superAdmin
           ],
           name: 'Tendencias',
-          showInSidebar: true
+          showInSidebar: true,
+          icon: 'fa fa-line-chart'
         }
       },
       {
@@ -79,7 +94,8 @@ export const routes: Routes = [
             IRoleType.user,
           ],
           name: 'Colecciones',
-          showInSidebar: true
+          showInSidebar: true,
+          icon: 'fa fa-object-group'
         }
       },
       {
@@ -92,12 +108,13 @@ export const routes: Routes = [
             IRoleType.user,
           ],
           name: 'Outfits',
-          showInSidebar: true
+          showInSidebar: true,
+          icon: 'fa fa-camera'
         }
       },
       {
         path: 'prendas',
-        component: ProductsComponent,
+        component: PrendasComponent,
         data: { 
           authorities: [
             IRoleType.admin, 
@@ -105,7 +122,8 @@ export const routes: Routes = [
             IRoleType.user,
           ],
           name: 'Prendas',
-          showInSidebar: true
+          showInSidebar: true,
+          icon: 'fa fa-camera'
         }
       },
       {
@@ -118,7 +136,8 @@ export const routes: Routes = [
             IRoleType.user,
           ],
           name: 'Recomendaciones',
-          showInSidebar: true
+          showInSidebar: true,
+          icon: 'fa fa-lightbulb'
         }
       },
       {
@@ -131,13 +150,42 @@ export const routes: Routes = [
             IRoleType.user,
           ],
           name: 'Préstamos',
-          showInSidebar: true
+          showInSidebar: true,
+          icon: 'fa fa-handshake'
+        }
+      },
+      {
+        path: 'reportes',
+        component: ProductsComponent,
+        data: {
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin,
+            IRoleType.user,
+          ],
+          name: 'Reportes',
+          showInSidebar: true,
+          icon: 'fa fa-database'
+        }
+      },
+      {
+        path: 'administrador',
+        component: ProductsComponent,
+        data: {
+          authorities: [
+            IRoleType.admin, 
+            IRoleType.superAdmin,
+            IRoleType.user,
+          ],
+          name: 'Administrador',
+          showInSidebar: true,
+          icon: 'fa fa-cogs'
         }
       },
       {
         path: 'profile',
         component: ProfileComponent,
-        data: { 
+        data: {
           authorities: [
             IRoleType.admin, 
             IRoleType.superAdmin,

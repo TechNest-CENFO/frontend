@@ -13,6 +13,10 @@ export interface IUser {
   lastname?: string;
   email?: string;
   password?: string;
+  confirmPassword?: string;
+  dateOfBirth?: string;
+  picture?: string;
+  direction?:string;
   active?: boolean;
   createdAt?: string;
   updatedAt?: string;
@@ -69,4 +73,28 @@ export interface IProduct{
   name: string;
   description: string;
   price: number;
+}
+
+export interface IToAddress{
+  id?: number;
+  toAddress: string;
+}
+
+export interface IPasswordResetEntity{
+  id?: number;
+  token: string;
+  expirationDate?: Date;
+  newPassword: string;
+}
+
+export interface IClothing {
+  is_favorite: boolean;
+  is_public: boolean;
+  image_url: string;
+  name: string;
+  type:string;
+  subType:string;
+  material:string;
+  season:string;
+  color:string;
 }
