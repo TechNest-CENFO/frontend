@@ -3,33 +3,34 @@
         <h2 class="mb-0">Agregar Prenda</h2>
     </div>
 
-    <!-- Nombre -->
-    <div class="col-md-6 mb-3">
-        <label for="name">Nombre</label>
-        <input type="text" formControlName="name" class="form-control" id="name" placeholder="Nombre de la prenda">
-        <div
-            *ngIf="clothingForm.controls['name'].invalid && (clothingForm.controls['name'].dirty || clothingForm.controls['name'].touched)">
-            <p class="text-danger my-1">Nombre es requerido</p>
-        </div>
-    </div>
-
     <!-- Categoría -->
     <div class="col-md-6 mb-3">
-        <label for="category">Categoría</label>
-        <select formControlName="category" class="form-control" id="category">
-            <!-- <option value="Accesorio">Accesorio</option> -->
-            
-            <!-- Agrega más opciones según sea necesario -->
+        <label for="type">Categoría</label>
+        <select (change)="callGetSubTypes()" [(ngModel)]="selectedType" formControlName="type" class="form-control"
+            id="type">
+            <option value="" disabled selected>Selecciona una categoría</option>
+            <option *ngFor="let item of uniqueTypes" [value]="item">{{ item }}</option>
         </select>
     </div>
 
     <!-- Subcategoría -->
     <div class="col-md-6 mb-3">
-        <label for="subcategory">Subcategoría</label>
-        <select formControlName="subcategory" class="form-control" id="subcategory">
-            <!-- <option value="Corbata">Corbata</option> -->
-            
-            <!-- Agrega más opciones según sea necesario -->
+        <label for="subType">Subcategoría</label>
+        <select (change)="callGetNames()" [(ngModel)]="selectedSubType" formControlName="subType" class="form-control"
+            id="subType">
+            <option value="" selected>Selecciona una subcategoría</option>
+            <option *ngFor="let item of uniqueSubTypes" [value]="item">
+                {{ item }}</option>
+        </select>
+
+    </div>
+
+    <!-- Nombre -->
+    <div class="col-md-6 mb-3">
+        <label for="name">Tipo de prenda</label>
+        <select [(ngModel)]="selectedName" formControlName="name" class="form-control" id="name">
+            <option value="" disabled selected>Seleccione un tipo</option>
+            <option *ngFor="let item of uniqueNames" [value]="item">{{ item }}</option>
         </select>
     </div>
 
@@ -38,7 +39,7 @@
         <label for="material">Material</label>
         <select formControlName="material" class="form-control" id="material">
             <!-- <option value="Estampado">Estampado</option> -->
-            
+
             <!-- Agrega más opciones según sea necesario -->
         </select>
     </div>
@@ -49,7 +50,7 @@
         <select formControlName="season" class="form-control" id="season">
             <!-- <option value="Cualquiera">Cualquiera</option> -->
             <!-- Agrega más opciones según sea necesario -->
-             
+
         </select>
     </div>
 
@@ -58,7 +59,7 @@
         <label for="color">Color</label>
         <select formControlName="color" class="form-control" id="color">
             <!-- <option value="Azul">Azul</option> -->
-            
+
             <!-- Agrega más opciones según sea necesario -->
         </select>
     </div>
@@ -80,8 +81,9 @@
     </div>
 
     <!-- Botón de envío -->
-    
-        <button (click)="callSave()" [disabled]="clothingForm.invalid" type="submit" class="btn btn-primary" >Guardar</button>
-        
-    
+
+    <button (click)="callSave()" [disabled]="clothingForm.invalid" type="submit"
+        class="btn btn-primary">Guardar</button>
+
+
 </form>

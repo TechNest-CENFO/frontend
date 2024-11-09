@@ -18,6 +18,10 @@ export class BaseService<T> {
     return this.http.get<IResponse<T[]>>(this.source);
   }
 
+  public findAllTypes(): Observable<IResponse<T[]>> {
+    return this.http.get<IResponse<T[]>>(`${this.source}Type`);
+  }
+
   public findAllWithParams(params: any = {}): Observable<IResponse<T[]>> {
     return this.http.get<IResponse<T[]>>(this.source, {params: this.buildUrlParams(params)});
   }

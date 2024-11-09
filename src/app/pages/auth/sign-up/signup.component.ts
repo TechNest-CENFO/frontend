@@ -81,6 +81,7 @@ export class SigUpComponent {
   //FUNCIÓN QUE REGULA LAS EXPRESIONES REGULARES DEL PASSWORD 
   //Mapea los mensajes aenviar y consulta al validator para confirmar si es valido o no
   validatePassword(): boolean  {
+
     if(this.passwordModel && this.passwordModel.value){
       this.passwordValue = this.passwordModel.value;
     }      
@@ -118,11 +119,19 @@ export class SigUpComponent {
       
     }
 
+    
     if(this.passwordValidationMessages.length > 0){
       this.isValidPassword = false;
     }else{
       this.isValidPassword = true;
     }
+   
+    if(this.passwordValue === ""){
+      this.passwordValidationMessages = [];
+    }
+      
+    
+
 
     this.updateFormValidity();
     return this.isValidPassword;
