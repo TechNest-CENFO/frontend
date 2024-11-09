@@ -12,14 +12,22 @@
     
     </div>
 } @loading (minimum 1.5s) {
-<app-loader />
+<app-loader 
+    
+    />
 }
 
 
 <ng-template #AddClothingModal>
     <app-modal [hideFooter]="true"> 
         <div>
-            <app-prendas-form [clothingForm]="clothingForm" (callSaveMethod)="saveClothing"/>
+            <app-prendas-form 
+            [clothingForm]="clothingForm"
+            [clothingType]="clothingData"  
+           
+            
+                        
+            />
             
         </div>
     </app-modal>
