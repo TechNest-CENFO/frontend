@@ -101,7 +101,7 @@
               </div>
 
               <div class="form-group px-1 mb-3">
-                <div class="row align-items-center">
+                <div class="row">
                   <!--INICIO de la contraseña-->
                   <div class="col-md-2 text-end">
                     <label for="password" class="col-form-label text-end">
@@ -112,15 +112,18 @@
                     <input maxlength="16" #password="ngModel" [type]="showPassword ? 'text' : 'password'"
                       class="form-control text-center" id="password" name="password" placeholder="******"
                       [(ngModel)]="user.password" (keyup)="validatePassword()" [ngClass]="{
-                        'is-invalid': password.invalid && password.touched,
-                        'is-valid': password.valid && password.touched
+                        'is-invalid': password.invalid && password.touched && !validatePassword(),
+                        'is-valid': password.valid && password.touched && validatePassword()
                   }" required minlength="8" />
-                    <div *ngIf="!validatePassword()" class="invalid-feedback">
+                    <div class="row align-items-center">
+                    </div>
+                    <div *ngIf="!validatePassword()" class="text-danger">
                       <ul>
                         <li *ngFor="let message of passwordValidationMessages">{{ message }}</li>
                       </ul>
                     </div>
                   </div>
+
                   <!--FIN de la contraseña-->
 
                   <div class="col-1">
@@ -155,11 +158,11 @@
                 </div>
               </div>
               <div class="form-group px-1 mb-3">
-                <div class="row align-items-center">
+                <div class="row">
                 </div>
               </div>
               <div class="form-group px-1 mb-3">
-                <div class="row align-items-center">
+                <div class="row">
                   <!--INICIO de la confirmacion de la contarseña-->
                   <div class="col-md-2 text-end">
                     <label for="confirmPassword" class="col-form-label">
@@ -174,7 +177,8 @@
                     'is-invalid': confirmPassword.invalid && confirmPassword.touched && !validateConfirmPassword(),
                     'is-valid': confirmPassword.valid && confirmPassword.touched && validateConfirmPassword()
                   }" required minlength="8" (change)="!validateConfirmPassword()" />
-                    <div *ngIf="validatePassword() && (!validateConfirmPassword() || confirmPassword.invalid)" class="text-danger mt-1">
+                    <div *ngIf="validatePassword() && (!validateConfirmPassword() || confirmPassword.invalid)"
+                      class="text-danger mt-1">
                       {{differentPassword}}
                     </div>
 
@@ -217,7 +221,7 @@
 
                 <p class="text-success success-snackbar" (click)="redirectToLogin()">Usuario registrado con exito</p>
 
-                }  
+                }
               </div>
 
             </div>

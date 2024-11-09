@@ -92,4 +92,9 @@ export interface IClothing {
   is_public: boolean;
   image_url: string;
   name: string;
+  type:string;
+  subType:string;
+  material:string;
+  season:string;
+  color:string;
 }
