@@ -28,7 +28,7 @@
     <!-- Nombre -->
     <div class="col-md-6 mb-3">
         <label for="name">Tipo de prenda</label>
-        <select [(ngModel)]="selectedName" formControlName="name" class="form-control" id="name">
+        <select (change)="callGetItem()" [(ngModel)]="selectedName" formControlName="name" class="form-control" id="name">
             <option value="" disabled selected>Seleccione un tipo</option>
             <option *ngFor="let item of uniqueNames" [value]="item">{{ item }}</option>
         </select>
