@@ -28,7 +28,7 @@ export class ClothingService extends BaseService<IClothing> {
   private notyfService: NotyfService = inject(NotyfService);
 
   save(clothing: IClothing) {
-    this.add(clothing).subscribe({
+    this.addCustomSource(`user/${this.authService.getUser()?.id}`, clothing).subscribe({
       next: (response: any) => {
         this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
         
@@ -114,3 +114,21 @@ export class ClothingService extends BaseService<IClothing> {
 
 
 
+/**
+
+  save(clothing: IClothing) {
+    this.addCustomSource(`user/${this.authService.getUser()?.id}`, clothing).subscribe({
+      next: (response: any) => {
+        this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
+        
+      },
+      error: (err: any) => {
+        this.alertService.displayAlert('error', 'An error occurred saving the categoria','center', 'top', ['error-snackbar']);
+        console.error('error', err);
+      }
+    });
+  }
+
+
+
+ */
