@@ -35,8 +35,8 @@ export class PrendasComponent {
     subType:[''],
     material:[''],
     season:[''],
-    color:['']
-
+    color:[''],
+    clothing_type_id:['']
   });
   clothingData: IClothing[] = []; // Almacenar los datos de las prendas
 
