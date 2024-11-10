@@ -17,7 +17,8 @@ export interface IUser {
   dateOfBirth?: string;
   picture?: string;
   direction?:string;
-  active?: boolean;
+  isUserActive?: boolean;
+  isProfileBlocked?: boolean;
   createdAt?: string;
   updatedAt?: string;
   authorities?: IAuthority[];
@@ -109,4 +110,5 @@ export interface IClothingType {
   name?: string;
   subType?: string;
   type?: string;
+  clothing_type_id:number;
 }

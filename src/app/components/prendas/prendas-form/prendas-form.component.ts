@@ -27,6 +27,7 @@ export class PrendasFormComponent {
   uniqueSubTypes: string[] = [];
   uniqueNames: string[] = [];
   form = this.fb.group({
+    id:[''],
     name: [''],
     is_favorite: [false],
     is_public: [false],
@@ -35,43 +36,63 @@ export class PrendasFormComponent {
     subType:['',{value:"", disabled:true}],
     material:[''],
     season:[''],
-    color:['']
+    color:[''],
+    clothing_type_id:['']
   })
-  
-  
-
-
 
   constructor(){};
 
   callSave() {
     this.callSaveMethod.emit(this.clothingForm.value);
+    
   }
+
 
   callGetSubTypes():void{
     this.callGetNames();
     //Se filtran solo los elementos que tengan la categoría seleccionada
     this.filterItems(this.selectedType, "subType", "type");
   }
+
   callGetNames():void{
     //Se filtran solo los elementos que tengan la categoría seleccionada
     this.filterItems(this.selectedSubType, "name", "subType");
   }
 
+  callGetItem():void{
+    //Se filtra por el nombre seleccionado para obtener el id
+    this.filterItems(this.selectedName, "id", "name");
+  }
+
   private filterItems(itemSelected: string, filter:string,field:keyof IClothing) {
     let filteredItems = [];
-    this.uniqueNames =[];
+    if(filter !== "id"){
+      this.uniqueNames =[];
+    }
+    
     this.selectedSubType="";
     filteredItems = this.clothingType.filter(item => item[field] === itemSelected);
     
     // Extrae los subType de los elementos filtrados `${this.source}Type`)
     if(filter==="subType"){   
       this.uniqueSubTypes = [...new Set(filteredItems.map(item => item.subType))];
-    }else{
-      //filteredItems = this.clothingType.filter(item => item.subType === itemSelected);
+    }else if( filter === "name"){     
       this.uniqueNames = [...new Set(filteredItems.map(item => item.name))];
       
-    }   
+    } else{
+      console.log(this.clothingType.filter(item => item.name === itemSelected));
+      this.clothingType.filter(item => item.name === itemSelected);
+      if(filteredItems.length > 0){
+        const uniqueId = filteredItems[0].id;
+        this.clothingForm.patchValue({
+          clothing_type_id:uniqueId
+        })
+        
+        
+      }
+
+    } 
+    
     
   }
 
@@ -80,6 +101,7 @@ export class PrendasFormComponent {
   ngOnInit(): void {       
     // Extraemos los tipos y eliminamos los duplicados
     this.uniqueTypes = [...new Set(this.clothingType.map(item => item.type))];
+    
   }
 
   files: File[] = [];

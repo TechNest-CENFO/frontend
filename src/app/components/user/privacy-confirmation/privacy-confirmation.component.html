@@ -1,0 +1,26 @@
+<form [formGroup]="privacyConfirmationForm" class="row">
+    
+    <div *ngIf="isProfileBlocked">
+        <div class="my-2">
+            <h2>Perfil Privado</h2>
+        </div>
+        <div >
+            <p>El perfil se ha configurado como privado. Mientras el perfil esté en modo privado, no se podrá acceder al módulo de préstamos.</p>
+        </div>
+    </div>
+    
+
+    <div *ngIf="!isProfileBlocked">
+        <div class="my-2">
+            <h2>Perfil Público</h2>
+        </div>
+        <div >
+            <p>El perfil está configurado como público. Puedes acceder al módulo de préstamos.</p>
+        </div>
+    </div>
+
+
+    <div class="d-flex justify-content-end">
+      <button (click)="closeModal()" class="btn button-default" type="button">Cerrar</button>
+    </div>
+  </form>

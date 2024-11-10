@@ -28,7 +28,7 @@
     <!-- Nombre -->
     <div class="col-md-6 mb-3">
         <label for="name">Tipo de prenda</label>
-        <select [(ngModel)]="selectedName" formControlName="name" class="form-control" id="name">
+        <select (change)="callGetItem()" [(ngModel)]="selectedName" formControlName="name" class="form-control" id="name">
             <option value="" disabled selected>Seleccione un tipo</option>
             <option *ngFor="let item of uniqueNames" [value]="item">{{ item }}</option>
         </select>
@@ -48,8 +48,9 @@
     <div class="col-md-6 mb-3">
         <label for="season">Temporada</label>
         <select formControlName="season" class="form-control" id="season">
-            <!-- <option value="Cualquiera">Cualquiera</option> -->
-            <!-- Agrega más opciones según sea necesario -->
+            <option value="Cualquiera">Cualquiera</option> 
+            <option value="Verano">Verano</option>
+            <option value="Invierno">Invierno</option>
 
         </select>
     </div>
@@ -58,7 +59,7 @@
     <div class="col-md-6 mb-3">
         <label for="color">Color</label>
         <select formControlName="color" class="form-control" id="color">
-            <!-- <option value="Azul">Azul</option> -->
+             <option value="Azul">Azul</option> 
 
             <!-- Agrega más opciones según sea necesario -->
         </select>

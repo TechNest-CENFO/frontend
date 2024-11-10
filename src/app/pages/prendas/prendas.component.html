@@ -80,11 +80,11 @@
 <ng-template #AddClothingModal>
     <app-modal [hideFooter]="true">
         <div>
-            <app-prendas-form
-                    [clothingForm]="clothingForm"
-                    [clothingType]="clothingData"
-
-
+            <app-prendas-form 
+            [clothingForm]="clothingForm" (callSaveMethod)="saveClothing($event)" 
+            [clothingType]="clothingData"  
+            
+                        
             />
 
         </div>

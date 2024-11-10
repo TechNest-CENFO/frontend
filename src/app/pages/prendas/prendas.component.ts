@@ -22,9 +22,10 @@ import {PaginationComponent} from "../../components/pagination/pagination.compon
     styleUrls: ['./prendas.component.scss']
 })
 export class PrendasComponent {
-    public clothingService: ClothingService = inject(ClothingService);
-    public ModalService: ModalService = inject(ModalService);
-    public AuthService: AuthService = inject(AuthService);
+  public clothingService: ClothingService = inject(ClothingService);
+  public ModalService: ModalService = inject(ModalService);
+  public AuthService: AuthService = inject(AuthService);
+  
 
 
     @ViewChild('AddClothingModal')
@@ -38,8 +39,8 @@ export class PrendasComponent {
         subType: [''],
         material: [''],
         season: [''],
-        color: ['']
-
+        color: [''],
+        clothing_type_id:['']
     });
     clothingData: IClothing[] = []; // Almacenar los datos de las prendas
     gridSelected: boolean = true;

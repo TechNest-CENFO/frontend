@@ -12,7 +12,7 @@ export class UploadService{
         let data = vals;
 
         return this._http.post(
-            'https://api.cloudinary.com/v1_1/dnglop0de/image/upload',
+            'https://api.cloudinary.com/v1_1/dklipon9i/image/upload',
             data
         )
     }
