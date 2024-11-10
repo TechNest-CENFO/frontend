@@ -10,6 +10,9 @@ export class NotyfService {
     position: { x: 'right', y: 'top' },
   });
 
+  constructor() {
+  }
+
   success(message: string) {
     this.notyf.success(message);
   }

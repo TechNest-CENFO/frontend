@@ -98,4 +98,15 @@ export interface IClothing {
   material:string;
   season:string;
   color:string;
+  /* GET */
+  isFavorite?: boolean;
+  clothingType?:IClothingType;
+  imageUrl?:string;
+}
+
+export interface IClothingType {
+  id?: number;
+  name?: string;
+  subType?: string;
+  type?: string;
 }
