@@ -1,5 +1,5 @@
 <form [formGroup]="clothingForm" class="row" (ngSubmit)="callSave()">
-    <div class="col-12 mb-3">
+    <div class="col-12 mb-3 text-center">
         <h2 class="mb-0">Agregar Prenda</h2>
     </div>
 
@@ -19,28 +19,17 @@
         <select (change)="callGetNames()" [(ngModel)]="selectedSubType" formControlName="subType" class="form-control"
             id="subType">
             <option value="" selected>Selecciona una subcategoría</option>
-            <option *ngFor="let item of uniqueSubTypes" [value]="item">
-                {{ item }}</option>
+            <option *ngFor="let item of uniqueSubTypes" [value]="item">{{ item }}</option>
         </select>
-
     </div>
 
     <!-- Nombre -->
     <div class="col-md-6 mb-3">
         <label for="name">Tipo de prenda</label>
-        <select (change)="callGetItem()" [(ngModel)]="selectedName" formControlName="name" class="form-control" id="name">
+        <select (change)="callGetItem()" [(ngModel)]="selectedName" formControlName="name" class="form-control"
+            id="name">
             <option value="" disabled selected>Seleccione un tipo</option>
             <option *ngFor="let item of uniqueNames" [value]="item">{{ item }}</option>
-        </select>
-    </div>
-
-    <!-- Material -->
-    <div class="col-md-6 mb-3">
-        <label for="material">Material</label>
-        <select formControlName="material" class="form-control" id="material">
-            <!-- <option value="Estampado">Estampado</option> -->
-
-            <!-- Agrega más opciones según sea necesario -->
         </select>
     </div>
 
@@ -48,10 +37,9 @@
     <div class="col-md-6 mb-3">
         <label for="season">Temporada</label>
         <select formControlName="season" class="form-control" id="season">
-            <option value="Cualquiera">Cualquiera</option> 
+            <option value="Cualquiera">Cualquiera</option>
             <option value="Verano">Verano</option>
             <option value="Invierno">Invierno</option>
-
         </select>
     </div>
 
@@ -59,32 +47,27 @@
     <div class="col-md-6 mb-3">
         <label for="color">Color</label>
         <select formControlName="color" class="form-control" id="color">
-             <option value="Azul">Azul</option> 
-
+            <option value="Azul">Azul</option>
             <!-- Agrega más opciones según sea necesario -->
         </select>
     </div>
 
     <!-- Imagen -->
     <div class="col-md-3 text-end">
-        <label for="picture" class="col-form-label">
-            Foto de la prenda:
-        </label>
+        <label for="picture" class="col-form-label">Foto de la prenda:</label>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-12">
         <ngx-dropzone (change)="onSelect($event)">
             <ngx-dropzone-label>Click para subir la imagen</ngx-dropzone-label>
-            <ngx-dropzone-image-preview style="width: 100%;" ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files"
-                [file]="f" [removable]="true" (removed)="onRemove(f)">
+            <ngx-dropzone-image-preview *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
             </ngx-dropzone-image-preview>
         </ngx-dropzone>
-
     </div>
 
     <!-- Botón de envío -->
-
-    <button (click)="callSave()" [disabled]="clothingForm.invalid" type="submit"
-        class="btn btn-primary">Guardar</button>
-
-
+    <div class="col-12 text-center mt-3">
+        <button (click)="callSave()" [disabled]="clothingForm.invalid" type="submit" class="btn btn-primary">
+            Guardar
+        </button>
+    </div>
 </form>

@@ -89,26 +89,23 @@ export interface IPasswordResetEntity{
 }
 
 export interface IClothing {
-  id?:number;
-  is_favorite: boolean;
-  is_public: boolean;
-  image_url: string;
+  id?: number;
+  isFavorite?: boolean;  // Cambiado para coincidir con el backend
+  isPublic?: boolean;
+  imageUrl?: string;     // Cambiado para coincidir con el backend
   name: string;
-  type:string;
-  subType:string;
-  material:string;
-  season:string;
-  color:string;
-  /* GET */
-  isFavorite?: boolean;
-  clothingType?:IClothingType;
-  imageUrl?:string;
+  season?: string;
+  color?: string;
+  clothingType?: IClothingType;
+
+
 }
+
 
 export interface IClothingType {
   id?: number;
-  name?: string;
-  subType?: string;
-  type?: string;
-  clothing_type_id:number;
+  name: string;
+  subType: string;
+  type: string;
+
 }
