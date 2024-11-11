@@ -46,6 +46,25 @@ export class ProfileService extends BaseService<IUser> {
     return this.http.get<IUser>('users/me'); 
   }
 
+
+  updateUserPicture(user: IUser): Observable<IUser>{
+    this.http.patch<IUser>(`users/profile/picture/${this.authService.getUser()?.id}`, user).subscribe({
+      next: (response: any) => {
+        this.userSignal.set(response);
+        const message = response?.message ?? 'Foto de perfil actualizada exitosamente';
+        this.alertService.displayAlert('success', message, 'center', 'top', ['success-snackbar']);
+        this.getUserInfoSignal();
+
+      },
+      error: (err: any) => {
+        this.alertService.displayAlert('error', 'Ocurrió un error actualizando la foto de perfil', 'center', 'top', ['error-snackbar']);
+      }
+    });
+    return this.http.patch<IUser>(`users/profile/${this.authService.getUser()?.id}`, user)
+
+  }
+
+
   updateUserInfo(user: IUser){
       this.http.put<IUser>(`users/profile/${this.authService.getUser()?.id}`, user).subscribe({
         next: (response: any) => {
@@ -60,6 +79,7 @@ export class ProfileService extends BaseService<IUser> {
         }
       });
   }
+
 
   deleteUser(user: IUser){
     this.http.patch<IUser>(`users/profile/${this.authService.getUser()?.id}`, user).subscribe({
@@ -76,6 +96,7 @@ export class ProfileService extends BaseService<IUser> {
     });
   }
 
+
   setProfilePrivate(user: IUser){
     this.http.patch<IUser>(`users/profile/privacy/${this.authService.getUser()?.id}`, user).subscribe({
       next: (response: any) => {
@@ -90,5 +111,4 @@ export class ProfileService extends BaseService<IUser> {
       }
     });
   }
-
 }

@@ -13,6 +13,7 @@ import { PrivacyConfirmationComponent } from '../../components/user/privacy-conf
 import { ModalComponent } from '../../components/modal/modal.component';
 import { UploadService } from '../../services/upload.service';
 import { AuthService } from '../../services/auth.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-profile',
@@ -36,6 +37,7 @@ export class ProfileComponent {
   public profileService = inject(ProfileService);
   public modalService: ModalService = inject(ModalService);
   public user: IUser = {};
+  private alertService: AlertService = inject(AlertService);
 
 
   public fb: FormBuilder = inject(FormBuilder);
@@ -122,12 +124,28 @@ export class ProfileComponent {
     data.append('cloud_name', 'dklipon9i');
    
     //sube la imagen a Cloudinary
-    this._uploadService.uploadImage(data).subscribe( (response) => {
+    this._uploadService.uploadImage(data).subscribe(async (response) => {
       if (response) {
         //Guarda el usuario con el seteo de la imagen
         this.updateForm.picture = response.secure_url;
+        let user = {
+          picture: this.updateForm.picture,
+        }
+        await this.updateUserPicture(user);
       }
     });
+  }
+
+  private updateUserPicture(user: IUser){
+    this.profileService.updateUserPicture(user).subscribe({
+      next: () => {
+        this.alertService.displayAlert('success', "Imagen de perfil actualizada exitosamente", 'center', 'top', ['success-snackbar']);
+      },
+      error: (err: any) => {
+        this.alertService.displayAlert('error', 'An error occurred adding the user','center', 'top', ['error-snackbar']);
+        console.error('error', err);
+      }
+    })
   }
 
 
