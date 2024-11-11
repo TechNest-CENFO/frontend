@@ -17,7 +17,7 @@ import { PrendasComponent } from '../../../pages/prendas/prendas.component';
 export class PrendasFormComponent {
   public fb: FormBuilder = inject(FormBuilder);
   @Input() clothingForm!: FormGroup;
-  @Input() clothingType: IClothing[]=[];
+  @Input() clothingType: IClothingType[]=[];
   uniqueTypes: string[] = [];
   filteredItems: string[] = [];
   @Output() callSaveMethod = new EventEmitter<IClothing>();
@@ -35,10 +35,9 @@ form = this.fb.group({
   season: [''],
   color: [''],
   clothingType: this.fb.group({
-    id: [null],
-    name: [null],
-    subType: [null],
-    type: [null]
+    name: [''],
+    subType: [''],
+    type: ['']
   })
 });
 
@@ -55,10 +54,9 @@ callSave() {
     season: formValue.season,
     color: formValue.color,
     clothingType: {
-      id: formValue.clothingType?.id,
-      name: this.selectedName,
-      subType: this.selectedSubType,
-      type: this.selectedType,
+      name: formValue.name ,
+      subType: formValue.subType,
+      type: formValue.type,
     }
   };
 
@@ -84,7 +82,7 @@ callSave() {
     this.filterItems(this.selectedName, "id", "name");
   }
 
-  private filterItems(itemSelected: string, filter:string,field:keyof IClothing) {
+  private filterItems(itemSelected: string, filter:string, field:keyof IClothingType) {
     let filteredItems = [];
     if(filter !== "id"){
       this.uniqueNames =[];
@@ -95,7 +93,7 @@ callSave() {
     
     // Extrae los subType de los elementos filtrados `${this.source}Type`)
     if(filter==="subType"){   
-      this.uniqueSubTypes = [...new Set(filteredItems.map(item => item.clothingType?.subType))];
+      this.uniqueSubTypes = [...new Set(filteredItems.map(item => item.subType))];
     }else if( filter === "name"){     
       this.uniqueNames = [...new Set(filteredItems.map(item => item.name))];
       
@@ -113,7 +111,6 @@ callSave() {
 
     } 
     
-    
   }
 
 
@@ -121,7 +118,7 @@ callSave() {
   ngOnInit(): void {       
     // Extraemos los tipos y eliminamos los duplicados
     this.uniqueTypes = [...new Set(this.clothingType.map(item => item.type))];
-    
+    console.log("tipos" + this.uniqueTypes);
   }
 
   files: File[] = [];

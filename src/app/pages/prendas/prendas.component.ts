@@ -1,3 +1,4 @@
+import { ClothingTypeService } from './../../services/clothing-type.service';
 import {AuthService} from './../../services/auth.service';
 
 import {ClothingService} from './../../services/clothing.service';
@@ -8,10 +9,11 @@ import {PrendasFormComponent} from "../../components/prendas/prendas-form/prenda
 import {ModalComponent} from "../../components/modal/modal.component";
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {LoaderComponent} from '../../components/loader/loader.component';
-import {IClothing} from '../../interfaces';
+import {IClothing, IClothingType} from '../../interfaces';
 import {NgClass} from "@angular/common";
 import {ClothingListComponent} from "../../components/prendas/clothing-list/clothing-list.component";
 import {PaginationComponent} from "../../components/pagination/pagination.component";
+
 
 
 @Component({
@@ -23,6 +25,7 @@ import {PaginationComponent} from "../../components/pagination/pagination.compon
 })
 export class PrendasComponent {
   public clothingService: ClothingService = inject(ClothingService);
+  public clothtingTypeService: ClothingTypeService = inject(ClothingTypeService);
   public ModalService: ModalService = inject(ModalService);
   public AuthService: AuthService = inject(AuthService);
   
@@ -35,14 +38,13 @@ export class PrendasComponent {
         is_favorite: [false],
         is_public: [false],
         image_url: [''],
-        type: [''],
-        subType: [''],
         material: [''],
         season: [''],
         color: [''],
         clothing_type_id:['']
     });
     clothingData: IClothing[] = []; // Almacenar los datos de las prendas
+    clothingTypeData: IClothingType[] = []; // Almacenar los datos de los tipos de prendas
     gridSelected: boolean = true;
     protected getBy: string = 'all';
     protected optionSelected: string = 'Tipo';
@@ -58,9 +60,9 @@ export class PrendasComponent {
 
     getTypeClothing() {
         // Método para obtener los datos nuevamente si es necesario
-        this.clothingService.getAll().subscribe({
+        this.clothtingTypeService.getAll().subscribe({
             next: (response) => {
-                this.clothingData = response.data;  // Puedes actualizar los datos aquí también
+                this.clothingTypeData = response.data;  // Puedes actualizar los datos aquí también
             },
             error: (err) => {
                 console.error("Error en getTypeClothing", err);

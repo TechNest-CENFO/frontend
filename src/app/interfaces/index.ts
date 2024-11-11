@@ -98,6 +98,7 @@ export interface IClothing {
   color?: string;
   clothingType?: IClothingType;
 
+  
 
 }
 

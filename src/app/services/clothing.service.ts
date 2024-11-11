@@ -9,7 +9,7 @@ import {NotyfService} from "./notyf.service";
 @Injectable({
   providedIn: 'root'
 })
-export class ClothingService extends BaseService<IClothing> {
+export class ClothingService extends BaseService<IClothing>{
 
   protected override source: string  = 'clothing';
   private clothingListSignal = signal<IClothing[]>([]);
@@ -44,6 +44,10 @@ export class ClothingService extends BaseService<IClothing> {
     return this.findAllTypes();
     
   }
+
+
+
+  
 
   ngOnInit() {
     this.getAll();
