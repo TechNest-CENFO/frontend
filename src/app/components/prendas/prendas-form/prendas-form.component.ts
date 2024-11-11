@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxDropzoneModule } from 'ngx-dropzone';
-import { IClothing, IClothingType } from '../../../interfaces';
+import { IClothing } from '../../../interfaces';
 import { PrendasComponent } from '../../../pages/prendas/prendas.component';
 
 
@@ -24,7 +24,7 @@ export class PrendasFormComponent {
   selectedType: string = '';
   selectedName:string = '';
   selectedSubType:string='';
-  uniqueSubTypes?: string[] = [];
+  uniqueSubTypes: string[] = [];
   uniqueNames: string[] = [];
 form = this.fb.group({
   id: [''],
@@ -39,8 +39,6 @@ form = this.fb.group({
     subType: [''],
     type: ['']
   })
-});
-
 
   constructor(){};
 
@@ -93,6 +91,7 @@ callSave() {
     
     // Extrae los subType de los elementos filtrados `${this.source}Type`)
     if(filter==="subType"){   
+      this.uniqueSubTypes = [...new Set(filteredItems.map(item => item.subType))];
       this.uniqueSubTypes = [...new Set(filteredItems.map(item => item.subType))];
     }else if( filter === "name"){     
       this.uniqueNames = [...new Set(filteredItems.map(item => item.name))];
