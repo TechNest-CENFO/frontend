@@ -113,18 +113,7 @@ export class ProfileService extends BaseService<IUser> {
   }
 
 
-  changePassword(user: IUser){
-    this.http.patch<IUser>(`users/profile/password/${this.authService.getUser()?.id}`, user).subscribe({
-      next: (response: any) => {
-        this.userSignal.set(response);
-        const message = response?.message ?? 'Se modificó la contraseña';
-        this.alertService.displayAlert('success', message, 'center', 'top', ['success-snackbar']);
-        this.getUserInfoSignal();
-
-      },
-      error: (err: any) => {
-        this.alertService.displayAlert('error', 'Ocurrió un error al modificar la contraseña', 'center', 'top', ['error-snackbar']);
-      }
-    });
+  public passwordUpdate(user: IUser): Observable<IUser> {
+    return this.http.patch<IUser>(`users/profile/password/${this.authService.getUser()?.id}`, user);
   }
 }
