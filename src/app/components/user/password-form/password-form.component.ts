@@ -3,6 +3,7 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IUser } from '../../../interfaces';
 import { ProfileService } from '../../../services/profile.service';
+import { ModalService } from '../../../services/modal.service';
 
 
 @Component({
@@ -17,6 +18,7 @@ import { ProfileService } from '../../../services/profile.service';
 })
 export class PasswordFormComponent {
   public profileService: ProfileService = inject(ProfileService);
+  public modalService: ModalService = inject(ModalService);
   //public fb: FormBuilder = inject(FormBuilder);
   @Input() changePasswordForm!: FormGroup;
   @Output() callSaveMethod: EventEmitter<IUser> = new EventEmitter<IUser>();
@@ -34,11 +36,18 @@ export class PasswordFormComponent {
       confirmNewPassword: ['', Validators.required]
     });
   }
+  
+
+  closeModal(){
+    this.modalService.closeAll();
+  }
+
 
   changePassword(){
-    let password={
-   //   password: this.changePasswordForm.password
+    let user = {
+      password: this.changePasswordForm.value
     }
-    //this.profileService.changePassword(user);
+    this.profileService.changePassword(user);
   }
+
 }
