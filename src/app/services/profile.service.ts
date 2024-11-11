@@ -111,4 +111,9 @@ export class ProfileService extends BaseService<IUser> {
       }
     });
   }
+
+
+  public passwordUpdate(user: IUser): Observable<IUser> {
+    return this.http.patch<IUser>(`users/profile/password/${this.authService.getUser()?.id}`, user);
+  }
 }
