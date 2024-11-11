@@ -11,6 +11,9 @@ import { PasswordFormComponent } from '../../components/user/password-form/passw
 import { ConfirmationFormComponent } from '../../components/user/confirmation-form/confirmation-form.component';
 import { PrivacyConfirmationComponent } from '../../components/user/privacy-confirmation/privacy-confirmation.component';
 import { ModalComponent } from '../../components/modal/modal.component';
+import { UploadService } from '../../services/upload.service';
+import { AuthService } from '../../services/auth.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-profile',
@@ -27,12 +30,15 @@ import { ModalComponent } from '../../components/modal/modal.component';
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
-  providers: [UserService]
+  providers: [UserService, UploadService]
 })
 export class ProfileComponent {
   public updateError!: string;
   public profileService = inject(ProfileService);
   public modalService: ModalService = inject(ModalService);
+  public user: IUser = {};
+  private alertService: AlertService = inject(AlertService);
+
 
   public fb: FormBuilder = inject(FormBuilder);
   confirmationForm = this.fb.group({
@@ -56,6 +62,7 @@ export class ProfileComponent {
     this.editMode = !this.editMode;
   }
   
+
   public updateForm: {picture: string,
                       name: string,
                       lastname: string,
@@ -93,7 +100,8 @@ export class ProfileComponent {
   }
 
 
-  constructor() {
+  constructor(private authService: AuthService,
+    private _uploadService: UploadService) {
     this.getUserInfo();
   }
 
@@ -107,15 +115,51 @@ export class ProfileComponent {
   //Inicio Imagen de perfil
   files: File[] = [];
 
-  onSelect(event: any) {
-    if(this.files.length >= 0){
+  private uploadImage() {
+    const file_data = this.files[0];
+    const data = new FormData();
+
+    data.append('file', file_data);
+    data.append('upload_preset', 'technest-preset');
+    data.append('cloud_name', 'dklipon9i');
+   
+    //sube la imagen a Cloudinary
+    this._uploadService.uploadImage(data).subscribe(async (response) => {
+      if (response) {
+        //Guarda el usuario con el seteo de la imagen
+        this.updateForm.picture = response.secure_url;
+        let user = {
+          picture: this.updateForm.picture,
+        }
+        await this.updateUserPicture(user);
+      }
+    });
+  }
+
+  private updateUserPicture(user: IUser){
+    this.profileService.updateUserPicture(user).subscribe({
+      next: () => {
+        this.alertService.displayAlert('success', "Imagen de perfil actualizada exitosamente", 'center', 'top', ['success-snackbar']);
+      },
+      error: (err: any) => {
+        this.alertService.displayAlert('error', 'An error occurred adding the user','center', 'top', ['error-snackbar']);
+        console.error('error', err);
+      }
+    })
+  }
+
+
+   onSelect(event: any) {
+    if (this.files.length >= 0) {
       this.onRemove(event);
     }
     this.files.push(...event.addedFiles);
+    const file = this.files[0];
+    if (file) {
+      this.uploadImage();
+    }
   }
-
     onRemove(event: any) {
-    console.log(event);
     this.files.splice(this.files.indexOf(event), 1);
   }
   //Fin Imagen de perfil
@@ -146,6 +190,7 @@ export class ProfileComponent {
   ngOnInit(): void {
     this.loadProfilePrivacy();
   }
+
 
   loadProfilePrivacy() {
     this.profileService.getUserInfoSignal().subscribe((user: IUser) => {

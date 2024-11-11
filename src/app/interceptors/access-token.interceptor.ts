@@ -7,6 +7,11 @@ export const accessTokenInterceptor: HttpInterceptorFn = (req, next) => {
   let headers = {};
 
   if (!authService.check()) return next(req);
+
+  if (req.url.includes('cloudinary.com')) {
+    return next(req);
+  }
+
   if (!req.url.includes('auth')) {
     headers = {
         setHeaders: {
