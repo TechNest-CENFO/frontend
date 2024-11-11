@@ -35,13 +35,11 @@ export class PrendasComponent {
     public fb: FormBuilder = inject(FormBuilder);
     clothingForm = this.fb.group({
         name: [''],
-        is_favorite: [false],
-        is_public: [false],
-        image_url: [''],
-        material: [''],
+        isFavorite: [false],
+        isPublic: [false],
+        imageUrl: [''],
         season: [''],
         color: [''],
-        clothing_type_id:['']
     });
     clothingData: IClothing[] = []; // Almacenar los datos de las prendas
     clothingTypeData: IClothingType[] = []; // Almacenar los datos de los tipos de prendas
@@ -62,13 +60,14 @@ export class PrendasComponent {
         // Método para obtener los datos nuevamente si es necesario
         this.clothtingTypeService.getAll().subscribe({
             next: (response) => {
+                console.log("GetTypeClothing " + response.data);
                 this.clothingTypeData = response.data;  // Puedes actualizar los datos aquí también
             },
             error: (err) => {
                 console.error("Error en getTypeClothing", err);
             }
         });
-
+        
     }
 
     ngOnInit(): void {

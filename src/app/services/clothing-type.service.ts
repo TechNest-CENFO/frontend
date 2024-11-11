@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 export class ClothingTypeService extends BaseService<IClothingType> {
 
     getAll() : Observable<IResponse<IClothingType[]>>{
+      console.log("GetAll" + this.source);
     return this.findAllTypes()
   }
 

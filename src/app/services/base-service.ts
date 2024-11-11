@@ -19,6 +19,7 @@ export class BaseService<T> {
   }
 
   public findAllTypes(): Observable<IResponse<T[]>> {
+    console.log("FindAllTypes" + this.source);
     return this.http.get<IResponse<T[]>>(`${this.source}Type`);
   }
 
