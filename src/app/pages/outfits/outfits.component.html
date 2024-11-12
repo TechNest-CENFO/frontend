@@ -1,0 +1,95 @@
+@defer {
+    <section id="clothing-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 px-4 py-5 d-flex justify-content-between">
+                    <h2>Outfits</h2>
+                    <div>
+                        <button class="btn button-tertiary me-4"><i class="bi bi-download"></i></button>
+                        <button (click)="ModalService.displayModal('md', AddOutfitModal)" type="button"
+                                class="btn button-default"><i class="bi bi-plus-lg"></i> Agregar Outfit
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-between px-4">
+                    <div class="d-flex align-items-center">
+                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='all'}" (click)="setGetBy('all')">Todos</a>
+                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='favorite'}" (click)="setGetBy('favorite')">Favoritos</a>
+                        <div class="ms-2 p-1 dropdown">
+                            <button class="btn button-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                {{ optionSelected }}
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" (click)="setGetBy('CASUAL')">Casual</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('FORMAL')">Formal</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('SEMI_FORMAL')">Semi Formal</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('SPORTSWEAR')">Deportivo</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('BEACHWEAR')">Playero</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('TRAVEL')">Viaje</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('FESTIVAL')">Festival</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('STREETWEAR')">Callejero</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <button [ngClass]="{'btn button-secondary':gridSelected, 'btn-custom': !gridSelected, 'me-4': true}"
+                                (click)="toggleGirdSelected()"><i class="bi bi-grid"></i></button>
+                        <button [ngClass]="{'btn button-secondary':!gridSelected, 'btn-custom': gridSelected}"
+                                (click)="toggleGirdSelected()"><i class="bi bi-list-ul"></i></button>
+                    </div>
+                </div>
+                <div class="col-12 px-4 mt-1">
+                    <div class="custom-divider"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-between px-4 mt-4">
+                    <p class="info-quantity"><span class="text-bold">{{ outfitsService.outfit$().length }}</span>
+                        @if (this.outfitsService.outfit$().length > 1 || this.outfitsService.outfit$().length === 0) {
+                            <span> outfits</span>
+                        } @else {
+                            <span> outfit</span>
+                        }</p>
+                </div>
+            </div>
+
+            <app-outfits-list
+                    (callDeleteAction)="outfitsService.delete($event)"
+                    [outfits]="outfitsService.outfit$()"
+            />
+
+            <app-pagination
+                    [service]="outfitsService"
+                    [customCall]="true"
+                    (callCustomPaginationMethod)="this.callGet()"
+            />
+
+            @if (outfitsService.outfit$().length) {
+
+            }
+        </div>
+    </section>
+} @loading (minimum 1.5s) {
+    <app-loader
+
+    />
+}
+
+
+<ng-template #AddOutfitModal>
+    <app-modal [hideFooter]="true">
+        <div>
+            <app-outfits-form
+                    [outfitsForm]="outfitForm"
+                    (callSaveMethod)="saveOutfit($event)"
+            />
+
+        </div>
+    </app-modal>
+
+</ng-template>
+
+

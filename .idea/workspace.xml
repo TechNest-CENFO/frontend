@@ -5,24 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c73ec76d-e504-454f-b0bd-7f62b5aa5dd6" name="Changes" comment="Recuperar Contrasena&gt; Cliente interfaz para envio de correo creada&gt; Interfaz de cambio de contrasena creada&gt;">
-      <change beforePath="$PROJECT_DIR$/.angular/cache/17.3.7/demo-angular-front/.tsbuildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/.angular/cache/17.3.7/demo-angular-front/.tsbuildinfo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.angular/cache/17.3.7/vite/deps/@ng-bootstrap_ng-bootstrap.js" beforeDir="false" afterPath="$PROJECT_DIR$/.angular/cache/17.3.7/vite/deps/@ng-bootstrap_ng-bootstrap.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.angular/cache/17.3.7/vite/deps/@ng-bootstrap_ng-bootstrap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/.angular/cache/17.3.7/vite/deps/@ng-bootstrap_ng-bootstrap.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.angular/cache/17.3.7/vite/deps/_metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/.angular/cache/17.3.7/vite/deps/_metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/img/login/stacked-waves-1.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/img/login/stacked-waves-haikei(2).svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/angular.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/prendas/clothing-list/clothing-list.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/prendas/clothing-list/clothing-list.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/prendas/clothing-list/clothing-list.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/prendas/clothing-list/clothing-list.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/prendas/clothing-list/clothing-list.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/prendas/clothing-list/clothing-list.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app.routes.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/interfaces/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/interfaces/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/pages/prendas/prendas.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/pages/prendas/prendas.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/pages/prendas/prendas.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/pages/prendas/prendas.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/pages/prendas/prendas.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/pages/prendas/prendas.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/services/clothing.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/services/clothing.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/services/notyf.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/services/notyf.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/global/global.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/global/global.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/pages/auth/login/login.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/pages/auth/login/login.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/pages/auth/login/login.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/pages/auth/login/login.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/pages/auth/login/login.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/pages/auth/login/login.component.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,8 +54,8 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;technest-56/listar-prendas&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/vadak/Desktop/Stuff/_bisoft/Cuatrimentre_Actual/Proyecto 3/frontend&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;technest-/estandar-ui&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/vadak/Desktop/proyecto.ps1&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -80,6 +70,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/assets/img/login" />
       <recent name="$PROJECT_DIR$/src/assets/lottie" />
       <recent name="$PROJECT_DIR$/src/assets/img/passwordRecovery" />
     </key>
@@ -127,7 +118,11 @@
       <workItem from="1730852878495" duration="3614000" />
       <workItem from="1730861366444" duration="46587000" />
       <workItem from="1731231703029" duration="9363000" />
-      <workItem from="1731241301728" duration="5403000" />
+      <workItem from="1731241301728" duration="7561000" />
+      <workItem from="1731270747879" duration="2091000" />
+      <workItem from="1731367449566" duration="13327000" />
+      <workItem from="1731383903251" duration="15000" />
+      <workItem from="1731385713218" duration="5430000" />
     </task>
     <task id="LOCAL-00001" summary="Tema base creado. Estructura base variables&gt;themes&gt;funcitons&gt;global&gt;styles.scss">
       <option name="closed" value="true" />

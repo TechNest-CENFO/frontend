@@ -1,44 +1,62 @@
-import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
-import { FormsModule, NgModel } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
+import {CommonModule} from '@angular/common';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {FormsModule, NgModel} from '@angular/forms';
+import {Router, RouterLink} from '@angular/router';
+import {AuthService} from '../../../services/auth.service';
+import * as Aos from 'aos';
+import {NotyfService} from "../../../services/notyf.service";
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+    selector: 'app-login',
+    standalone: true,
+    imports: [CommonModule, FormsModule, RouterLink],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss'
 })
-export class LoginComponent {
-  public loginError!: string;
-  @ViewChild('email') emailModel!: NgModel;
-  @ViewChild('password') passwordModel!: NgModel;
+export class LoginComponent implements OnInit {
+    public loginError!: string;
+    @ViewChild('email') emailModel!: NgModel;
+    @ViewChild('password') passwordModel!: NgModel;
+    private notyfService: NotyfService = inject(NotyfService);
 
-  public loginForm: { email: string; password: string } = {
-    email: '',
-    password: '',
-  };
+    public loginForm: { email: string; password: string } = {
+        email: '',
+        password: '',
+    };
+    backgroundLoaded = false;
+    backgroundUrl = "../../../../assets/img/login/stacked-waves-1.svg";
 
-  constructor(
-    private router: Router, 
-    private authService: AuthService
-  ) {}
+    ngOnInit(): void {
+        Aos.init();
+        const img = new Image();
+        img.src = this.backgroundUrl;
 
-  public handleLogin(event: Event) {
-    event.preventDefault();
-    if (!this.emailModel.valid) {
-      this.emailModel.control.markAsTouched();
+        img.onload = () => {
+            this.backgroundLoaded = true;
+        };
     }
-    if (!this.passwordModel.valid) {
-      this.passwordModel.control.markAsTouched();
+
+    constructor(
+        private router: Router,
+        private authService: AuthService
+    ) {
     }
-    if (this.emailModel.valid && this.passwordModel.valid) {
-      this.authService.login(this.loginForm).subscribe({
-        next: () => this.router.navigateByUrl('/app/dashboard'),
-        error: (err: any) => (this.loginError = err.error.description),
-      });
+
+    public handleLogin(event: Event) {
+        event.preventDefault();
+        if (!this.emailModel.valid) {
+            this.emailModel.control.markAsTouched();
+        }
+        if (!this.passwordModel.valid) {
+            this.passwordModel.control.markAsTouched();
+        }
+        if (this.emailModel.valid && this.passwordModel.valid) {
+            this.authService.login(this.loginForm).subscribe({
+                next: () => this.router.navigateByUrl('/app/dashboard'),
+                error: (err: any) => {
+                    this.notyfService.error('Por favor verifique sus datos.');
+                }
+            });
+        }
     }
-  }
 }
