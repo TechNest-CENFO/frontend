@@ -7,7 +7,7 @@
     <div class="col-md-6 mb-3">
         <label for="type">Categoría</label>
         <select (change)="callGetSubTypes()" [(ngModel)]="selectedType" formControlName="clothingType" class="form-control"
-            id="type">
+            id="type" >
             <option value="" disabled selected>Selecciona una categoría</option>
             <option *ngFor="let item of uniqueTypes" [value]="item">{{ item }}</option>
         </select>
@@ -16,7 +16,7 @@
     <!-- Subcategoría -->
     <div class="col-md-6 mb-3">
         <label for="subType">Subcategoría</label>
-        <select (change)="callGetNames()" [(ngModel)]="selectedSubType" formControlName="subType" class="form-control"
+        <select (change)="callGetNames()" [(ngModel)]="selectedSubType"  formControlName="clothingSubType" class="form-control"
             id="subType">
             <option value="" selected>Selecciona una subcategoría</option>
             <option *ngFor="let item of uniqueSubTypes" [value]="item">
@@ -28,7 +28,7 @@
     <!-- Nombre -->
     <div class="col-md-6 mb-3">
         <label for="name">Tipo de prenda</label>
-        <select (change)="callGetItem()" [(ngModel)]="selectedName" formControlName="name" class="form-control" id="name">
+        <select (change)="callGetItem()" formControlName="clothingTypeName" class="form-control" id="clothingTypeName">
             <option value="" disabled selected>Seleccione un tipo</option>
             <option *ngFor="let item of uniqueNames" [value]="item">{{ item }}</option>
         </select>

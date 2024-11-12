@@ -14,10 +14,10 @@ import { PrendasComponent } from '../../../pages/prendas/prendas.component';
   templateUrl: './prendas-form.component.html',
   styleUrls: ['./prendas-form.component.scss']
 })
-export class PrendasFormComponent {
+export class PrendasFormComponent implements OnInit{
   public fb: FormBuilder = inject(FormBuilder);
   @Input() clothingForm!: FormGroup;
-  @Input() clothingType: IClothingType[]=[];
+  @Input() vclothingType: IClothingType[]=[];
   uniqueTypes: string[] = [];
   filteredItems: string[] = [];
   @Output() callSaveMethod = new EventEmitter<IClothing>();
@@ -34,13 +34,16 @@ form = this.fb.group({
   imageUrl: [''],         // Cambiado para coincidir con el backend
   season: [''],
   color: [''],
+  subType:[''],
   clothingType: this.fb.group({
-    id: ['']
+    id: [''],
+    
   })
 });
 
 
-  constructor(){};
+  constructor(){}
+
 
 callSave() {
   const formValue = this.clothingForm.value;
@@ -52,7 +55,7 @@ callSave() {
     season: formValue.season,
     color: formValue.color,
     clothingType: {
-      id: formValue.id
+      id: formValue.id,
     }
   };
 
@@ -63,7 +66,7 @@ callSave() {
 
 
   callGetSubTypes():void{
-    this.callGetNames();
+
     //Se filtran solo los elementos que tengan la categoría seleccionada
     this.filterItems(this.selectedType, "subType", "type");
   }
@@ -85,7 +88,7 @@ callSave() {
     }
     
     this.selectedSubType="";
-    filteredItems = this.clothingType.filter(item => item[field] === itemSelected);
+    filteredItems = this.vclothingType.filter(item => item[field] === itemSelected);
     
     // Extrae los subType de los elementos filtrados `${this.source}Type`)
         if (filter === "subType" && filteredItems !== undefined) {   
@@ -93,12 +96,15 @@ callSave() {
     } else if (filter === "name") {     
       this.uniqueNames = [...new Set(filteredItems.map(item => item.name).filter((name): name is string => name !== undefined))];
     } else if (filter === "id") {
-      console.log(this.clothingType.filter(item => item.name === itemSelected));
-      this.clothingType.filter(item => item.name === itemSelected);
+      console.log(this.vclothingType.filter(item => item.name === itemSelected));
+      this.vclothingType.filter(item => item.name === itemSelected);
       if(filteredItems.length > 0){
         const uniqueId = filteredItems[0].id;
         this.clothingForm.patchValue({
-          clothing_type_id:uniqueId
+          clothingType: {
+            id: uniqueId,
+          }
+          
         })
         
         
@@ -112,7 +118,7 @@ callSave() {
 
   ngOnInit(): void {       
     // Extraemos los tipos y eliminamos los duplicados
-    this.uniqueTypes = [...new Set(this.clothingType.map(item => item.type).filter((type): type is string => type !== undefined))];
+    this.uniqueTypes = [...new Set(this.vclothingType.map(item => item.type).filter((type): type is string => type !== undefined))];
     console.log("tipo" + this.uniqueTypes);
   }
 

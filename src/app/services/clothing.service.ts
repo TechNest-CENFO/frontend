@@ -41,6 +41,7 @@ export class ClothingService extends BaseService<IClothing>{
   }
 
   getAll() : Observable<IResponse<IClothing[]>>{
+    console.log("clothing service")
     return this.findAllTypes();
     
   }

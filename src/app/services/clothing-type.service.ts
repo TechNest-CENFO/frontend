@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { IClothingType, IResponse } from '../interfaces';
 import { BaseService } from './base-service';
 import { Observable } from 'rxjs';
@@ -8,10 +8,16 @@ import { Observable } from 'rxjs';
 })
 export class ClothingTypeService extends BaseService<IClothingType> {
 
-    getAll() : Observable<IResponse<IClothingType[]>>{
-      console.log("GetAll" + this.source);
+  protected override source: string  = 'clothingType';
+  private clothingTypeListSignal = signal<IClothingType[]>([]);
+
+  getAll() : Observable<IResponse<IClothingType[]>>{
+      console.log("GetAll", this.findAllTypes());
     return this.findAllTypes()
   }
 
+  ngOnInit() {
+    this.getAll();
+  }
   
 }

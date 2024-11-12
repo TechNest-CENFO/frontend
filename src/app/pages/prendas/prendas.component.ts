@@ -40,11 +40,9 @@ export class PrendasComponent {
         imageUrl: [''],
         season: [''],
         color: [''],
-        clothingType: this.fb.group({
-            name: [''],
-            subType: [''],
-            type: ['']
-        })
+        clothingTypeName: [''],
+        clothingSubType: [''],
+        clothingType: ['']
     });
     clothingData: IClothing[] = []; // Almacenar los datos de las prendas
     clothingTypeData: IClothingType[] = []; // Almacenar los datos de los tipos de prendas
@@ -53,6 +51,7 @@ export class PrendasComponent {
     protected optionSelected: string = 'Tipo';
 
     constructor() {
+        this.getAllTypeClothing();
     }
 
     saveClothing(clothing: IClothing) {
@@ -61,32 +60,21 @@ export class PrendasComponent {
 
     }
 
-    getTypeClothing() {
-        // Método para obtener los datos nuevamente si es necesario
+
+
+    getAllTypeClothing(): void {
+        // Llamamos a getAll() y al Observable para obtener los datos
+        console.log(this.clothtingTypeService);
         this.clothtingTypeService.getAll().subscribe({
             next: (response) => {
-                console.log("GetTypeClothing " + response.data);
-                this.clothingTypeData = response.data;  // Puedes actualizar los datos aquí también
-            },
-            error: (err) => {
-                console.error("Error en getTypeClothing", err);
-            }
-        });
-        
-    }
-
-    ngOnInit(): void {
-        // Llamamos a getAll() y al Observable para obtener los datos
-        this.clothingService.getAll().subscribe({
-            next: (response) => {
                 // Accedemos a los datos y los almacenamos en la propiedad clothingData
-                this.clothingData = response.data;
+                this.clothingTypeData = response.data;
             },
             error: (err) => {
                 err = "Ocurrió un error al cargar los datos.";
             }
         });
-        this.callGet()
+        //this.callGet()
     }
 
     callGet() {
