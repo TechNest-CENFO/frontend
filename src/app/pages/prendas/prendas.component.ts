@@ -40,6 +40,11 @@ export class PrendasComponent {
         imageUrl: [''],
         season: [''],
         color: [''],
+        clothingType: this.fb.group({
+            name: [''],
+            subType: [''],
+            type: ['']
+        })
     });
     clothingData: IClothing[] = []; // Almacenar los datos de las prendas
     clothingTypeData: IClothingType[] = []; // Almacenar los datos de los tipos de prendas

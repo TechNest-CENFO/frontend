@@ -6,7 +6,7 @@
     <!-- Categoría -->
     <div class="col-md-6 mb-3">
         <label for="type">Categoría</label>
-        <select (change)="callGetSubTypes()" [(ngModel)]="selectedType" formControlName="clothingType.type" class="form-control"
+        <select (change)="callGetSubTypes()" [(ngModel)]="selectedType" formControlName="clothingType" class="form-control"
             id="type">
             <option value="" disabled selected>Selecciona una categoría</option>
             <option *ngFor="let item of uniqueTypes" [value]="item">{{ item }}</option>
@@ -34,15 +34,6 @@
         </select>
     </div>
 
-    <!-- Material -->
-    <div class="col-md-6 mb-3">
-        <label for="material">Material</label>
-        <select formControlName="material" class="form-control" id="material">
-            <!-- <option value="Estampado">Estampado</option> -->
-
-            <!-- Agrega más opciones según sea necesario -->
-        </select>
-    </div>
 
     <!-- Temporada -->
     <div class="col-md-6 mb-3">
@@ -65,15 +56,16 @@
         </select>
     </div>
 
+
     <!-- Imagen -->
     <div class="col-md-3 text-end">
         <label for="picture" class="col-form-label">
             Foto de la prenda:
         </label>
     </div>
-    <div class="col-md-6">
-        <ngx-dropzone (change)="onSelect($event)">
-            <ngx-dropzone-label>Click para subir la imagen</ngx-dropzone-label>
+    <div class="col-md-12 " >
+        <ngx-dropzone (change)="onSelect($event)" class="dropzone">
+            <ngx-dropzone-label >Click para subir la imagen</ngx-dropzone-label>
             <ngx-dropzone-image-preview style="width: 100%;" ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files"
                 [file]="f" [removable]="true" (removed)="onRemove(f)">
             </ngx-dropzone-image-preview>
@@ -84,7 +76,7 @@
     <!-- Botón de envío -->
 
     <button (click)="callSave()" [disabled]="clothingForm.invalid" type="submit"
-        class="btn btn-primary">Guardar</button>
+        class="btn">Guardar</button>
 
 
 </form>

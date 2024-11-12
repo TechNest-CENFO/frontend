@@ -3,6 +3,8 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IUser } from '../../../interfaces';
 import { ProfileService } from '../../../services/profile.service';
+import { ModalService } from '../../../services/modal.service';
+import { AlertService } from '../../../services/alert.service';
 
 
 @Component({
@@ -17,13 +19,12 @@ import { ProfileService } from '../../../services/profile.service';
 })
 export class PasswordFormComponent {
   public profileService: ProfileService = inject(ProfileService);
-  //public fb: FormBuilder = inject(FormBuilder);
+  public modalService: ModalService = inject(ModalService);
+  public alertService: AlertService = inject(AlertService);
+  public user: IUser = {};
   @Input() changePasswordForm!: FormGroup;
   @Output() callSaveMethod: EventEmitter<IUser> = new EventEmitter<IUser>();
   @Output() callUpdateMethod: EventEmitter<IUser> = new EventEmitter<IUser>();
-
-
-
 
   constructor(private fb: FormBuilder) {}
 
@@ -33,12 +34,30 @@ export class PasswordFormComponent {
       newPassword: ['', Validators.required],
       confirmNewPassword: ['', Validators.required]
     });
+
+  }
+  changePassword(): void {
+    if (this.changePasswordForm.invalid) {
+      this.alertService.displayAlert('error', 'Please complete all fields.', 'center', 'top', ['error-snackbar']);
+      return;
+    }
+    const passwordData = {
+      password: this.changePasswordForm.value.currentPassword
+    };
+
+    this.profileService.passwordUpdate(passwordData).subscribe({
+      next: () => {
+        this.alertService.displayAlert('success', "Password updated successfully", 'center', 'top', ['success-snackbar']);
+      },
+      error: (err: any) => {
+        this.alertService.displayAlert('error', 'An error occurred updating the password', 'center', 'top', ['error-snackbar']);
+        console.error('error', err);
+      }
+    });
+    this.closeModal();
   }
 
-  changePassword(){
-    let password={
-   //   password: this.changePasswordForm.password
-    }
-    //this.profileService.changePassword(user);
+  closeModal(){
+    this.modalService.closeAll();
   }
 }

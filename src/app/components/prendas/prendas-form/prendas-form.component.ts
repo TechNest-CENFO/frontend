@@ -35,10 +35,7 @@ form = this.fb.group({
   season: [''],
   color: [''],
   clothingType: this.fb.group({
-    clothing_type_id: [''],
-    name: [''],
-    subType: [''],
-    type: ['']
+    id: ['']
   })
 });
 
@@ -55,10 +52,8 @@ callSave() {
     season: formValue.season,
     color: formValue.color,
     clothingType: {
-      name: formValue.name,
-      subType: formValue.subType,
-      type: formValue.type,
-    },
+      id: formValue.id
+    }
   };
 
   this.callSaveMethod.emit(clothingData);
