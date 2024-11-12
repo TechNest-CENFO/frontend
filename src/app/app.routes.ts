@@ -15,6 +15,7 @@ import { ProductsComponent } from './pages/products/products.component';
 import {PasswordRecoveryComponent} from "./pages/auth/password-recovery/password-recovery.component";
 import {PasswordResetComponent} from "./pages/auth/password-reset/password-reset.component";
 import { PrendasComponent } from './pages/prendas/prendas.component';
+import {OutfitsComponent} from "./pages/outfits/outfits.component";
 
 export const routes: Routes = [
   {
@@ -100,7 +101,7 @@ export const routes: Routes = [
       },
       {
         path: 'outfits',
-        component: ProductsComponent,
+        component: OutfitsComponent,
         data: { 
           authorities: [
             IRoleType.admin, 
