@@ -112,3 +112,19 @@ export interface IClothingType {
   type?: string;
   clothing_type_id:number;
 }
+
+export interface IOutfit{
+  id?: number;
+  name?: string;
+  clothing:IClothing[];
+  isPublic?: boolean;
+  isFavorite?: boolean;
+  category?:ICategory
+  user:IUser;
+  imageUrl?:string;
+}
+
+export interface ICategory{
+  id?: number;
+  name: string;
+}
