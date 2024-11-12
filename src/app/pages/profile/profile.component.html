@@ -36,6 +36,7 @@
           <div class="my-3 mx-3 col-md-6 profile-input">
             <label class="py-1">Nombre:</label>
             <p *ngIf="!editMode" >{{ updateForm.name }}</p>
+
             <input #name="ngModel"
               id="name"
               name="name"
@@ -49,6 +50,10 @@
                 'is-valid': name.valid && name.touched
               }"
               required />
+              <div
+                class="invalid-feedback padding-bottom-md">
+                El nombre es requerido
+              </div>
           </div>
 
           <div class="my-3 mx-3 col-md-6 profile-input">
@@ -67,6 +72,9 @@
                 'is-valid': lastname.valid && lastname.touched
               }"
               required />
+              <div class="invalid-feedback">
+                El apellido es requerido
+              </div>
           </div>
 
 
@@ -84,6 +92,9 @@
                 'is-valid': email.valid && email.touched
               }"
               required email />
+              <div class="invalid-feedback">
+                El correo electrónico es requerido
+              </div>
           </div>
 
           <div class="my-3 mx-3 col-md-6 profile-input">
@@ -103,6 +114,12 @@
                 'is-valid': dateOfBirth.valid && dateOfBirth.touched && validateDate()
               }" required
               />
+              <div class="invalid-feedback">
+                La fecha de nacimiento es requerida
+              </div>
+              <div *ngIf="!validateDate()" class="invalid-feedback">
+                {{ validationMessageDate }}
+              </div>
           </div>
           
           <div class="my-3 mx-3 col-md-6 profile-input">
@@ -119,10 +136,13 @@
                 'is-invalid': direction.invalid && direction.touched,
                 'is-valid': direction.valid && direction.touched
               }" required/>
+              <div class="invalid-feedback">
+                El dirección es requerida
+              </div>
           </div>
 
           <div class="form-group mb-0">
-            <button *ngIf="editMode" (click)="handleUpdate($event)"  class="btn button-default mx-3 my-3" type="button">Actualizar</button>
+            <button [disabled]="!isFormValid" *ngIf="editMode" (click)="handleUpdate($event)"  class="btn button-default mx-3 my-3" type="button">Actualizar</button>
             <button *ngIf="editMode" (click)="cancelEdit()"  class="btn btn-outline-primary mx-3 my-3" type="button">Cancelar</button>
           </div>
         </form>

@@ -40,8 +40,6 @@ export class ProfileComponent {
   public user: IUser = {};
   private alertService: AlertService = inject(AlertService);
 
-
-
   public signUpError!: String;
   public validSignup!: boolean;
   @ViewChild('name') nameModel!: NgModel;
@@ -65,31 +63,31 @@ export class ProfileComponent {
   public isValidPassword:boolean = true;
   public isValidConfirmPassword:boolean = true;
 
-  //VALIDAR LA FECHA ACTUAL INGRESA PERO SE DEBE BUSCAR LA FORMA DE HACER UN VALIDATOR
+  //Validación de fecha
   validateDate(): boolean {
-    if (this.user.dateOfBirth) {
-        const selectedDate = new Date(this.user.dateOfBirth); // Convierte a objeto Date
-        const today = new Date(); // Obtiene la fecha actual
-
-        this.validationMessageDate = "";
-
-        // Compara las fechas
-        if (selectedDate > today) {
-            this.validationMessageDate = 'La fecha de nacimiento no puede ser mayor a la actual.';
+    if (this.updateForm.dateOfBirth) {
+      const selectedDate = new Date(this.updateForm.dateOfBirth); // Convierte a objeto Date
+      const today = new Date(); // Obtiene la fecha actual
+      
+      this.validationMessageDate = "";
+      
+      // Compara las fechas
+      if (selectedDate > today) {
+        this.validationMessageDate = 'La fecha de nacimiento no puede ser mayor a la actual.';
             this.isValidDate = false;
-        } else {
+        }else{
             this.isValidDate = true;
         }
 
         this.updateFormValidity();
     }
-    
+    if(!this.updateForm.dateOfBirth && this.editMode){
+      this.isValidDate = false;
+    }
     return this.isValidDate;
 }
 
-
-
-
+//Validación de contraseña
 validatePassword(): boolean  {
 
   if(this.passwordModel && this.passwordModel.value){
@@ -107,28 +105,26 @@ validatePassword(): boolean  {
     
     
     if (!CustomValidators.containsLowercase(this.passwordValue)) {
-      this.passwordValidationMessages.push('- Al menos una letra minúscula');
+      this.passwordValidationMessages.push('Al menos una letra minúscula');
     }
 
     if (!CustomValidators.containsUppercase(this.passwordValue)) {
-      this.passwordValidationMessages.push('- Al menos una letra mayúscula');
+      this.passwordValidationMessages.push('Al menos una letra mayúscula');
 
     }
     if (!CustomValidators.containsNumbers(this.passwordValue)) {
-      this.passwordValidationMessages.push('- Al menos un número');
+      this.passwordValidationMessages.push('Al menos un número');
 
     }
     if (!CustomValidators.containsSpecialCharacter(this.passwordValue)) {
-      this.passwordValidationMessages.push('- Al menos un carácter especial');
+      this.passwordValidationMessages.push('Al menos un carácter especial');
     }
     
     if (!CustomValidators.minimunRequired(this.passwordValue) || 
         !CustomValidators.maximunRequired(this.passwordValue)) {
-        this.passwordValidationMessages.push('- Longitud de entre 8 y 16 caracteres');
+        this.passwordValidationMessages.push('Longitud de entre 8 y 16 caracteres');
     }
-    
   }
-
   
   if(this.passwordValidationMessages.length > 0){
     this.isValidPassword = false;
@@ -139,18 +135,13 @@ validatePassword(): boolean  {
   if(this.passwordValue === ""){
     this.passwordValidationMessages = [];
   }
-    
-  
-
 
   this.updateFormValidity();
   return this.isValidPassword;
- 
 }
 
 
 validateConfirmPassword():boolean{
-
   if (!CustomValidators.isPasswordEqualsConfirm(this.passwordModel?.value, 
     this.confirmPasswordModel?.value)) {
     this.differentPassword ='Las contraseñas no coinciden';
@@ -158,27 +149,21 @@ validateConfirmPassword():boolean{
   }else{
     this.isValidConfirmPassword = true;
   }
- 
 
   this.updateFormValidity();
   return this.isValidConfirmPassword;
 }
 
 
-
 updateFormValidity() {
- 
   // Verificamos que todos los campos estén válidos
-  this.isFormValid = this.nameModel?.valid && this.emailModel?.valid &&
-                     this.lastnameModel?.valid && this.directionModel?.valid &&
-                     this.passwordModel?.valid && this.confirmPasswordModel?.valid &&
+  this.isFormValid = this.nameModel?.valid &&
+                     this.emailModel?.valid &&
+                     this.lastnameModel?.valid &&
+                     this.directionModel?.valid &&
                      this.dateOfBirthModel?.valid &&
-                     this.passwordValidationMessages.length === 0 &&
-                     this.files.length !== 0 && this.isValidDate && this.isValidPassword && this.isValidConfirmPassword; // También chequeamos las validaciones de contraseñas
+                     this.isValidDate;
 }
-
-
-  
 
 
   public fb: FormBuilder = inject(FormBuilder);
@@ -202,27 +187,18 @@ updateFormValidity() {
   toggleEditMode() {
     this.editMode = !this.editMode;
   }
-  
 
-  public updateForm: {picture: string,
-                      name: string,
-                      lastname: string,
-                      email:string,
-                      dateOfBirth:string,
-                      direction:string,
-                      isUserActive: boolean,
-                      updatedAt: Date
-                     } = 
-      {
-        picture: '',
-        name: '',
-        lastname: '',
-        email: '',
-        dateOfBirth: '',
-        direction: '',
-        isUserActive: false,
-        updatedAt: new Date('2024-04-04')
-      };
+
+  public updateForm = {
+    name: '',
+    lastname: '',
+    email: '',
+    dateOfBirth: '',
+    direction: '',
+    picture: '',
+    isUserActive: false,
+    updatedAt: new Date('2024-04-04')
+  };
 
 
   private getUserInfo (){
@@ -246,14 +222,14 @@ updateFormValidity() {
     this.getUserInfo();
   }
 
-
+  //Cancela Modo Edición del Form
   cancelEdit() {
     this.editMode = false; 
     this.getUserInfo();
   }
 
 
-  //Inicio Imagen de perfil
+  //Imagen de perfil
   files: File[] = [];
 
   private uploadImage() {
@@ -277,6 +253,7 @@ updateFormValidity() {
     });
   }
 
+
   private updateUserPicture(user: IUser){
     this.profileService.updateUserPicture(user).subscribe({
       next: () => {
@@ -288,7 +265,6 @@ updateFormValidity() {
       }
     })
   }
-
 
    onSelect(event: any) {
     if (this.files.length >= 0) {
@@ -304,9 +280,9 @@ updateFormValidity() {
     this.files.splice(this.files.indexOf(event), 1);
     this.updateFormValidity();
   }
-  //Fin Imagen de perfil
 
 
+  //Update del form
   handleUpdate(event: Event) {
     let user = {
       picture: this.updateForm.picture,
@@ -327,6 +303,7 @@ updateFormValidity() {
   }
 
 
+  //Privacidad del perfil
   isProfileBlocked: boolean = false;
 
   ngOnInit(): void {
@@ -347,6 +324,7 @@ updateFormValidity() {
     };
     this.setProfilePrivate(user);
   }
+
 
   setProfilePrivate(user: IUser){
     this.profileService.setProfilePrivate(user);
