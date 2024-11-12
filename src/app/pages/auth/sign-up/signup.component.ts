@@ -198,8 +198,8 @@ export class SigUpComponent {
     this.updateFormValidity();
     const data = new FormData();
     data.append('file', file_data);
-    data.append('upload_preset', 'angular_cloudinary');
-    data.append('cloud_name', 'dnglop0de');
+    data.append('upload_preset', 'technest-preset');
+    data.append('cloud_name', 'dklipon9i');
     //sube la imagen a Cloudinary
     this._uploadService.uploadImage(data).subscribe(async (response) => {
       if (response) {
@@ -246,7 +246,6 @@ export class SigUpComponent {
         // Obtener la extensión del archivo
         const fileExtension = fileName.split('.').pop()?.toLowerCase(); // Usamos `split` y `pop` para obtener la extensión  
   
-    
         if (fileExtension) {
           // Validar la extensión (puedes agregar más validaciones si lo deseas)
           if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(fileExtension)) {
@@ -276,7 +275,6 @@ export class SigUpComponent {
   }
 
   updateFormValidity() {
- 
     // Verificamos que todos los campos estén válidos
     this.isFormValid = this.nameModel?.valid && this.emailModel?.valid &&
                        this.lastnameModel?.valid && this.directionModel?.valid &&
