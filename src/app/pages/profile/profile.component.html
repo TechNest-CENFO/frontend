@@ -26,7 +26,7 @@
           </div>
           <!-- sección de actualización de la imagen -->
 
-          <div *ngIf="!editMode" class="edit-pen mx-3 my-3">
+          <div *ngIf="!editMode" class="edit-pen mx-3 mt-5">
             <button (click)="toggleEditMode()" class=" btn button-default">
               <i class="fas fa-pen"></i>
               <span>Editar Perfil</span>
@@ -35,61 +35,100 @@
           
           <div class="my-3 mx-3 col-md-6 profile-input">
             <label class="py-1">Nombre:</label>
-            <p *ngIf="!editMode" >{{ updateForm.name }} </p>
-            <input *ngIf="editMode"
+            <p *ngIf="!editMode" >{{ updateForm.name }}</p>
+            <input #name="ngModel"
+              id="name"
+              name="name"
+              placeholder="Nombre*"
+              *ngIf="editMode"
               [(ngModel)]="updateForm.name"
               [ngModelOptions]="{standalone: true}"
-              class="form-control"/>
+              class="form-control"
+              [ngClass]="{
+                'is-invalid': name.invalid && name.touched,
+                'is-valid': name.valid && name.touched
+              }"
+              required />
           </div>
 
           <div class="my-3 mx-3 col-md-6 profile-input">
             <label class="py-1">Apellido:</label>
             <p *ngIf="!editMode" >{{ updateForm.lastname }} </p>
-            <input *ngIf="editMode"
+            <input #lastname="ngModel"
+              type="text"
+              *ngIf="editMode"
+              id="lastname"
+              name="lastname"
+              placeholder="Apellido*"
               [(ngModel)]="updateForm.lastname"
               [ngModelOptions]="{standalone: true}"
-              class="form-control"/>
+              class="form-control" [ngClass]="{
+                'is-invalid': lastname.invalid && lastname.touched,
+                'is-valid': lastname.valid && lastname.touched
+              }"
+              required />
           </div>
+
 
           <div class="my-3 mx-3 col-md-6 profile-input">
             <label class="py-1">Email:</label>
             <p *ngIf="!editMode" >{{ updateForm.email }} </p>
-            <input *ngIf="editMode"
+            <input #email="ngModel"
+              id="email"
+              name="email"
+              *ngIf="editMode"
               [(ngModel)]="updateForm.email"
               [ngModelOptions]="{standalone: true}"
-              class="form-control"/>
+              class="form-control" [ngClass]="{
+                'is-invalid': email.invalid && email.touched,
+                'is-valid': email.valid && email.touched
+              }"
+              required email />
           </div>
 
           <div class="my-3 mx-3 col-md-6 profile-input">
             <label class="py-1">Fecha de Nacimiento:</label>
             <p *ngIf="!editMode" >{{ updateForm.dateOfBirth }} </p>
-            <input *ngIf="editMode"
+            <input #dateOfBirth="ngModel"
+              (change)="validateDate()"
+              id="dateOfBirth"
+              name="dateOfBirth"
+              placeholder="Fecha de nacimiento*"
+              *ngIf="editMode"
               [(ngModel)]="updateForm.dateOfBirth"
               [ngModelOptions]="{standalone: true}"
               class="form-control"
-              type="date"/>
+              type="date" [ngClass]="{
+                'is-invalid': dateOfBirth.invalid && dateOfBirth.touched && !validateDate(),
+                'is-valid': dateOfBirth.valid && dateOfBirth.touched && validateDate()
+              }" required
+              />
           </div>
           
           <div class="my-3 mx-3 col-md-6 profile-input">
             <label class="py-1">Dirección:</label>
             <p *ngIf="!editMode" >{{ updateForm.direction }} </p>
-            <input *ngIf="editMode"
+            <input #direction="ngModel"
+              *ngIf="editMode"
+              id="direction"
+              name="direction"
+              placeholder="Dirección*"
               [(ngModel)]="updateForm.direction"
               [ngModelOptions]="{standalone: true}"
-              class="form-control"/>
+              class="form-control" [ngClass]="{
+                'is-invalid': direction.invalid && direction.touched,
+                'is-valid': direction.valid && direction.touched
+              }" required/>
           </div>
-
 
           <div class="form-group mb-0">
             <button *ngIf="editMode" (click)="handleUpdate($event)"  class="btn button-default mx-3 my-3" type="button">Actualizar</button>
             <button *ngIf="editMode" (click)="cancelEdit()"  class="btn btn-outline-primary mx-3 my-3" type="button">Cancelar</button>
-
           </div>
-
         </form>
     </div>
 
-    <div class="bg-body rounded col-md-6">
+    <div class="bg-body rounded col-md-6 shadow-sm">
       <h5 class="mx-3 my-2">Administración de Cuenta</h5>
 
       <div class="my-4 mx-3 col-md-6 profile-input privacy-container">

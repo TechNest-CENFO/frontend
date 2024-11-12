@@ -1,10 +1,10 @@
 import { IUser } from './../../interfaces/index';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { ProfileService } from '../../services/profile.service';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../../components/app-layout/elements/button/button.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
-import { FormBuilder, FormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, NgModel, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ModalService } from '../../services/modal.service';
 import { PasswordFormComponent } from '../../components/user/password-form/password-form.component';
@@ -14,6 +14,7 @@ import { ModalComponent } from '../../components/modal/modal.component';
 import { UploadService } from '../../services/upload.service';
 import { AuthService } from '../../services/auth.service';
 import { AlertService } from '../../services/alert.service';
+import { CustomValidators } from '../../customValidators/custom-validators';
 
 @Component({
   selector: 'app-profile',
@@ -38,6 +39,146 @@ export class ProfileComponent {
   public modalService: ModalService = inject(ModalService);
   public user: IUser = {};
   private alertService: AlertService = inject(AlertService);
+
+
+
+  public signUpError!: String;
+  public validSignup!: boolean;
+  @ViewChild('name') nameModel!: NgModel;
+  @ViewChild('email') emailModel!: NgModel;
+  @ViewChild('lastname') lastnameModel!: NgModel;
+  @ViewChild('direction') directionModel!: NgModel;
+  @ViewChild('password') passwordModel!: NgModel;
+  @ViewChild('confirmPassword') confirmPasswordModel!: NgModel;
+  @ViewChild('dateOfBirth') dateOfBirthModel!: NgModel;
+  @ViewChild('picture') pictureModel!: NgModel;
+
+
+  passwordValidationMessages: string[] = [];
+  validationMessageDate:string = "";
+  differentPassword:string = "";
+  passwordValue: string = "";
+  showPassword:boolean = false;
+  showConfirmPassword:boolean=false;
+  public isFormValid: boolean | null = null;
+  public isValidDate:boolean = true;
+  public isValidPassword:boolean = true;
+  public isValidConfirmPassword:boolean = true;
+
+  //VALIDAR LA FECHA ACTUAL INGRESA PERO SE DEBE BUSCAR LA FORMA DE HACER UN VALIDATOR
+  validateDate(): boolean {
+    if (this.user.dateOfBirth) {
+        const selectedDate = new Date(this.user.dateOfBirth); // Convierte a objeto Date
+        const today = new Date(); // Obtiene la fecha actual
+
+        this.validationMessageDate = "";
+
+        // Compara las fechas
+        if (selectedDate > today) {
+            this.validationMessageDate = 'La fecha de nacimiento no puede ser mayor a la actual.';
+            this.isValidDate = false;
+        } else {
+            this.isValidDate = true;
+        }
+
+        this.updateFormValidity();
+    }
+    
+    return this.isValidDate;
+}
+
+
+
+
+validatePassword(): boolean  {
+
+  if(this.passwordModel && this.passwordModel.value){
+    this.passwordValue = this.passwordModel.value;
+  }      
+  
+  this.passwordValidationMessages = []; // Reiniciar mensajes de validación
+  
+  if (!CustomValidators.passwordIsNull(this.passwordValue)) {
+    this.passwordValidationMessages.push('La contraseña es requerida.');
+  }
+  
+  if (!CustomValidators.passwordPatternValid(this.passwordValue)) {
+    this.passwordValidationMessages.push('La contraseña debe cumplir con los siguientes requisitos:');
+    
+    
+    if (!CustomValidators.containsLowercase(this.passwordValue)) {
+      this.passwordValidationMessages.push('- Al menos una letra minúscula');
+    }
+
+    if (!CustomValidators.containsUppercase(this.passwordValue)) {
+      this.passwordValidationMessages.push('- Al menos una letra mayúscula');
+
+    }
+    if (!CustomValidators.containsNumbers(this.passwordValue)) {
+      this.passwordValidationMessages.push('- Al menos un número');
+
+    }
+    if (!CustomValidators.containsSpecialCharacter(this.passwordValue)) {
+      this.passwordValidationMessages.push('- Al menos un carácter especial');
+    }
+    
+    if (!CustomValidators.minimunRequired(this.passwordValue) || 
+        !CustomValidators.maximunRequired(this.passwordValue)) {
+        this.passwordValidationMessages.push('- Longitud de entre 8 y 16 caracteres');
+    }
+    
+  }
+
+  
+  if(this.passwordValidationMessages.length > 0){
+    this.isValidPassword = false;
+  }else{
+    this.isValidPassword = true;
+  }
+ 
+  if(this.passwordValue === ""){
+    this.passwordValidationMessages = [];
+  }
+    
+  
+
+
+  this.updateFormValidity();
+  return this.isValidPassword;
+ 
+}
+
+
+validateConfirmPassword():boolean{
+
+  if (!CustomValidators.isPasswordEqualsConfirm(this.passwordModel?.value, 
+    this.confirmPasswordModel?.value)) {
+    this.differentPassword ='Las contraseñas no coinciden';
+    this.isValidConfirmPassword = false;
+  }else{
+    this.isValidConfirmPassword = true;
+  }
+ 
+
+  this.updateFormValidity();
+  return this.isValidConfirmPassword;
+}
+
+
+
+updateFormValidity() {
+ 
+  // Verificamos que todos los campos estén válidos
+  this.isFormValid = this.nameModel?.valid && this.emailModel?.valid &&
+                     this.lastnameModel?.valid && this.directionModel?.valid &&
+                     this.passwordModel?.valid && this.confirmPasswordModel?.valid &&
+                     this.dateOfBirthModel?.valid &&
+                     this.passwordValidationMessages.length === 0 &&
+                     this.files.length !== 0 && this.isValidDate && this.isValidPassword && this.isValidConfirmPassword; // También chequeamos las validaciones de contraseñas
+}
+
+
+  
 
 
   public fb: FormBuilder = inject(FormBuilder);
@@ -161,6 +302,7 @@ export class ProfileComponent {
   }
     onRemove(event: any) {
     this.files.splice(this.files.indexOf(event), 1);
+    this.updateFormValidity();
   }
   //Fin Imagen de perfil
 
