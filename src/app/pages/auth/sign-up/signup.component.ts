@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, ViewChild } from '@angular/core';
-import { FormControl, FormsModule, NgModel, Validators, FormBuilder, FormGroup, AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
+import { FormsModule, NgModel } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { IUser } from '../../../interfaces';
@@ -33,7 +33,7 @@ export class SigUpComponent {
   @ViewChild('dateOfBirth') dateOfBirthModel!: NgModel;
   @ViewChild('picture') pictureModel!: NgModel;
   public istrue = false;
-  
+  photoErrorMessage:string ='';
   passwordValidationMessages: string[] = [];
   validationMessageDate:string = "";
   differentPassword:string = "";
@@ -198,8 +198,8 @@ export class SigUpComponent {
     this.updateFormValidity();
     const data = new FormData();
     data.append('file', file_data);
-    data.append('upload_preset', 'technest-preset');
-    data.append('cloud_name', 'dklipon9i');
+    data.append('upload_preset', 'angular_cloudinary');
+    data.append('cloud_name', 'dnglop0de');
     //sube la imagen a Cloudinary
     this._uploadService.uploadImage(data).subscribe(async (response) => {
       if (response) {
@@ -235,10 +235,39 @@ export class SigUpComponent {
   }
 
   onSelect(event: any) {
-    if(this.files.length >= 0){
-      this.onRemove(event);
+    this.photoErrorMessage = '';
+    //const selectedFiles = event.addedFiles;
+    const selectedFiles: any[] = event.addedFiles;
+
+    if (selectedFiles.length > 0){
+      selectedFiles.forEach(file => {
+        const fileName = file.name; // El nombre del archivo (ej. "logo.png")
+    
+        // Obtener la extensión del archivo
+        const fileExtension = fileName.split('.').pop()?.toLowerCase(); // Usamos `split` y `pop` para obtener la extensión  
+  
+    
+        if (fileExtension) {
+          // Validar la extensión (puedes agregar más validaciones si lo deseas)
+          if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(fileExtension)) {
+            if(this.files.length > 1){
+              this.photoErrorMessage = 'Solo se permite seleccionar una imagen.';
+              this.files = [];
+            }else{
+              this.files = [selectedFiles[0]];
+  
+            }
+          } else {
+            this.photoErrorMessage='El archivo no es una imagen válida.';
+          }
+        } else {
+          this.photoErrorMessage='El archivo no tiene extensión.';
+        }
+      });
+    }else{
+      this.photoErrorMessage='El archivo no es una imagen válida.';
     }
-    this.files.push(...event.addedFiles);
+    
   }
 
   onRemove(event: any) {    
