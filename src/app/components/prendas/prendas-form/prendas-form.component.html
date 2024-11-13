@@ -6,8 +6,8 @@
     <!-- Categoría -->
     <div class="col-md-6 mb-3">
         <label for="type">Categoría</label>
-        <select (change)="callGetSubTypes()" [(ngModel)]="selectedType" formControlName="type" class="form-control"
-            id="type">
+        <select (change)="callGetSubTypes()" [(ngModel)]="selectedType" formControlName="clothingType" class="form-control"
+            id="type" >
             <option value="" disabled selected>Selecciona una categoría</option>
             <option *ngFor="let item of uniqueTypes" [value]="item">{{ item }}</option>
         </select>
@@ -16,7 +16,7 @@
     <!-- Subcategoría -->
     <div class="col-md-6 mb-3">
         <label for="subType">Subcategoría</label>
-        <select (change)="callGetNames()" [(ngModel)]="selectedSubType" formControlName="subType" class="form-control"
+        <select (change)="callGetNames()" [(ngModel)]="selectedSubType"  formControlName="clothingSubType" class="form-control"
             id="subType">
             <option value="" selected>Selecciona una subcategoría</option>
             <option *ngFor="let item of uniqueSubTypes" [value]="item">
@@ -28,21 +28,12 @@
     <!-- Nombre -->
     <div class="col-md-6 mb-3">
         <label for="name">Tipo de prenda</label>
-        <select (change)="callGetItem()" [(ngModel)]="selectedName" formControlName="name" class="form-control" id="name">
+        <select (change)="callGetItem()" formControlName="clothingTypeName" [(ngModel)]="selectedName" class="form-control" id="clothingTypeName">
             <option value="" disabled selected>Seleccione un tipo</option>
             <option *ngFor="let item of uniqueNames" [value]="item">{{ item }}</option>
         </select>
     </div>
 
-    <!-- Material -->
-    <div class="col-md-6 mb-3">
-        <label for="material">Material</label>
-        <select formControlName="material" class="form-control" id="material">
-            <!-- <option value="Estampado">Estampado</option> -->
-
-            <!-- Agrega más opciones según sea necesario -->
-        </select>
-    </div>
 
     <!-- Temporada -->
     <div class="col-md-6 mb-3">
@@ -55,14 +46,16 @@
         </select>
     </div>
 
-    <!-- Color -->
+        <!-- Color -->
     <div class="col-md-6 mb-3">
         <label for="color">Color</label>
-        <select formControlName="color" class="form-control" id="color">
-             <option value="Azul">Azul</option> 
+        <input formControlName="color" type="color"class="form-control" id="color">
+    </div>
 
-            <!-- Agrega más opciones según sea necesario -->
-        </select>
+    <!-- Nombre -->
+    <div class="col-md-6 mb-3">
+        <label for="name">Nombre</label>
+        <input formControlName="name" type="text" class="form-control" id="name" placeholder="Nombre de la prenda">
     </div>
 
     <!-- Imagen -->
@@ -71,9 +64,9 @@
             Foto de la prenda:
         </label>
     </div>
-    <div class="col-md-6">
-        <ngx-dropzone (change)="onSelect($event)">
-            <ngx-dropzone-label>Click para subir la imagen</ngx-dropzone-label>
+    <div class="col-md-12 " >
+        <ngx-dropzone (change)="onSelect($event)" class="dropzone">
+            <ngx-dropzone-label >Click para subir la imagen</ngx-dropzone-label>
             <ngx-dropzone-image-preview style="width: 100%;" ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files"
                 [file]="f" [removable]="true" (removed)="onRemove(f)">
             </ngx-dropzone-image-preview>
@@ -83,8 +76,8 @@
 
     <!-- Botón de envío -->
 
-    <button (click)="callSave()" [disabled]="clothingForm.invalid" type="submit"
-        class="btn btn-primary">Guardar</button>
+    <button [disabled]="clothingForm.invalid" type="submit"
+        class="btn">Guardar</button>
 
 
 </form>

@@ -15,13 +15,6 @@
                 </div>
                 <img *ngIf="updateForm.picture" [src]="updateForm.picture" alt="User Profile" class="profile-picture">
               </ngx-dropzone-label>
-              <ngx-dropzone-image-preview 
-                *ngFor="let f of files" 
-                [file]="f" 
-                [removable]="true" 
-                (removed)="onRemove(f)"
-                class="profile-picture-preview">
-              </ngx-dropzone-image-preview>
             </ngx-dropzone>
           </div>
           <!-- sección de actualización de la imagen -->
@@ -178,7 +171,6 @@
   >
     <div>
       <app-password-form
-        [changePasswordForm] = "changePasswordForm"
       />
     </div>
   </app-modal>
