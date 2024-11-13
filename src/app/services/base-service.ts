@@ -19,7 +19,8 @@ export class BaseService<T> {
   }
 
   public findAllTypes(): Observable<IResponse<T[]>> {
-    return this.http.get<IResponse<T[]>>(`${this.source}Type`);
+
+    return this.http.get<IResponse<T[]>>(this.source);
   }
 
   public findAllWithParams(params: any = {}): Observable<IResponse<T[]>> {

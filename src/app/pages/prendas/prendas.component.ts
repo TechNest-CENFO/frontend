@@ -1,17 +1,19 @@
+import { ClothingTypeService } from './../../services/clothing-type.service';
 import {AuthService} from './../../services/auth.service';
 
 import {ClothingService} from './../../services/clothing.service';
-import {Component, inject, ViewChild} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {ModalService} from './../../services/modal.service';
 
 import {PrendasFormComponent} from "../../components/prendas/prendas-form/prendas-form.component";
 import {ModalComponent} from "../../components/modal/modal.component";
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {LoaderComponent} from '../../components/loader/loader.component';
-import {IClothing} from '../../interfaces';
+import {IClothing, IClothingType} from '../../interfaces';
 import {NgClass} from "@angular/common";
 import {ClothingListComponent} from "../../components/prendas/clothing-list/clothing-list.component";
 import {PaginationComponent} from "../../components/pagination/pagination.component";
+
 
 
 @Component({
@@ -21,8 +23,9 @@ import {PaginationComponent} from "../../components/pagination/pagination.compon
     templateUrl: './prendas.component.html',
     styleUrls: ['./prendas.component.scss']
 })
-export class PrendasComponent {
+export class PrendasComponent implements OnInit {
   public clothingService: ClothingService = inject(ClothingService);
+  public clothtingTypeService: ClothingTypeService = inject(ClothingTypeService);
   public ModalService: ModalService = inject(ModalService);
   public AuthService: AuthService = inject(AuthService);
   
@@ -32,22 +35,26 @@ export class PrendasComponent {
     public fb: FormBuilder = inject(FormBuilder);
     clothingForm = this.fb.group({
         name: [''],
-        is_favorite: [false],
-        is_public: [false],
-        image_url: [''],
-        type: [''],
-        subType: [''],
-        material: [''],
+        isFavorite: [false],
+        isPublic: [false],
+        imageUrl: [''],
         season: [''],
         color: [''],
-        clothing_type_id:['']
+        clothingTypeName: [''],
+        clothingSubType: [''],
+        clothingType: ['']
     });
     clothingData: IClothing[] = []; // Almacenar los datos de las prendas
+    clothingTypeData: IClothingType[] = []; // Almacenar los datos de los tipos de prendas
     gridSelected: boolean = true;
     protected getBy: string = 'all';
     protected optionSelected: string = 'Tipo';
 
     constructor() {
+        this.getAllTypeClothing();
+    }
+    ngOnInit(): void {
+        this.callGet();
     }
 
     saveClothing(clothing: IClothing) {
@@ -56,31 +63,20 @@ export class PrendasComponent {
 
     }
 
-    getTypeClothing() {
-        // Método para obtener los datos nuevamente si es necesario
-        this.clothingService.getAll().subscribe({
-            next: (response) => {
-                this.clothingData = response.data;  // Puedes actualizar los datos aquí también
-            },
-            error: (err) => {
-                console.error("Error en getTypeClothing", err);
-            }
-        });
 
-    }
 
-    ngOnInit(): void {
+    getAllTypeClothing(): void {
         // Llamamos a getAll() y al Observable para obtener los datos
-        this.clothingService.getAll().subscribe({
+        this.clothtingTypeService.getAll().subscribe({
             next: (response) => {
                 // Accedemos a los datos y los almacenamos en la propiedad clothingData
-                this.clothingData = response.data;
+                this.clothingTypeData = response.data;
             },
             error: (err) => {
                 err = "Ocurrió un error al cargar los datos.";
             }
         });
-        this.callGet()
+        
     }
 
     callGet() {
@@ -113,4 +109,6 @@ export class PrendasComponent {
         this.getBy = type;
         this.callGet();
     }
+
+
 }

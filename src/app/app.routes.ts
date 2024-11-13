@@ -161,8 +161,6 @@ export const routes: Routes = [
         data: {
           authorities: [
             IRoleType.admin, 
-            IRoleType.superAdmin,
-            IRoleType.user,
           ],
           name: 'Reportes',
           showInSidebar: true,
@@ -173,10 +171,8 @@ export const routes: Routes = [
         path: 'administrador',
         component: OutfitsComponent,
         data: {
-          authorities: [
-            IRoleType.admin, 
-            IRoleType.superAdmin,
-            IRoleType.user,
+          authorities: [ 
+            IRoleType.admin,
           ],
           name: 'Administrador',
           showInSidebar: true,
