@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {IClothing} from "../../../interfaces";
 import {ClothingCardComponent} from "../clothing-card/clothing-card.component";
+import * as Aos from 'aos';
 
 @Component({
   selector: 'app-clothing-list',
@@ -17,5 +18,7 @@ export class ClothingListComponent {
   @Output() callModalAction: EventEmitter<IClothing> = new EventEmitter<IClothing>();
   @Output() callDeleteAction: EventEmitter<IClothing> = new EventEmitter<IClothing>();
 
-
+  ngOnInit(): void {
+    Aos.init()
+  }
 }

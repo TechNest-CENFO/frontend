@@ -16,6 +16,7 @@ import {PasswordRecoveryComponent} from "./pages/auth/password-recovery/password
 import {PasswordResetComponent} from "./pages/auth/password-reset/password-reset.component";
 import { PrendasComponent } from './pages/prendas/prendas.component';
 import {OutfitsComponent} from "./pages/outfits/outfits.component";
+import {NotFoundComponent} from "./components/not-found/not-found.component";
 
 export const routes: Routes = [
   {
@@ -195,7 +196,9 @@ export const routes: Routes = [
           name: 'profile',
           showInSidebar: false
         }
-      }
+      },
     ],
   },
+  { path: '404', component: NotFoundComponent },
+  { path: '**', redirectTo: '/404' },
 ];
