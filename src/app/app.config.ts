@@ -14,7 +14,6 @@ import player from 'lottie-web';
 export const appConfig: ApplicationConfig = {
     providers: [
         provideRouter(routes),
-        provideClientHydration(),
         provideHttpClient(
             withInterceptors([
                 baseUrlInterceptor,

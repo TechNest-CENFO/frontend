@@ -10,7 +10,7 @@
                             <img
                                     width="450"
                                     class="img-fluid mb-4"
-                                    src="../../../../assets/icons/logo.jpg"
+                                    src="../../../../assets/icons/logo.svg"
                                     alt="Logo"
                             />
                         </a>
@@ -20,7 +20,7 @@
                             <div class="mb-3">
                                 <h4>Ingresa a tu cuenta</h4>
                                 <small style="color: #4f4f4f">
-                                    Ingresa tu Email y Contraseña
+                                    Ingresa tu email y contraseña
                                 </small>
                             </div>
 
@@ -29,7 +29,7 @@
                                     Email
                                 </label>
                                 <input #email="ngModel" type="text" class="form-control" id="email" name="email"
-                                       placeholder="example@sample.com" [(ngModel)]="loginForm.email" [ngClass]="{
+                                       placeholder="correo@dominio.com" [(ngModel)]="loginForm.email" [ngClass]="{
                   'is-invalid': email.invalid && email.touched,
                   'is-valid': email.valid && email.touched
                 }" required />
@@ -62,7 +62,7 @@
                             </div>
                             <div class="d-flex justify-content-between align-items-center mt-4 px-2">
                                 <a href="/signup" class="inter-link-style">¡Regístrate!</a>
-                                <a href="/passwordRecovery" class="inter-link-style">¿Olvidaste tu Contraseña?</a>
+                                <a href="/passwordRecovery" class="inter-link-style">¿Olvidaste tu contraseña?</a>
                             </div>
                         </form>
                     </div>

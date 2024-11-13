@@ -117,7 +117,7 @@
               <div class="invalid-feedback">
                 La fecha de nacimiento es requerida
               </div>
-              <div *ngIf="!validateDate()" class="invalid-feedback">
+              <div *ngIf="!validateDate()" class="text-danger">
                 {{ validationMessageDate }}
               </div>
           </div>
@@ -160,7 +160,7 @@
       </div>
     
       <div class="my-4 mx-3 col-md-3 profile-input">
-        <a (click)="modalService.displayModal('md', deleteAccountModal)" class="text-danger delete-account">Eliminar Cuenta</a>
+        <a (click)="modalService.displayModal('md', deleteAccountModal)" class="delete-txt delete-account">Eliminar Cuenta</a>
       </div>
       
       <div class="my-4 mx-3">
