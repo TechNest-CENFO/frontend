@@ -2,7 +2,7 @@ import { ClothingTypeService } from './../../services/clothing-type.service';
 import {AuthService} from './../../services/auth.service';
 
 import {ClothingService} from './../../services/clothing.service';
-import {Component, inject, ViewChild} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {ModalService} from './../../services/modal.service';
 
 import {PrendasFormComponent} from "../../components/prendas/prendas-form/prendas-form.component";
@@ -23,7 +23,7 @@ import {PaginationComponent} from "../../components/pagination/pagination.compon
     templateUrl: './prendas.component.html',
     styleUrls: ['./prendas.component.scss']
 })
-export class PrendasComponent {
+export class PrendasComponent implements OnInit {
   public clothingService: ClothingService = inject(ClothingService);
   public clothtingTypeService: ClothingTypeService = inject(ClothingTypeService);
   public ModalService: ModalService = inject(ModalService);
@@ -53,6 +53,9 @@ export class PrendasComponent {
     constructor() {
         this.getAllTypeClothing();
     }
+    ngOnInit(): void {
+        this.callGet();
+    }
 
     saveClothing(clothing: IClothing) {
         this.clothingService.save(clothing);
@@ -64,7 +67,6 @@ export class PrendasComponent {
 
     getAllTypeClothing(): void {
         // Llamamos a getAll() y al Observable para obtener los datos
-        console.log(this.clothtingTypeService);
         this.clothtingTypeService.getAll().subscribe({
             next: (response) => {
                 // Accedemos a los datos y los almacenamos en la propiedad clothingData
@@ -74,7 +76,7 @@ export class PrendasComponent {
                 err = "Ocurrió un error al cargar los datos.";
             }
         });
-        //this.callGet()
+        
     }
 
     callGet() {
@@ -107,4 +109,6 @@ export class PrendasComponent {
         this.getBy = type;
         this.callGet();
     }
+
+
 }

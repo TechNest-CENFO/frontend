@@ -28,20 +28,18 @@ export class ClothingService extends BaseService<IClothing>{
   private notyfService: NotyfService = inject(NotyfService);
 
   save(clothing: IClothing) {
-    this.add(clothing).subscribe({
+    this.addCustomSource(`user/${this.authService.getUser()?.id}`, clothing).subscribe({
       next: (response: any) => {
         this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
         
       },
       error: (err: any) => {
-        this.alertService.displayAlert('error', 'An error occurred saving the categoria','center', 'top', ['error-snackbar']);
-        console.error('error', err);
+        this.alertService.displayAlert('error', err.error.message, 'center', 'top', ['error-snackbar']);
       }
     });
   }
 
   getAll() : Observable<IResponse<IClothing[]>>{
-    console.log("clothing service")
     return this.findAllTypes();
     
   }
@@ -64,10 +62,8 @@ export class ClothingService extends BaseService<IClothing>{
         this.search = {...this.search, ...response.meta};
         this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
         this.clothingListSignal.set(response.data);
-        console.log('prendas: ', response)
       },
       error: (err: any) => {
-        console.error('error', err);
         this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
       }
     });
@@ -83,17 +79,14 @@ export class ClothingService extends BaseService<IClothing>{
         this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
         const allByType: IClothing[] = response.data.filter((item: { isFavorite: any; }) => item.isFavorite);
         this.clothingListSignal.set(allByType);
-        console.log('prendas favoritas: ', allByType)
       },
       error: (err: any) => {
-        console.error('error', err);
         this.notyfService.error('Ha ocurrido un error al cargas tus prendas.');
       }
     });
   }
 
   getAllByType(type:string) {
-    console.log(type)
     this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/clothing`, {
       page: this.search.page,
       size: this.search.size
@@ -103,10 +96,8 @@ export class ClothingService extends BaseService<IClothing>{
         this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
         const allByType: IClothing[] = response.data.filter((item: { clothingType: any; }) => item.clothingType.type==type);
         this.clothingListSignal.set(allByType);
-        console.log('prendas por tipo: ', allByType)
       },
       error: (err: any) => {
-        console.error('error', err);
         this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
       }
     });

@@ -28,7 +28,7 @@
     <!-- Nombre -->
     <div class="col-md-6 mb-3">
         <label for="name">Tipo de prenda</label>
-        <select (change)="callGetItem()" formControlName="clothingTypeName" class="form-control" id="clothingTypeName">
+        <select (change)="callGetItem()" formControlName="clothingTypeName" [(ngModel)]="selectedName" class="form-control" id="clothingTypeName">
             <option value="" disabled selected>Seleccione un tipo</option>
             <option *ngFor="let item of uniqueNames" [value]="item">{{ item }}</option>
         </select>
@@ -56,6 +56,11 @@
         </select>
     </div>
 
+    <!-- Nombre -->
+    <div class="col-md-6 mb-3">
+        <label for="name">Nombre</label>
+        <input formControlName="name" type="text" class="form-control" id="name" placeholder="Nombre de la prenda">
+    </div>
 
     <!-- Imagen -->
     <div class="col-md-3 text-end">
@@ -75,7 +80,7 @@
 
     <!-- Botón de envío -->
 
-    <button (click)="callSave()" [disabled]="clothingForm.invalid" type="submit"
+    <button [disabled]="clothingForm.invalid" type="submit"
         class="btn">Guardar</button>
 
 
