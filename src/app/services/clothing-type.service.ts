@@ -12,7 +12,6 @@ export class ClothingTypeService extends BaseService<IClothingType> {
   private clothingTypeListSignal = signal<IClothingType[]>([]);
 
   getAll() : Observable<IResponse<IClothingType[]>>{
-      console.log("GetAll", this.findAllTypes());
     return this.findAllTypes()
   }
 

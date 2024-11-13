@@ -15,12 +15,11 @@ export class BaseService<T> {
   }
 
   public findAll(): Observable<IResponse<T[]>> {
-    console.log("FindAllTypes" + this.source);
     return this.http.get<IResponse<T[]>>(this.source);
   }
 
   public findAllTypes(): Observable<IResponse<T[]>> {
-    console.log("FindAllTypes mio " + this.source);
+
     return this.http.get<IResponse<T[]>>(this.source);
   }
 
