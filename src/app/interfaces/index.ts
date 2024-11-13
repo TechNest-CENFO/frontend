@@ -90,17 +90,11 @@ export interface IPasswordResetEntity{
 
 export interface IClothing {
   id?:number;
-  is_favorite: boolean;
-  is_public: boolean;
-  image_url: string;
   name: string;
-  type:string;
-  subType:string;
-  material:string;
   season:string;
   color:string;
-  /* GET */
   isFavorite?: boolean;
+  isPublic?: boolean;
   clothingType?:IClothingType;
   imageUrl?:string;
 }
@@ -110,7 +104,6 @@ export interface IClothingType {
   name?: string;
   subType?: string;
   type?: string;
-  clothing_type_id:number;
 }
 
 export interface IOutfit{

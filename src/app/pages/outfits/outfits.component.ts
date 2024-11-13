@@ -65,7 +65,7 @@ export class OutfitsComponent implements OnInit{
         } else if (this.getBy == 'favorite') {
             this.outfitsService.getAllFavoritesByUser();
             this.optionSelected = 'Tipo';
-            console.log(this.optionSelected)
+            
 
         } else {
             this.outfitsService.getAllByType(this.getBy);

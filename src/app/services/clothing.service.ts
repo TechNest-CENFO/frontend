@@ -9,7 +9,7 @@ import {NotyfService} from "./notyf.service";
 @Injectable({
   providedIn: 'root'
 })
-export class ClothingService extends BaseService<IClothing> {
+export class ClothingService extends BaseService<IClothing>{
 
   protected override source: string  = 'clothing';
   private clothingListSignal = signal<IClothing[]>([]);
@@ -28,14 +28,13 @@ export class ClothingService extends BaseService<IClothing> {
   private notyfService: NotyfService = inject(NotyfService);
 
   save(clothing: IClothing) {
-    this.add(clothing).subscribe({
+    this.addCustomSource(`user/${this.authService.getUser()?.id}`, clothing).subscribe({
       next: (response: any) => {
         this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
         
       },
       error: (err: any) => {
-        this.alertService.displayAlert('error', 'An error occurred saving the categoria','center', 'top', ['error-snackbar']);
-        console.error('error', err);
+        this.alertService.displayAlert('error', err.error.message, 'center', 'top', ['error-snackbar']);
       }
     });
   }
@@ -44,6 +43,10 @@ export class ClothingService extends BaseService<IClothing> {
     return this.findAllTypes();
     
   }
+
+
+
+  
 
   ngOnInit() {
     this.getAll();
@@ -61,7 +64,6 @@ export class ClothingService extends BaseService<IClothing> {
         this.clothingListSignal.set(response.data);
       },
       error: (err: any) => {
-        console.error('error', err);
         this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
       }
     });
@@ -78,8 +80,7 @@ export class ClothingService extends BaseService<IClothing> {
         this.clothingListSignal.set(response.data);
       },
       error: (err: any) => {
-        console.error('error', err);
-        this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
+        this.notyfService.error('Ha ocurrido un error al cargas tus prendas.');
       }
     });
   }
@@ -95,7 +96,6 @@ export class ClothingService extends BaseService<IClothing> {
         this.clothingListSignal.set(response.data);
       },
       error: (err: any) => {
-        console.error('error', err);
         this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
       }
     });
