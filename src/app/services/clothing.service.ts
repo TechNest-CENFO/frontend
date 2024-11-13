@@ -30,11 +30,10 @@ export class ClothingService extends BaseService<IClothing> {
   save(clothing: IClothing) {
     this.add(clothing).subscribe({
       next: (response: any) => {
-        this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
-        
+        this.notyfService.success('¡Prenda agregada con éxito!');
       },
       error: (err: any) => {
-        this.alertService.displayAlert('error', 'An error occurred saving the categoria','center', 'top', ['error-snackbar']);
+        this.notyfService.error('Ha ocurrido un error al agregar la prenda.')
         console.error('error', err);
       }
     });
