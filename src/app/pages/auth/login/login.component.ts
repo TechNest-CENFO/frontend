@@ -5,11 +5,12 @@ import {Router, RouterLink} from '@angular/router';
 import {AuthService} from '../../../services/auth.service';
 import * as Aos from 'aos';
 import {NotyfService} from "../../../services/notyf.service";
+import {LottieComponentComponent} from "../../lottie-component/lottie-component.component";
 
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterLink],
+    imports: [CommonModule, FormsModule, RouterLink, LottieComponentComponent],
     templateUrl: './login.component.html',
     styleUrl: './login.component.scss'
 })
@@ -25,6 +26,12 @@ export class LoginComponent implements OnInit {
     };
     backgroundLoaded = false;
     backgroundUrl = "../../../../assets/img/login/stacked-waves-1.svg";
+    showLottie: boolean = false;
+    lottie = {
+        path: './assets/lottie/success.json',
+        loop: false,
+        autoplay: true
+    };
 
     ngOnInit(): void {
         Aos.init();
@@ -52,11 +59,22 @@ export class LoginComponent implements OnInit {
         }
         if (this.emailModel.valid && this.passwordModel.valid) {
             this.authService.login(this.loginForm).subscribe({
-                next: () => this.router.navigateByUrl('/app/dashboard'),
+                next: () => {
+                    this.showLottie = !this.showLottie;
+                    this.notyfService.success('¡Ingreso existoso!')
+
+                },
                 error: (err: any) => {
                     this.notyfService.error('Por favor verifique sus datos.');
                 }
             });
+            setTimeout(() => {
+                this.redirectToDashboard();
+            }, 3000);
         }
+    }
+
+    redirectToDashboard(){
+        this.router.navigate(['/app/dashboard']);
     }
 }
