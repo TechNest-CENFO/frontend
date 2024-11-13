@@ -15,8 +15,10 @@
             <div class="row">
                 <div class="col-12 d-flex justify-content-between px-4">
                     <div class="d-flex align-items-center">
-                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='all'}" (click)="setGetBy('all')">Todos</a>
-                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='favorite'}" (click)="setGetBy('favorite')">Favoritos</a>
+                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='all'}"
+                           (click)="setGetBy('all')">Todos</a>
+                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='favorite'}"
+                           (click)="setGetBy('favorite')">Favoritos</a>
                         <div class="ms-2 p-1 dropdown">
                             <button class="btn button-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">
@@ -59,11 +61,15 @@
                     [clothing]="clothingService.clothing$()"
             />
 
-            <app-pagination
-                    [service]="clothingService"
-                    [customCall]="true"
-                    (callCustomPaginationMethod)="this.callGet()"
-            />
+            @if (clothingService.clothing$().length) {
+                <app-pagination
+                        [service]="clothingService"
+                        [customCall]="true"
+                        (callCustomPaginationMethod)="this.callGet()"
+                />
+            } @else {
+
+            }
 
             @if (clothingService.clothing$().length) {
 
@@ -80,11 +86,11 @@
 <ng-template #AddClothingModal>
     <app-modal [hideFooter]="true">
         <div>
-            <app-prendas-form 
-            [clothingForm]="clothingForm" (callSaveMethod)="saveClothing($event)" 
-            [clothingType]="clothingData"  
-            
-                        
+            <app-prendas-form
+                    [clothingForm]="clothingForm" (callSaveMethod)="saveClothing($event)"
+                    [clothingType]="clothingData"
+
+
             />
 
         </div>

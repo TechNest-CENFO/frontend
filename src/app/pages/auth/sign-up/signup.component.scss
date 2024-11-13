@@ -1,3 +1,5 @@
+@import "../../../../assets/functions/functions.scss";
+
 .login-container {
 
   background-position: left;
@@ -5,6 +7,8 @@
   background-repeat: no-repeat;
   padding: 20px 6%;
   position: relative;
+  height: 100vh;
+  background-image: url("../../../../assets/img/login/stacked-waves-1.svg");
   &::before {
     content: '';
     position: absolute;
@@ -12,7 +16,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5); /* Ajusta la opacidad según necesites */
+    background: rgba(0, 0, 0, 0); /* Ajusta la opacidad según necesites */
     z-index: 1;
   }
   .login-card {
@@ -51,4 +55,27 @@
 
 .text-danger{
   font-size: 14px;
+}
+
+.lottie-container{
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+}
+
+.lottie-format{
+  width: 250px;
+}
+
+.eye-button{
+  padding: 0.5em;
+  border: none;
+  border-radius: 8px;
+}
+
+.close-icon{
+  color: #292929;
+  &:hover{
+    color: black;
+  }
 }
