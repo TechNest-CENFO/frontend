@@ -158,4 +158,13 @@ export class PasswordFormComponent {
       this.confirmPasswordModel.control.markAsTouched();
     }
   }
+
+
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPassword(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
 }
