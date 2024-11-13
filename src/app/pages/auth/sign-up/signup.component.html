@@ -8,7 +8,7 @@
         </div>
         <div class="text-center">
           <a class="logo text-center" routerLink="/">
-            <img width="500" class="img-fluid" src="../../../../assets/icons/logo.jpg" alt="Logo" />
+            <img width="500" class="img-fluid" src="../../../../assets/icons/logo.svg" alt="Logo" />
           </a>
         </div>
         <div class="login-main">
@@ -198,13 +198,15 @@
                     </label>
                   </div>
                   <div class="col-md-3">
-                    <ngx-dropzone (change)="onSelect($event)">
+                    <ngx-dropzone (change)="onSelect($event)" [accept]="'image/*'">
                       <ngx-dropzone-label>Click para subir la imagen</ngx-dropzone-label>
                       <ngx-dropzone-image-preview style="width: 100%;" ngProjectAs="ngx-dropzone-preview"
                         *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
                       </ngx-dropzone-image-preview>
                     </ngx-dropzone>
-
+                    <div *ngIf="photoErrorMessage" class="text-danger">
+                      {{ photoErrorMessage }}
+                    </div>
                   </div>
                 </div>
               </div>

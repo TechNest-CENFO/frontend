@@ -93,8 +93,8 @@ export interface IClothing {
   name: string;
   season:string;
   color:string;
-  /* GET */
   isFavorite?: boolean;
+  isPublic?: boolean;
   clothingType?:IClothingType;
   imageUrl?:string;
 }
@@ -104,4 +104,20 @@ export interface IClothingType {
   name?: string;
   subType?: string;
   type?: string;
+}
+
+export interface IOutfit{
+  id?: number;
+  name?: string;
+  clothing:IClothing[];
+  isPublic?: boolean;
+  isFavorite?: boolean;
+  category?:ICategory
+  user:IUser;
+  imageUrl?:string;
+}
+
+export interface ICategory{
+  id?: number;
+  name: string;
 }

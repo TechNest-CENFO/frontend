@@ -19,7 +19,7 @@
 
     &:hover {
         background-color: lighten($accent-disabled, 5%);
-
+        margin: 2px 0;
         .sidebar-link{
             color: $accent-active;
         }
