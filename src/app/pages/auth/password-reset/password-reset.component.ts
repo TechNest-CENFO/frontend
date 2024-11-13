@@ -68,7 +68,7 @@ export class PasswordResetComponent {
         Aos.init();
         this.route.paramMap.subscribe(params => {
             this.token = params.get('token');
-            console.log("Token recibido:", this.token);
+            
         });
     }
 
