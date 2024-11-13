@@ -59,7 +59,6 @@ export class ClothingService extends BaseService<IClothing> {
         this.search = {...this.search, ...response.meta};
         this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
         this.clothingListSignal.set(response.data);
-        console.log('prendas: ', response)
       },
       error: (err: any) => {
         console.error('error', err);
@@ -78,7 +77,6 @@ export class ClothingService extends BaseService<IClothing> {
         this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
         const allByType: IClothing[] = response.data.filter((item: { isFavorite: any; }) => item.isFavorite);
         this.clothingListSignal.set(allByType);
-        console.log('prendas favoritas: ', allByType)
       },
       error: (err: any) => {
         console.error('error', err);
@@ -88,7 +86,6 @@ export class ClothingService extends BaseService<IClothing> {
   }
 
   getAllByType(type:string) {
-    console.log(type)
     this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/clothing`, {
       page: this.search.page,
       size: this.search.size
@@ -98,7 +95,6 @@ export class ClothingService extends BaseService<IClothing> {
         this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
         const allByType: IClothing[] = response.data.filter((item: { clothingType: any; }) => item.clothingType.type==type);
         this.clothingListSignal.set(allByType);
-        console.log('prendas por tipo: ', allByType)
       },
       error: (err: any) => {
         console.error('error', err);

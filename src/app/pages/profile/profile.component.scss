@@ -121,6 +121,11 @@ ngx-dropzone {
   max-width: auto;
 }
 
+.delete-txt{
+  color: rgb(255, 0, 0);
+  font-size: 16px;
+}
+
 .custom-container {
   max-width: 70%;
   margin: 0 auto;
@@ -179,4 +184,8 @@ ngx-dropzone {
       }
     }
   }
+}
+
+.text-danger{
+  font-size: 14px;
 }

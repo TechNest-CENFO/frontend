@@ -73,12 +73,12 @@ export const routes: Routes = [
       },
       {
         path: 'tendencias',
-        component: UsersComponent,
-        canActivate:[AdminRoleGuard],
+        component: OutfitsComponent,
         data: { 
           authorities: [
             IRoleType.admin, 
-            IRoleType.superAdmin
+            IRoleType.superAdmin,
+            IRoleType.user,
           ],
           name: 'Tendencias',
           showInSidebar: true,
@@ -87,7 +87,7 @@ export const routes: Routes = [
       },
       {
         path: 'colecciones',
-        component: OrdersComponent,
+        component: OutfitsComponent,
         data: { 
           authorities: [
             IRoleType.admin, 
@@ -129,7 +129,7 @@ export const routes: Routes = [
       },
       {
         path: 'recomendaciones',
-        component: ProductsComponent,
+        component: OutfitsComponent,
         data: { 
           authorities: [
             IRoleType.admin, 
@@ -143,7 +143,7 @@ export const routes: Routes = [
       },
       {
         path: 'prestamos',
-        component: ProductsComponent,
+        component: OutfitsComponent,
         data: { 
           authorities: [
             IRoleType.admin, 
@@ -157,7 +157,7 @@ export const routes: Routes = [
       },
       {
         path: 'reportes',
-        component: ProductsComponent,
+        component: OutfitsComponent,
         data: {
           authorities: [
             IRoleType.admin, 
@@ -171,7 +171,7 @@ export const routes: Routes = [
       },
       {
         path: 'administrador',
-        component: ProductsComponent,
+        component: OutfitsComponent,
         data: {
           authorities: [
             IRoleType.admin, 
