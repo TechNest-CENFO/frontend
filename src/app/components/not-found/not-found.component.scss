@@ -1,0 +1,26 @@
+.bg{
+  position: relative;
+
+  height: 100vh;
+  width: 100vw;
+
+  background-image: url("../../../assets/img/not-found/not-found-blobs.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.lottie-container{
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+}
+
+.lottie-format{
+  width: 450px;
+}
+
+.go-back{
+  position: absolute;
+  top: 3%;
+  left: 1.7%;
+}
