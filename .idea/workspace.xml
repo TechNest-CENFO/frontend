@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c73ec76d-e504-454f-b0bd-7f62b5aa5dd6" name="Changes" comment="Recuperar Contrasena&gt; Cliente interfaz para envio de correo creada&gt; Interfaz de cambio de contrasena creada&gt;">
-      <change afterPath="$PROJECT_DIR$/src/assets/img/login/stacked-waves-1.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/img/login/stacked-waves-haikei(2).svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app.routes.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/interfaces/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/interfaces/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/pages/auth/login/login.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/pages/auth/login/login.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/pages/auth/login/login.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/pages/auth/login/login.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/pages/auth/login/login.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/pages/auth/login/login.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/services/clothing.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/services/clothing.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +117,9 @@
       <workItem from="1731270747879" duration="2091000" />
       <workItem from="1731367449566" duration="13327000" />
       <workItem from="1731383903251" duration="15000" />
-      <workItem from="1731385713218" duration="5430000" />
+      <workItem from="1731385713218" duration="6298000" />
+      <workItem from="1731464380897" duration="5999000" />
+      <workItem from="1731470728879" duration="4839000" />
     </task>
     <task id="LOCAL-00001" summary="Tema base creado. Estructura base variables&gt;themes&gt;funcitons&gt;global&gt;styles.scss">
       <option name="closed" value="true" />

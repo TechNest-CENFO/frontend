@@ -68,33 +68,31 @@ export class ClothingService extends BaseService<IClothing> {
   }
 
   getAllFavoritesByUser() {
-    this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/clothing`, {
+    this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/clothing/isFavorite`, {
       page: this.search.page,
       size: this.search.size
     }).subscribe({
       next: (response: any) => {
         this.search = {...this.search, ...response.meta};
         this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
-        const allByType: IClothing[] = response.data.filter((item: { isFavorite: any; }) => item.isFavorite);
-        this.clothingListSignal.set(allByType);
+        this.clothingListSignal.set(response.data);
       },
       error: (err: any) => {
         console.error('error', err);
-        this.notyfService.error('Ha ocurrido un error al cargas tus prendas.');
+        this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
       }
     });
   }
 
   getAllByType(type:string) {
-    this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/clothing`, {
+    this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/clothing/${type}`, {
       page: this.search.page,
       size: this.search.size
     }).subscribe({
       next: (response: any) => {
         this.search = {...this.search, ...response.meta};
         this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
-        const allByType: IClothing[] = response.data.filter((item: { clothingType: any; }) => item.clothingType.type==type);
-        this.clothingListSignal.set(allByType);
+        this.clothingListSignal.set(response.data);
       },
       error: (err: any) => {
         console.error('error', err);
