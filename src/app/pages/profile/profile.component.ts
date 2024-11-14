@@ -257,10 +257,8 @@ updateFormValidity() {
   private updateUserPicture(user: IUser){
     this.profileService.updateUserPicture(user).subscribe({
       next: () => {
-        this.alertService.displayAlert('success', "Imagen de perfil actualizada exitosamente", 'center', 'top', ['success-snackbar']);
       },
       error: (err: any) => {
-        this.alertService.displayAlert('error', 'An error occurred adding the user','center', 'top', ['error-snackbar']);
         console.error('error', err);
       }
     })
