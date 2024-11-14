@@ -2,28 +2,18 @@
   <a routerLink="/">
     <img
       class="img-fluid"
-      src="../../../../../assets/icons/logo.jpg"
+      src="../../../../../assets/icons/logo.svg"
       alt="Logo"
       width="90"
     />
   </a>
-
-  <div class="back-btn" (click)="layoutService.toggleSidebar()">
-    <i class="fa-solid fa-arrow-left"></i>
-  </div>
-
-  <div class="toggle-sidebar" (click)="layoutService.toggleSidebar()">
-    <i class="fa-solid fa fa-thumb-tack"></i>
-  </div>
 </div>
-
 
 <nav class="sidebar-main">
   <div
     id="left-arrow"
     class="left-arrow"
-    [ngClass]="{ 'd-none': !showLeftArrow }"
-  >
+    [ngClass]="{ 'd-none': !showLeftArrow }">
   </div>
 
   <div id="sidebar-menu" class="custom-sidebar" style="margin-left: 0px">

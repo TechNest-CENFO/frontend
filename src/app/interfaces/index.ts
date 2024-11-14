@@ -17,7 +17,8 @@ export interface IUser {
   dateOfBirth?: string;
   picture?: string;
   direction?:string;
-  active?: boolean;
+  isUserActive?: boolean;
+  isProfileBlocked?: boolean;
   createdAt?: string;
   updatedAt?: string;
   authorities?: IAuthority[];
@@ -88,13 +89,35 @@ export interface IPasswordResetEntity{
 }
 
 export interface IClothing {
-  is_favorite: boolean;
-  is_public: boolean;
-  image_url: string;
+  id?:number;
   name: string;
-  type:string;
-  subType:string;
-  material:string;
   season:string;
   color:string;
+  isFavorite?: boolean;
+  isPublic?: boolean;
+  clothingType?:IClothingType;
+  imageUrl?:string;
+}
+
+export interface IClothingType {
+  id?: number;
+  name?: string;
+  subType?: string;
+  type?: string;
+}
+
+export interface IOutfit{
+  id?: number;
+  name?: string;
+  clothing:IClothing[];
+  isPublic?: boolean;
+  isFavorite?: boolean;
+  category?:ICategory
+  user:IUser;
+  imageUrl?:string;
+}
+
+export interface ICategory{
+  id?: number;
+  name: string;
 }

@@ -55,3 +55,15 @@
   }
   &:active {color: vcloset-color(accent-active);}
 }
+
+.button-tertiary {
+  background-color: vcloset-color(accent-disabled);
+  color: vcloset-color(accent-default);
+  outline: none;
+  &:hover {
+    color: vcloset-color(accent-hovered);
+    border-width: 1px;
+    border-color: vcloset-color(accent-hovered);
+  }
+  &:active {color: vcloset-color(accent-active);}
+}

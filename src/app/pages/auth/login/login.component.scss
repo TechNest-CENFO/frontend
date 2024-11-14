@@ -1,3 +1,5 @@
+@import "../../../../assets/functions/functions.scss";
+
 .login-container {
   height: 100vh;
   // background-image: url("../../../../assets/img/login/login-bg.jpg");
@@ -6,6 +8,7 @@
   background-repeat: no-repeat;
   padding: 20px 20%;
   position: relative;
+
   &::before {
     content: '';
     position: absolute;
@@ -13,9 +16,10 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5); /* Ajusta la opacidad según necesites */
+    background: rgba(0, 0, 0, 0); /* Ajusta la opacidad según necesites */
     z-index: 1;
   }
+
   .login-card {
     position: relative;
     z-index: 2;
@@ -26,10 +30,12 @@
     margin: 0 auto;
     background-color: #fff;
   }
+
   @media screen and (min-width: 801px) and (max-width: 1500px) {
     padding: 20px 5%;
     .login-card {
       width: 60%;
+
       .login-main {
         padding: 0px;
       }
@@ -39,9 +45,34 @@
     padding: 20px 5%;
     .login-card {
       width: 100%;
+
       .login-main {
         padding: 0px;
       }
     }
   }
+}
+
+.bg {
+  background-image: url("../../../../assets/img/login/stacked-waves-1.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.inter-link-style{
+  color: vcloset-color(accent-default);
+  text-decoration: none;
+  &:hover {
+    color: vcloset-color(accent-hovered);
+  }
+}
+
+.lottie-container{
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.lottie-format{
+  width: 150px;
 }

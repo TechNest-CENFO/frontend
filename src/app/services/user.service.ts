@@ -3,6 +3,7 @@ import { BaseService } from './base-service';
 import { ISearch, IUser } from '../interfaces';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { AlertService } from './alert.service';
+import {NotyfService} from "./notyf.service";
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,7 @@ export class UserService extends BaseService<IUser> {
     size: 5
   }
   public totalItems: any = [];
-  private alertService: AlertService = inject(AlertService);
+  private notyfService: NotyfService = inject(NotyfService);
 
   getAll() {
     this.findAllWithParams({ page: this.search.page, size: this.search.size}).subscribe({
@@ -37,11 +38,11 @@ export class UserService extends BaseService<IUser> {
   save(user: IUser) {
     this.add(user).subscribe({
       next: (response: any) => {
-        this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
+        this.notyfService.success('¡Usuario agregado exitosamente!');
         this.getAll();
       },
       error: (err: any) => {
-        this.alertService.displayAlert('error', 'An error occurred adding the user','center', 'top', ['error-snackbar']);
+        this.notyfService.error('Error al crear el usuario.');
         console.error('error', err);
       }
     });
@@ -50,11 +51,11 @@ export class UserService extends BaseService<IUser> {
   update(user: IUser) {
     this.editCustomSource(`${user.id}`, user).subscribe({
       next: (response: any) => {
-        this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
+        this.notyfService.success('¡Tu perfil fue editado exitosamente!');
         this.getAll();
       },
       error: (err: any) => {
-        this.alertService.displayAlert('error', 'An error occurred updating the user','center', 'top', ['error-snackbar']);
+        this.notyfService.error('Ha ocurrido un error al editar tu perfil.');
         console.error('error', err);
       }
     });
@@ -63,11 +64,11 @@ export class UserService extends BaseService<IUser> {
   delete(user: IUser) {
     this.delCustomSource(`${user.id}`).subscribe({
       next: (response: any) => {
-        this.alertService.displayAlert('success', response.message, 'center', 'top', ['success-snackbar']);
+        this.notyfService.success('Tu cuenta ha sido desactivada.')
         this.getAll();
       },
       error: (err: any) => {
-        this.alertService.displayAlert('error', 'An error occurred deleting the user','center', 'top', ['error-snackbar']);
+        this.notyfService.error('Ha ocurrido un error al desactivar tu cuenta.')
         console.error('error', err);
       }
     });

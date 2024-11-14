@@ -13,7 +13,7 @@ import {AnimationOptions, LottieComponent} from "ngx-lottie";
 })
 export class LottieComponentComponent {
   @Input() options: AnimationOptions = {
-    path: '',        // Dejar la ruta vacía por defecto
+    path: '',
     loop: false,
     autoplay: true,
   };

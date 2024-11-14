@@ -12,7 +12,7 @@ export class CustomValidators{
     //Valida que contenga el patrón adecuado
     static passwordPatternValid(value:string):boolean{
         let isValid = true;
-        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+        const passwordPattern = /^(?=.*[a-zñ])(?=.*[A-ZÑ])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&ñÑ]{8,16}$/
 
         if (!passwordPattern.test(value)) {
             isValid = false;
@@ -25,7 +25,7 @@ export class CustomValidators{
     static containsLowercase(value:string):boolean{
         let isValid = true;
         
-        if (!/(?=.*[a-z])/.test(value)) {
+        if (!/[a-zñ]/.test(value)) {
             isValid = false;
         }
 
@@ -36,7 +36,7 @@ export class CustomValidators{
     static containsUppercase(value:string):boolean{
         let isValid = true;
         
-        if (!/(?=.*[A-Z])/.test(value)) {
+        if (!/[A-ZÑ]/.test(value)) {
             isValid = false;
         }
 
