@@ -28,13 +28,14 @@ export class ClothingService extends BaseService<IClothing> {
   private notyfService: NotyfService = inject(NotyfService);
 
   save(clothing: IClothing) {
-    this.add(clothing).subscribe({
+    this.addCustomSource(`user/${this.authService.getUser()?.id}`, clothing).subscribe({
       next: (response: any) => {
-        this.notyfService.success('¡Prenda agregada con éxito!');
+        this.notyfService.success('¡Tu prenda ha sido agregada exitosamente!');
+
+        this.getAllByUser();
       },
       error: (err: any) => {
-        this.notyfService.error('Ha ocurrido un error al agregar la prenda.')
-        console.error('error', err);
+        this.notyfService.error('Ha ocurrido un error al agregar la prenda.');
       }
     });
   }

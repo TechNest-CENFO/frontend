@@ -59,14 +59,12 @@
                     [clothing]="clothingService.clothing$()"
             />
 
-            <app-pagination
-                    [service]="clothingService"
-                    [customCall]="true"
-                    (callCustomPaginationMethod)="this.callGet()"
-            />
-
             @if (clothingService.clothing$().length) {
-
+                <app-pagination
+                        [service]="clothingService"
+                        [customCall]="true"
+                        (callCustomPaginationMethod)="this.callGet()"
+                />
             }
         </div>
     </section>

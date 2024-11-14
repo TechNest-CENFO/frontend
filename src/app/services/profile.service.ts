@@ -16,7 +16,6 @@ export class ProfileService extends BaseService<IUser> {
   protected override source: string = 'users/me';
   private userSignal = signal<IUser>({});
   private snackBar = inject(MatSnackBar);
-  private alertService: AlertService = inject(AlertService);
   private notyfService: NotyfService = inject(NotyfService);
   private authService: AuthService = inject(AuthService);
 
@@ -52,13 +51,12 @@ export class ProfileService extends BaseService<IUser> {
       this.http.put<IUser>(`users/profile/${this.authService.getUser()?.id}`, user).subscribe({
         next: (response: any) => {
           this.userSignal.set(response);
-          const message = response?.message ?? 'Usuario actualizado exitosamente';
-          this.alertService.displayAlert('success', message, 'center', 'top', ['success-snackbar']);
+          this.notyfService.success('¡Perfil actualizado exitosamente!');
           this.getUserInfoSignal();
 
         },
         error: (err: any) => {
-          this.alertService.displayAlert('error', 'Ocurrió un error actualizando el usuario', 'center', 'top', ['error-snackbar']);
+          this.notyfService.error('Ha ocurrido un error al editar tu perfil.');
         }
       });
   }
@@ -68,13 +66,12 @@ export class ProfileService extends BaseService<IUser> {
     this.http.patch<IUser>(`users/profile/${this.authService.getUser()?.id}`, user).subscribe({
       next: (response: any) => {
         this.userSignal.set(response);
-        const message = response?.message ?? 'Usuario eliminado exitosamente';
-        this.alertService.displayAlert('success', message, 'center', 'top', ['success-snackbar']);
+        this.notyfService.success('Tu cuenta ha sido eliminada.');
         this.getUserInfoSignal();
 
       },
       error: (err: any) => {
-        this.alertService.displayAlert('error', 'Ocurrió un error eliminando el usuario', 'center', 'top', ['error-snackbar']);
+        this.notyfService.error('Ha ocurrido un error al desactivar tu cuenta.');
       }
     });
   }

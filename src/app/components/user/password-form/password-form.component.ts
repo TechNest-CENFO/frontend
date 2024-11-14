@@ -6,6 +6,7 @@ import { ProfileService } from '../../../services/profile.service';
 import { ModalService } from '../../../services/modal.service';
 import { AlertService } from '../../../services/alert.service';
 import { CustomValidators } from '../../../customValidators/custom-validators';
+import {NotyfService} from "../../../services/notyf.service";
 
 
 @Component({
@@ -39,7 +40,7 @@ export class PasswordFormComponent {
 
   public isValidPassword:boolean = true;
   public isValidConfirmPassword:boolean = true;
-  private alertService: AlertService = inject(AlertService);
+  private notyfService: NotyfService = inject(NotyfService);
   private profileService: ProfileService = inject(ProfileService);
   private modalService: ModalService = inject(ModalService);
 
@@ -49,7 +50,7 @@ export class PasswordFormComponent {
   changePassword(): void {
     this.handleFormValidation()
     if (!this.user) {
-      this.alertService.displayAlert('error', 'Por favor complete todos los campos requeridos.', 'center', 'top', ['error-snackbar']);
+      this.notyfService.error('Por favor complete todos los campos requeridos.');
       return;
     }
     const passwordData = {
@@ -58,10 +59,10 @@ export class PasswordFormComponent {
 
     this.profileService.passwordUpdate(passwordData).subscribe({
       next: () => {
-        this.alertService.displayAlert('success', "Contraseña actualizada exitosamente", 'center', 'top', ['success-snackbar']);
+        this.notyfService.success('Contraseña actualizada exitosamente');
       },
       error: (err: any) => {
-        this.alertService.displayAlert('error', 'Ocurrió un error al actualizar la contraseña', 'center', 'top', ['error-snackbar']);
+        this.notyfService.error('Por favor complete todos los campos requeridos.');
       }
     });
     this.closeModal();
