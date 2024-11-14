@@ -221,14 +221,15 @@ export class SigUpComponent {
             next: () => {
                 this.showLottie = !this.showLottie
                 this.notyfService.success('¡Registro exitoso!')
+                setTimeout(() => {
+                    this.redirectToLogin();
+                }, 3000);
             },
             error: (err: any) => {
                 this.notyfService.error('Ha ocurrido un error al registrar tu usuario.')
+
             }
         });
-        setTimeout(() => {
-            this.redirectToLogin();
-        }, 3000);
     }
 
     redirectToLogin() {

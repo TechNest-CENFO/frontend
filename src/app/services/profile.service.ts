@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertService } from './alert.service';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
+import {NotyfService} from "./notyf.service";
 
 
 
@@ -16,31 +17,13 @@ export class ProfileService extends BaseService<IUser> {
   private userSignal = signal<IUser>({});
   private snackBar = inject(MatSnackBar);
   private alertService: AlertService = inject(AlertService);
+  private notyfService: NotyfService = inject(NotyfService);
   private authService: AuthService = inject(AuthService);
 
 
   get user$() {
     return  this.userSignal;
   }
-
-  // getUserInfoSignal(): Observable<IUser> {
-  //   this.findAll().subscribe({
-  //     next: (response: any) => {
-  //       this.userSignal.set(response);
-  //     },
-  //     error: (error: any) => {
-  //       this.snackBar.open(
-  //         `Error getting user profile info ${error.message}`,
-  //          'Close', 
-  //         {
-  //           horizontalPosition: 'right', 
-  //           verticalPosition: 'top',
-  //           panelClass: ['error-snackbar']
-  //         }
-  //       )
-  //     }
-  //   })
-  // }
 
   getUserInfoSignal(): Observable<IUser> {
     return this.http.get<IUser>('users/me'); 
@@ -52,12 +35,12 @@ export class ProfileService extends BaseService<IUser> {
       next: (response: any) => {
         this.userSignal.set(response);
         const message = response?.message ?? 'Foto de perfil actualizada exitosamente';
-        this.alertService.displayAlert('success', message, 'center', 'top', ['success-snackbar']);
+        this.notyfService.success('¡La imagen ha sido actualizada exitosamente!');
         this.getUserInfoSignal();
 
       },
       error: (err: any) => {
-        this.alertService.displayAlert('error', 'Ocurrió un error actualizando la foto de perfil', 'center', 'top', ['error-snackbar']);
+        this.notyfService.error('Ha ocurrido un error al editar tu imagen.');
       }
     });
     return this.http.patch<IUser>(`users/profile/${this.authService.getUser()?.id}`, user)
@@ -102,12 +85,12 @@ export class ProfileService extends BaseService<IUser> {
       next: (response: any) => {
         this.userSignal.set(response);
         const message = response?.message ?? 'Se modificó la privacidad del perfil';
-        this.alertService.displayAlert('success', message, 'center', 'top', ['success-snackbar']);
+        this.notyfService.success('¡Se ha modificado la privacidad del perfil!');
         this.getUserInfoSignal();
 
       },
       error: (err: any) => {
-        this.alertService.displayAlert('error', 'Ocurrió un error al modificar la privacidad del perfil', 'center', 'top', ['error-snackbar']);
+        this.notyfService.error('Ha ocurrido un error al modificar la privacidad del perfil');
       }
     });
   }
