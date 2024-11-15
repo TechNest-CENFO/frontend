@@ -1,1 +1,99 @@
-<p>outfits-form works!</p>
+<form [formGroup]="outfitsForm" class="row">
+    <div class="col-12 mb-3">
+        <h2 class="mb-0">Crear outfit</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-12 d-flex justify-content-between px-4">
+            <div class="d-flex align-items-center">
+                <a class="custom-underline me-3">Manual</a>
+                <a class="custom-underline me-3">Aleatorio</a>
+                <div class="ms-2 p-1 dropdown">
+                    <button class="btn button-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item">Casual</a></li>
+                        <li><a class="dropdown-item">Formal</a></li>
+                        <li><a class="dropdown-item">Semi Formal</a></li>
+                        <li><a class="dropdown-item">Deportivo</a></li>
+                        <li><a class="dropdown-item">Playero</a></li>
+                        <li><a class="dropdown-item">Viaje</a></li>
+                        <li><a class="dropdown-item">Festival</a></li>
+                        <li><a class="dropdown-item">Callejero</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nombre -->
+    <div class="col-md-3 mb-3">
+        <label for="name">Nombre</label>
+        <input formControlName="name" type="text" class="form-control" id="name" placeholder="Nombre del outfit">
+    </div>
+
+    <button 
+    class="btn">Generar</button>
+
+    <div class="row mb-3 offset-md-1">
+        <div class="col-lg-4 ">
+            <ngx-dropzone (change)="onSelect($event)" class="dropzone">
+                <ngx-dropzone-label><i class="bi bi-suitcase-lg-fill fs-3"></i></ngx-dropzone-label>
+                <ngx-dropzone-image-preview style="width: 100%;" ngProjectAs="ngx-dropzone-preview"
+                    *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
+                </ngx-dropzone-image-preview>
+            </ngx-dropzone>
+        </div>
+
+        <div class="col-lg-2 ">
+            <ngx-dropzone (change)="onSelect($event)" class="dropzone">
+                <ngx-dropzone-label><i class="bi bi-suitcase-lg-fill"></i></ngx-dropzone-label>
+                <ngx-dropzone-image-preview style="width: 100%;" ngProjectAs="ngx-dropzone-preview"
+                    *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
+                </ngx-dropzone-image-preview>
+            </ngx-dropzone>
+        </div>
+        <div class="col-md-2 ">
+            <ngx-dropzone (change)="onSelect($event)" class="dropzone">
+                <ngx-dropzone-label><i class="bi bi-suitcase-lg-fill"></i></ngx-dropzone-label>
+                <ngx-dropzone-image-preview style="width: 100%;" ngProjectAs="ngx-dropzone-preview"
+                    *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
+                </ngx-dropzone-image-preview>
+            </ngx-dropzone>
+        </div>
+        <div class="col-md-2 ">
+            <ngx-dropzone (change)="onSelect($event)" class="dropzone">
+                <ngx-dropzone-label><i class="bi bi-suitcase-lg-fill"></i></ngx-dropzone-label>
+                <ngx-dropzone-image-preview style="width: 100%;" ngProjectAs="ngx-dropzone-preview"
+                    *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
+                </ngx-dropzone-image-preview>
+            </ngx-dropzone>
+        </div>
+    </div>
+
+    <div class="row">        
+
+        <div class="col-md-2 offset-md-6">
+            <ngx-dropzone (change)="onSelect($event)" class="dropzone">
+                <ngx-dropzone-label><i class="bi bi-suitcase-lg-fill"></i></ngx-dropzone-label>
+                <ngx-dropzone-image-preview style="width: 100%;" ngProjectAs="ngx-dropzone-preview"
+                    *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
+                </ngx-dropzone-image-preview>
+            </ngx-dropzone>
+        </div>
+        <div class="col-md-2 ">
+            <ngx-dropzone (change)="onSelect($event)" class="dropzone">
+                <ngx-dropzone-label><i class="bi bi-suitcase-lg-fill"></i></ngx-dropzone-label>
+                <ngx-dropzone-image-preview style="width: 100%;" ngProjectAs="ngx-dropzone-preview"
+                    *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
+                </ngx-dropzone-image-preview>
+            </ngx-dropzone>
+        </div>
+    </div>
+
+    <button type="submit"
+        class="btn">Guardar</button>
+
+</form>
