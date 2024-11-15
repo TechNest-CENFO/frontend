@@ -1,0 +1,82 @@
+@import "../../../../assets/functions/functions.scss";
+
+.custom-pop-up{
+  border-radius: 1vmin;
+  padding: 0 15%;
+}
+
+.custom-underline {
+  position: relative;
+  cursor: pointer;
+  padding: 7px 25px;
+  color: black;
+  text-decoration: none;
+
+  &:hover,
+  &:active {
+    color: vcloset-color(accent-hovered);
+  }
+
+  &:hover::after,
+  &:active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background-color: vcloset-color(accent-default);
+    border-radius: 5px 5px 0 0;
+  }
+}
+
+.isActive{
+  color: vcloset-color(accent-hovered);
+}
+
+.isActive::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background-color: vcloset-color(accent-default);
+  border-radius: 5px 5px 0 0;
+}
+
+
+.custom-divider {
+  border-top: 1px solid;
+  border-color: #e6e4e4;
+}
+
+.button-dropdown{
+  border: 1px solid gray;
+}
+
+.card-custom{
+  width: 250px;
+  height: 250px;
+  border-radius: 1vmin;
+  position: relative;
+  background-color: white;
+  &:hover{
+    .image-format{
+      transition: transform 0.2s ease-in-out, max-width 0.2s ease-in-out, max-height 0.2s ease-in-out;
+      max-width: 75%;
+      max-height: 75%;
+    }
+  }
+}
+
+.image-format{
+  max-width: 70%;
+  max-height: 70%;
+}
+
+
+.clothing-slot{
+  width: 70px;
+  height: 70px;
+}

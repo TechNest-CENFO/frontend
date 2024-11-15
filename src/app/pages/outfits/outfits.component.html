@@ -6,7 +6,7 @@
                     <h2>Outfits</h2>
                     <div>
                         <button class="btn button-tertiary me-4"><i class="bi bi-download"></i></button>
-                        <button (click)="ModalService.displayModal('xl', AddOutfitModal)" type="button"
+                        <button (click)="ModalService.displayModal('lg', AddOutfitModal)" type="button"
                                 class="btn button-default"><i class="bi bi-plus-lg"></i> Agregar Outfit
                         </button>
                     </div>
@@ -61,35 +61,32 @@
                     [outfits]="outfitsService.outfit$()"
             />
 
-            <app-pagination
-                    [service]="outfitsService"
-                    [customCall]="true"
-                    (callCustomPaginationMethod)="this.callGet()"
-            />
-
             @if (outfitsService.outfit$().length) {
-
+                <app-pagination
+                        [service]="outfitsService"
+                        [customCall]="true"
+                        (callCustomPaginationMethod)="this.callGet()"
+                />
             }
+
         </div>
     </section>
-} @loading (minimum 1.5s) {
+} <!--@loading (minimum 1.5s) {
     <app-loader
 
     />
 }
+-->
 
-
-<ng-template #AddOutfitModal>
-    <app-modal [hideFooter]="true">
-        <div>
+<ng-template #AddOutfitModal class="bg-primary">
+    <app-modal
+            [hideFooter]="true"
+    >
             <app-outfits-form
                     [outfitsForm]="outfitForm"
                     (callSaveMethod)="saveOutfit($event)"
             />
-
-        </div>
     </app-modal>
-
 </ng-template>
 
 
