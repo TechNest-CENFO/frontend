@@ -10,7 +10,7 @@ import {BaseService} from "./base-service";
 })
 export class OutfitsService extends BaseService<IOutfit> {
 
-    protected override source: string = 'clothing';
+    protected override source: string = 'outfit';
     private outfitListSignal = signal<IOutfit[]>([]);
 
     get outfit$() {
@@ -32,10 +32,37 @@ export class OutfitsService extends BaseService<IOutfit> {
     }
 
     getAllFavoritesByUser() {
-
+      this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/outfit/favorites`, {
+      page: this.search.page,
+      size: this.search.size
+    }).subscribe({
+      next: (response: any) => {
+        this.search = {...this.search, ...response.meta};
+        this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
+        this.outfitListSignal.set(response.data);
+      },
+      error: (err: any) => {
+        console.error('error', err);
+        this.notyfService.error('Ha ocurrido un error al cargas tus outfits.')
+      }
+    });
     }
 
     getAllByUser() {
+        this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}`, {
+      page: this.search.page,
+      size: this.search.size
+    }).subscribe({
+      next: (response: any) => {
+        this.search = {...this.search, ...response.meta};
+        this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
+        this.outfitListSignal.set(response.data);
+      },
+      error: (err: any) => {
+        console.error('error', err);
+        this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
+      }
+    });
 
     }
 

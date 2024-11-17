@@ -59,6 +59,7 @@ export class ClothingService extends BaseService<IClothing> {
         this.search = {...this.search, ...response.meta};
         this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
         this.clothingListSignal.set(response.data);
+        console.log(response.data);
       },
       error: (err: any) => {
         console.error('error', err);

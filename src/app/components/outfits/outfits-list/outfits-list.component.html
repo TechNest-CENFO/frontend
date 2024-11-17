@@ -2,7 +2,9 @@
     @for (item of outfits; track $index) {
         <div class="col-3 d-flex justify-content-center align-content-center mb-5">
             <app-outfits-card
-                    [outfit]="item"
+                [outfit]="item"
+                data-aos="zoom-in"
+                data-aos-duration="600"
             />
         </div>
     } @empty {
