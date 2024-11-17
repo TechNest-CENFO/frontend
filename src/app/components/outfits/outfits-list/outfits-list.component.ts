@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {IOutfit} from "../../../interfaces";
 import {ClothingCardComponent} from "../../prendas/clothing-card/clothing-card.component";
 import {OutfitsCardComponent} from "../outfits-card/outfits-card.component";
+import Aos from 'aos';
 
 @Component({
     selector: 'app-outfits-list',
@@ -14,7 +15,11 @@ import {OutfitsCardComponent} from "../outfits-card/outfits-card.component";
     styleUrl: './outfits-list.component.scss'
 })
 export class OutfitsListComponent {
+    @Output() callModalAction = new EventEmitter<IOutfit>();
     @Output() callDeleteAction = new EventEmitter<IOutfit>();
     @Input() outfits!: IOutfit[];
 
+    ngOnInit(): void {
+    Aos.init()
+  }
 }

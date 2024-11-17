@@ -1,1 +1,22 @@
-<p>outfits-card works!</p>
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <h5 class="title-format">{{ this.outfit.name }}</h5>
+    <div class="d-flex align-items-center">
+        <span>Compartir</span>
+        <label class="switch ms-2">
+            <input type="checkbox" [checked]="outfit.isPublic" (change)="toggleIsPublic()">
+            <span class="slider round"></span>
+        </label>
+    </div>
+</div>
+
+
+<div class="card-custom shadow-sm">
+    <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+        <img src="{{this.outfit.imageUrl}}" class="image-format" alt="clothing-image">
+    </div>
+    <button><i class="bi bi-pencil-square edit"></i></button>
+    <button (click)="toggleIsFav()">
+        <i [class]="isFav ? 'bi bi-star-fill favourite filled' : 'bi bi-star favourite'"></i>
+    </button>
+    <button><i class="bi bi-dash-circle custom-icon delete"></i></button>
+</div>
