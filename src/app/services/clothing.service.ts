@@ -161,6 +161,7 @@ export class ClothingService extends BaseService<IClothing> {
     delete(clothing: IClothing) {
         this.delCustomSource(`${clothing.id}`)
     }
+      
 }
 
 
