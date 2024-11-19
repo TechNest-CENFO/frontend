@@ -25,7 +25,6 @@ export class OutfitsService extends BaseService<IOutfit> {
 
     public totalItems: any = [];
     private authService: AuthService = inject(AuthService);
-    private alertService: AlertService = inject(AlertService);
     private notyfService: NotyfService = inject(NotyfService);
 
     delete($event: IOutfit) {
@@ -80,5 +79,18 @@ export class OutfitsService extends BaseService<IOutfit> {
     getOutfitByUserRandom() : Observable<IResponse<any[]>>{
       console.log(this.authService.getUser()?.id);
       return this.getOutfitRandom(`${this.authService.getUser()?.id}/random`);
+    }
+
+    save(outfit: IOutfit) {
+        this.addCustomSource(`user/${this.authService.getUser()?.id}`, outfit).subscribe({
+            next: (response: any) => {
+                this.notyfService.success('¡Tu outfit ha sido creado con éxito!');
+                this.getAllByUser();
+            },
+            error: (err: any) => {
+                this.notyfService.error('Ha ocurrido un error al crear tu outfit.');
+                console.error('error', err);
+            }
+        });
     }
 }

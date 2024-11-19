@@ -1,0 +1,49 @@
+<div class="container">
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+            <div class="d-flex align-items-center justify-content-between mt-4 mb-5">
+                <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='all'}" (click)="setGetBy('all')">Todos</a>
+                <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='favorite'}"
+                   (click)="setGetBy('favorite')">Favoritos</a>
+                <div class="ms-2 p-1 dropdown">
+                    <button class="btn button-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        {{ dropdownOptionSelected }}
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" (click)="setGetBy('UPPER')">Superiores</a></li>
+                        <li><a class="dropdown-item" (click)="setGetBy('BOTTOM')">Inferiores</a></li>
+                        <li><a class="dropdown-item" (click)="setGetBy('OUTWEAR')">Exteriores</a></li>
+                        <li><a class="dropdown-item" (click)="setGetBy('FOOTWEAR')">Calzado</a></li>
+                        <li><a class="dropdown-item" (click)="setGetBy('FULL_BODY')">Cuerpo Entero</a></li>
+                        <li><a class="dropdown-item" (click)="setGetBy('ACCESSORY')">Accesorios</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-4 px-5">
+        <div class="col-12">
+            <small class="ms-5 small-text-format">Seleccione las prendas que desea añadir al outfit:</small>
+        </div>
+    </div>
+    <div class="row scrollable px-5 mb-5 rounded-5">
+        <div class="fade-top"></div>
+        @for (item of clothingList; track $index) {
+            <app-outfits-manual-clothing-card class="col-3 mb-4"
+                                              [item]="item"
+                                              [selectedClothing]="selectedClothing"
+                                              (clothingOutput)="addClothing(item)"
+
+            />
+        }
+        <div class="fade-bottom"></div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-12 d-flex align-items-center justify-content-center">
+            <button class="btn button-default" (click)="callSaveClothing()"><i class="bi bi-plus-lg"></i> Agregar prendas</button>
+        </div>
+    </div>
+
+</div>
+

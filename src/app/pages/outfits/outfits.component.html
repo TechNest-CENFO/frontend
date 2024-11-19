@@ -15,8 +15,10 @@
             <div class="row">
                 <div class="col-12 d-flex justify-content-between px-4">
                     <div class="d-flex align-items-center">
-                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='all'}" (click)="setGetBy('all')">Todos</a>
-                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='favorite'}" (click)="setGetBy('favorite')">Favoritos</a>
+                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='all'}"
+                           (click)="setGetBy('all')">Todos</a>
+                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='favorite'}"
+                           (click)="setGetBy('favorite')">Favoritos</a>
                         <div class="ms-2 p-1 dropdown">
                             <button class="btn button-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">
@@ -79,15 +81,41 @@
 -->
 
 <ng-template #AddOutfitModal class="bg-primary">
-    <app-modal
-            [hideFooter]="true"
-    >
+    @if (!isAddClothingModalActive) {
+        <app-modal
+                [hideFooter]="true"
+                (callSetIsAddClothingModalActive)="toggleAddClothingModal()"
+                [isAddClothingModalSelected]="isAddClothingModalActive"
+        >
+
             <app-outfits-form
                     [outfitsForm]="outfitForm"
+                    [manualClothing]="manualOutfitClothing"
                     (callSaveMethod)="saveOutfit($event)"
+<<<<<<< HEAD
                     
+=======
+                    (callSetIsAddClothingModalActive)="toggleAddClothingModal()"
+>>>>>>> origin/dev
             />
-    </app-modal>
+
+        </app-modal>
+    } @else {
+        <app-modal
+                [hideFooter]="true"
+                (callSetIsAddClothingModalActive)="toggleAddClothingModal()"
+                [isAddClothingModalSelected]="isAddClothingModalActive"
+        >
+            <app-outfits-add-clothing-form
+                [clothingList]="clothingService.clothing$()"
+                [selectedClothing] ="manualOutfitClothing"
+                (getByValue)="setGetByOption($event)"
+                (callSetClothing)="setClotingAddToOutfit($event)"
+                (toggleAddClothingModal)="toggleAddClothingModal()"
+            />
+
+        </app-modal>
+    }
 </ng-template>
 
 
