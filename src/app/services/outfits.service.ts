@@ -1,5 +1,5 @@
 import {inject, Injectable, signal} from '@angular/core';
-import {IOutfit, ISearch} from "../interfaces";
+import {IOrder, IOutfit, ISearch} from "../interfaces";
 import {AuthService} from "./auth.service";
 import {AlertService} from "./alert.service";
 import {NotyfService} from "./notyf.service";
@@ -24,7 +24,6 @@ export class OutfitsService extends BaseService<IOutfit> {
 
     public totalItems: any = [];
     private authService: AuthService = inject(AuthService);
-    private alertService: AlertService = inject(AlertService);
     private notyfService: NotyfService = inject(NotyfService);
 
     delete($event: IOutfit) {
@@ -72,5 +71,18 @@ export class OutfitsService extends BaseService<IOutfit> {
 
     getAll() {
 
+    }
+
+    save(outfit: IOutfit) {
+        this.addCustomSource(`user/${this.authService.getUser()?.id}`, outfit).subscribe({
+            next: (response: any) => {
+                this.notyfService.success('¡Tu outfit ha sido creado con éxito!');
+                this.getAllByUser();
+            },
+            error: (err: any) => {
+                this.notyfService.error('Ha ocurrido un error al crear tu outfit.');
+                console.error('error', err);
+            }
+        });
     }
 }

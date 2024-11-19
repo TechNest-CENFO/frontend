@@ -75,6 +75,16 @@
   max-height: 70%;
 }
 
+.mini-preview{
+  border-radius: 1vmin;
+  &:hover{
+    .image-format{
+      max-width: 75%;
+      max-height: 75%;
+    }
+  }
+}
+
 
 .clothing-slot{
   width: 70px;
