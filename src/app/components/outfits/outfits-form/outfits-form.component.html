@@ -72,7 +72,7 @@
         } @else {
             <div class="col-6 d-flex align-items-end">
                 <div class="col-12">
-                    <button class="btn button-secondary w-100" data-aos="zoom-in" data-aos-duration="200"><i class="bi bi-stars"></i> Generar</button>
+                    <button class="btn button-secondary w-100" data-aos="zoom-in" data-aos-duration="200"><i class="bi bi-stars" (click)="getOutfitRandom()"></i> Generar</button>
                 </div>
             </div>
         }
@@ -86,7 +86,7 @@
                 </div>
                 <div class="card-custom shadow-sm d-flex justify-content-center align-items-center">
                     <img id="preview" class="image-format"
-                         src="https://res.cloudinary.com/dklipon9i/image/upload/v1731214811/gojirajacket2_pnrrq8.webp"
+                         src="{{previewImage}}"
                          alt="preview-outfit-clothing">
                 </div>
             </div>
@@ -95,11 +95,16 @@
             <div class="row d-flex justify-content-center gap-3">
                 @if (outfitCreationOption==='manual'){
                     <div class="col-12">
-                        <button class="btn button-secondary w-100" data-aos="zoom-in" data-aos-duration="200">
+                        <button class="btn button-secondary w-100" data-aos="zoom-in" data-aos-duration="200" (click)="callSetIsAddClothingModal()">
                             Agregar prendas
                         </button>
                     </div>
-                }
+                    @for (item of manualClothing; track $index){
+                        <div class="clothing-slot col-4 p-0 shadow-sm d-flex justify-content-center align-items-center mini-preview" (mouseenter)="loadPreview(item.imageUrl!)">
+                            <img src="{{item.imageUrl}}" class="image-format">
+                        </div>
+                    }
+                } @else {
                 <div class="clothing-slot col-4 p-0">
                     <ngx-dropzone (change)="onSelect($event)" class="dropzone h-100 w-100" data-aos="zoom-in" data-aos-duration="200">
                         <ngx-dropzone-label><i class="bi bi-suitcase-lg-fill"></i></ngx-dropzone-label>
@@ -145,6 +150,7 @@
                         </ngx-dropzone-image-preview>
                     </ngx-dropzone>
                 </div>
+                }
             </div>
         </div>
     </div>
@@ -152,7 +158,9 @@
     <div class="row">
         <div class="col-12 d-flex justify-content-center align-items-center">
             <button type="submit"
-                    class="btn button-default">Guardar
+                    class="btn button-default"
+                    (click)="callSave()"
+                    ><i class="bi bi-floppy"></i> Guardar
             </button>
         </div>
     </div>

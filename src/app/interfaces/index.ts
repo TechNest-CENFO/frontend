@@ -97,6 +97,8 @@ export interface IClothing {
   isPublic?: boolean;
   clothingType?:IClothingType;
   imageUrl?:string;
+  //Para cambiar el estado en el modal mas facil. No viaja hacia el endpoint
+  isSelectedInSubModal?: boolean;
   isClothingItemActive?: boolean
 }
 
@@ -113,9 +115,14 @@ export interface IOutfit{
   clothing:IClothing[];
   isPublic?: boolean;
   isFavorite?: boolean;
-  category?:ICategory
+  category?:ICategory;
   user:IUser;
   imageUrl?:string;
+  picture1?:string;
+  picture2?:string;
+  picture3?:string;
+  picture4?:string;
+  picture5?:string;
 }
 
 export interface ICategory{

@@ -1,9 +1,10 @@
 import {inject, Injectable, signal} from '@angular/core';
-import {IOutfit, ISearch} from "../interfaces";
+import {IOutfit, IResponse, ISearch} from "../interfaces";
 import {AuthService} from "./auth.service";
 import {AlertService} from "./alert.service";
 import {NotyfService} from "./notyf.service";
 import {BaseService} from "./base-service";
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -24,7 +25,6 @@ export class OutfitsService extends BaseService<IOutfit> {
 
     public totalItems: any = [];
     private authService: AuthService = inject(AuthService);
-    private alertService: AlertService = inject(AlertService);
     private notyfService: NotyfService = inject(NotyfService);
 
     delete($event: IOutfit) {
@@ -49,20 +49,20 @@ export class OutfitsService extends BaseService<IOutfit> {
     }
 
     getAllByUser() {
-        this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}`, {
-      page: this.search.page,
-      size: this.search.size
-    }).subscribe({
-      next: (response: any) => {
-        this.search = {...this.search, ...response.meta};
-        this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
-        this.outfitListSignal.set(response.data);
-      },
-      error: (err: any) => {
-        console.error('error', err);
-        this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
-      }
-    });
+      this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}`, {
+        page: this.search.page,
+        size: this.search.size
+      }).subscribe({
+        next: (response: any) => {
+          this.search = {...this.search, ...response.meta};
+          this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
+          this.outfitListSignal.set(response.data);
+        },
+        error: (err: any) => {
+          console.error('error', err);
+          this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
+        }
+      });
 
     }
 
@@ -72,5 +72,25 @@ export class OutfitsService extends BaseService<IOutfit> {
 
     getAll() {
 
+    }
+
+
+
+    getOutfitByUserRandom() : Observable<IResponse<any[]>>{
+      console.log(this.authService.getUser()?.id);
+      return this.getOutfitRandom(`${this.authService.getUser()?.id}/random`);
+    }
+
+    save(outfit: IOutfit) {
+        this.addCustomSource(`user/${this.authService.getUser()?.id}`, outfit).subscribe({
+            next: (response: any) => {
+                this.notyfService.success('¡Tu outfit ha sido creado con éxito!');
+                this.getAllByUser();
+            },
+            error: (err: any) => {
+                this.notyfService.error('Ha ocurrido un error al crear tu outfit.');
+                console.error('error', err);
+            }
+        });
     }
 }
