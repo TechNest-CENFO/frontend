@@ -5,9 +5,29 @@
     <div class="w-100 h-100 d-flex justify-content-center align-items-center">
         <img src="{{this.clothing.imageUrl}}" class="image-format" alt="clothing-image">
     </div>
-    <button><i class="bi bi-pencil-square edit"></i></button>
+    <button (click)="modalService.displayModal('md', EditClothingModal)" ><i class="bi bi-pencil-square edit"></i></button>
     <button (click)="toggleIsFav()">
         <i [class]="isFav ? 'bi bi-star-fill favourite filled' : 'bi bi-star favourite'"></i>
     </button>
-    <button><i class="bi bi-dash-circle custom-icon delete"></i></button>
+    <button (click)="modalService.displayModal('md', DeleteClothingModal)"><i class="bi bi-dash-circle custom-icon delete"></i></button>
 </div>
+
+<ng-template #EditClothingModal>
+    <app-modal [hideFooter]="true">
+        <div>
+            <app-clothing-edit
+            />
+        </div>
+    </app-modal>
+</ng-template>
+
+
+<ng-template #DeleteClothingModal>
+    <app-modal [hideFooter]="true">
+        <div>
+            <app-clothing-delete-confirmation
+            [clothing]="clothing"
+            />
+        </div>
+    </app-modal>
+</ng-template>

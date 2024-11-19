@@ -97,6 +97,7 @@ export interface IClothing {
   isPublic?: boolean;
   clothingType?:IClothingType;
   imageUrl?:string;
+  isClothingItemActive?: boolean
 }
 
 export interface IClothingType {
