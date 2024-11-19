@@ -33,6 +33,7 @@ export class OutfitsComponent implements OnInit{
     public outfitsService: OutfitsService = inject(OutfitsService);
     public ModalService: ModalService = inject(ModalService);
     public AuthService: AuthService = inject(AuthService);
+    outfitRandomData:IOutfit[]=[];
 
     @ViewChild('AddOutfitModal')
     public fb: FormBuilder = inject(FormBuilder);
@@ -82,4 +83,18 @@ export class OutfitsComponent implements OnInit{
     saveOutfit($event: IOutfit) {
         
     }
+
+    callGetOutfitByUserRandom(){
+       this.outfitsService.getOutfitByUserRandom().subscribe({
+        next:(response) => {
+            console.log("outfitComponent", response.data);
+            response.data;
+        },
+        error:(err)=>{
+            console.error("Error", err);
+        }
+        
+       });
+    }
+    
 }

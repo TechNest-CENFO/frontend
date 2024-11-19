@@ -1,9 +1,10 @@
 import {inject, Injectable, signal} from '@angular/core';
-import {IOutfit, ISearch} from "../interfaces";
+import {IOutfit, IResponse, ISearch} from "../interfaces";
 import {AuthService} from "./auth.service";
 import {AlertService} from "./alert.service";
 import {NotyfService} from "./notyf.service";
 import {BaseService} from "./base-service";
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -49,20 +50,20 @@ export class OutfitsService extends BaseService<IOutfit> {
     }
 
     getAllByUser() {
-        this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}`, {
-      page: this.search.page,
-      size: this.search.size
-    }).subscribe({
-      next: (response: any) => {
-        this.search = {...this.search, ...response.meta};
-        this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
-        this.outfitListSignal.set(response.data);
-      },
-      error: (err: any) => {
-        console.error('error', err);
-        this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
-      }
-    });
+      this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}`, {
+        page: this.search.page,
+        size: this.search.size
+      }).subscribe({
+        next: (response: any) => {
+          this.search = {...this.search, ...response.meta};
+          this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
+          this.outfitListSignal.set(response.data);
+        },
+        error: (err: any) => {
+          console.error('error', err);
+          this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
+        }
+      });
 
     }
 
@@ -72,5 +73,12 @@ export class OutfitsService extends BaseService<IOutfit> {
 
     getAll() {
 
+    }
+
+
+
+    getOutfitByUserRandom() : Observable<IResponse<any[]>>{
+      console.log(this.authService.getUser()?.id);
+      return this.getOutfitRandom(`${this.authService.getUser()?.id}/random`);
     }
 }

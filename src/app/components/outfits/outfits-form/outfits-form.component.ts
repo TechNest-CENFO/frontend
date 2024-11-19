@@ -5,6 +5,7 @@ import {UploadService} from '../../../services/upload.service';
 import {NgxDropzoneModule} from 'ngx-dropzone';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import Aos from "aos";
+import { OutfitsComponent } from '../../../pages/outfits/outfits.component';
 
 @Component({
     selector: 'app-outfits-form',
@@ -17,12 +18,14 @@ import Aos from "aos";
 export class OutfitsFormComponent {
     @Input() outfitsForm!: FormGroup;
     @Output() callSaveMethod = new EventEmitter<IOutfit>();
+    
 
     files: File[] = [];
     outfitCreationOption: string = 'manual';
     dropdownOptionSelected: string = 'Estilo';
 
     constructor(private _uploadService: UploadService,
+        private _outfitsComponent : OutfitsComponent
     ) {
     }
 
@@ -73,5 +76,9 @@ export class OutfitsFormComponent {
         if (!text) return '';
         const formattedText = text.replace(/_/g, ' ');
         return formattedText.charAt(0).toUpperCase() + formattedText.slice(1).toLowerCase();
+    }
+
+    getOutfitRandom(){
+        this._outfitsComponent.callGetOutfitByUserRandom();
     }
 }
