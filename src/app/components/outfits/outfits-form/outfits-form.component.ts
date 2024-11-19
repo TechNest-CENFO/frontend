@@ -94,8 +94,14 @@ export class OutfitsFormComponent {
         return formattedText.charAt(0).toUpperCase() + formattedText.slice(1).toLowerCase();
     }
 
-    getOutfitRandom(){
-        this._outfitsComponent.callGetOutfitByUserRandom();
+    async getOutfitRandom(){
+         await this._outfitsComponent.callGetOutfitByUserRandom();
+
+         this.otherFunction();
+    }
+
+    otherFunction(){
+        
     }
         
     callSetIsAddClothingModal() {

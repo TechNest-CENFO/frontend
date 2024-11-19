@@ -18,7 +18,7 @@ export class OutfitsCardComponent {
     }
 
     toggleIsPublic() {
-        //this.outfit.isPublic = !this.outfit.isPublic
+        this.outfit.isPublic = !this.outfit.isPublic
         
     }
 }
