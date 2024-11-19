@@ -39,6 +39,7 @@ export class OutfitsComponent implements OnInit{
     public clothingService: ClothingService = inject(ClothingService);
     public ModalService: ModalService = inject(ModalService);
     public AuthService: AuthService = inject(AuthService);
+    outfitRandomData:IOutfit[]=[];
 
     //INICIO - METODOS Y VARIABLES PARA EL SUBMODAL
     //Variable para parametrizar la busqueda de prendas desde el submodal
@@ -127,4 +128,18 @@ export class OutfitsComponent implements OnInit{
         console.log('manual clothing to add: ', clothing);
         this.manualOutfitClothing = clothing;
     }
+
+    callGetOutfitByUserRandom(){
+       this.outfitsService.getOutfitByUserRandom().subscribe({
+        next:(response) => {
+            console.log("outfitComponent", response.data);
+            response.data;
+        },
+        error:(err)=>{
+            console.error("Error", err);
+        }
+        
+       });
+    }
+    
 }

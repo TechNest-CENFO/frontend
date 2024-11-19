@@ -5,6 +5,7 @@ import {UploadService} from '../../../services/upload.service';
 import {NgxDropzoneModule} from 'ngx-dropzone';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import Aos from "aos";
+import { OutfitsComponent } from '../../../pages/outfits/outfits.component';
 
 @Component({
     selector: 'app-outfits-form',
@@ -19,6 +20,7 @@ export class OutfitsFormComponent {
     @Input() outfitsForm!: FormGroup;
     @Input() manualClothing?: IClothing[];
     @Output() callSaveMethod = new EventEmitter<IOutfit>();
+    
     @Output() callUpdateMethod = new EventEmitter<IOutfit>();
     @Output() callSetIsAddClothingModalActive = new EventEmitter<unknown>();
 
@@ -39,6 +41,7 @@ export class OutfitsFormComponent {
     previewImage?: string;
 
     constructor(private _uploadService: UploadService,
+        private _outfitsComponent : OutfitsComponent
     ) {
     }
 
@@ -91,7 +94,17 @@ export class OutfitsFormComponent {
         return formattedText.charAt(0).toUpperCase() + formattedText.slice(1).toLowerCase();
     }
 
-     callSetIsAddClothingModal() {
+    async getOutfitRandom(){
+         await this._outfitsComponent.callGetOutfitByUserRandom();
+
+         this.otherFunction();
+    }
+
+    otherFunction(){
+        
+    }
+        
+    callSetIsAddClothingModal() {
 
         this.callSetIsAddClothingModalActive.emit();
 
