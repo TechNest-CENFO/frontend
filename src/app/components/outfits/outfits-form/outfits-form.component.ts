@@ -1,15 +1,16 @@
-import {Component, EventEmitter, Inject, Input, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output, SimpleChanges} from '@angular/core';
 import {IClothing, IOrder, IOutfit} from "../../../interfaces";
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {UploadService} from '../../../services/upload.service';
 import {NgxDropzoneModule} from 'ngx-dropzone';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import Aos from "aos";
+import {LottieComponentComponent} from "../../../pages/lottie-component/lottie-component.component";
 
 @Component({
     selector: 'app-outfits-form',
     standalone: true,
-    imports: [NgxDropzoneModule, ReactiveFormsModule, CommonModule, NgOptimizedImage],
+    imports: [NgxDropzoneModule, ReactiveFormsModule, CommonModule, NgOptimizedImage, LottieComponentComponent],
     templateUrl: './outfits-form.component.html',
     styleUrl: './outfits-form.component.scss',
     providers: [UploadService]
@@ -21,6 +22,8 @@ export class OutfitsFormComponent {
     @Output() callSaveMethod = new EventEmitter<IOutfit>();
     @Output() callUpdateMethod = new EventEmitter<IOutfit>();
     @Output() callSetIsAddClothingModalActive = new EventEmitter<unknown>();
+    //Refrescar el contexto de prendas al cambiar el tipo de creacion
+    @Output() refreshClothingContext = new EventEmitter<void>();
 
     files: File[] = [];
 
@@ -36,14 +39,26 @@ export class OutfitsFormComponent {
     //Para guardar la data de las prendas seleccionadas
     clothing: IClothing[] = [];
     //Para guardar el url del la imagen a previsualizar
-    previewImage?: string;
+    previewImage: string = 'lottie';
+    outfitCategory: string = 'Categoría';
+    lottie = {
+        path: './assets/lottie/emptyOutfit.json',
+        loop: true,
+        autoplay: true
+    };
 
-    constructor(private _uploadService: UploadService,
-    ) {
+    constructor(private _uploadService: UploadService) {
     }
 
     ngOnInit() {
         Aos.init();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (this.manualClothing?.length) {
+            // @ts-ignore
+            this.previewImage = this.manualClothing.at(0).imageUrl;
+        }
     }
 
     private uploadImage() {
@@ -83,6 +98,8 @@ export class OutfitsFormComponent {
         } else {
             this.dropdownOptionSelected = this.capitalizeAndReplace(outfitCreationOption);
         }
+        this.refreshClothingContext.emit();
+        this.previewImage = 'lottie';
     }
 
     capitalizeAndReplace(text: string): string {
@@ -91,7 +108,7 @@ export class OutfitsFormComponent {
         return formattedText.charAt(0).toUpperCase() + formattedText.slice(1).toLowerCase();
     }
 
-     callSetIsAddClothingModal() {
+    callSetIsAddClothingModal() {
 
         this.callSetIsAddClothingModalActive.emit();
 
@@ -105,15 +122,42 @@ export class OutfitsFormComponent {
         let outfit: IOutfit = {
             clothing: [],
             user: {},
-            name: this.outfitsForm.controls['name'].value
+            name: this.outfitsForm.controls['name'].value,
+            category: {
+                name: this.reformat(this.outfitCategory)
+            }
         }
-        if(this.manualClothing?.length) {
+        if (this.manualClothing?.length) {
             outfit.clothing = this.manualClothing;
         }
-        if(outfit.id) {
+        if (outfit.id) {
             this.callUpdateMethod.emit(outfit);
         } else {
             this.callSaveMethod.emit(outfit);
         }
+    }
+
+    setOutfitCategory(category: string) {
+        this.outfitCategory = this.capitalizeAndReplace(category);
+        console.log(this.outfitCategory);
+    }
+
+    public reformat(text: string) {
+        if (
+            text !== 'Casual'
+            && text !== 'Formal'
+            && text !== 'Semi formal'
+            && text !== 'Casual'
+            && text !== 'Deportivo'
+            && text !== 'Playero'
+            && text !== 'Viaje'
+            && text !== 'Festival'
+            && text !== 'Callejero'
+        ) {
+            text = 'Otro';
+        } else {
+            text = text.replace(/ /g, '_');
+        }
+        return text.toUpperCase();
     }
 }

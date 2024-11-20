@@ -127,4 +127,8 @@ export class OutfitsComponent implements OnInit{
         console.log('manual clothing to add: ', clothing);
         this.manualOutfitClothing = clothing;
     }
+
+    refreshClothingContext() {
+        this.manualOutfitClothing = []
+    }
 }
