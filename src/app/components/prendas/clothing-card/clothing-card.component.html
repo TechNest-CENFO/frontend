@@ -5,7 +5,7 @@
     <div class="w-100 h-100 d-flex justify-content-center align-items-center">
         <img src="{{this.clothing.imageUrl}}" class="image-format" alt="clothing-image">
     </div>
-    <button (click)="modalService.displayModal('md', EditClothingModal)" ><i class="bi bi-pencil-square edit"></i></button>
+    <button (click)="getAllTypeClothing()"  (click)="modalService.displayModal('md', EditClothingModal)"><i class="bi bi-pencil-square edit"></i></button>
     <button (click)="toggleIsFav()">
         <i [class]="isFav ? 'bi bi-star-fill favourite filled' : 'bi bi-star favourite'"></i>
     </button>
@@ -16,6 +16,8 @@
     <app-modal [hideFooter]="true">
         <div>
             <app-clothing-edit
+                [clothing]="clothing"
+                [vclothingType]="clothingTypeData"
             />
         </div>
     </app-modal>
