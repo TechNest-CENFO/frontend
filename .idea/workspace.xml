@@ -5,27 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c73ec76d-e504-454f-b0bd-7f62b5aa5dd6" name="Changes" comment="Recuperar Contrasena&gt; Cliente interfaz para envio de correo creada&gt; Interfaz de cambio de contrasena creada&gt;">
-      <change afterPath="$PROJECT_DIR$/src/app/services/clothing-type.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/frontend.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/app.routes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/prendas/prendas-form/prendas-form.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/prendas/prendas-form/prendas-form.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/prendas/prendas-form/prendas-form.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/prendas/prendas-form/prendas-form.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/prendas/prendas-form/prendas-form.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/prendas/prendas-form/prendas-form.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/user/password-form/password-form.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/user/password-form/password-form.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/user/password-form/password-form.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/user/password-form/password-form.component.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/components/user/password-form/password-form.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/user/password-form/password-form.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/interfaces/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/interfaces/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/pages/auth/password-reset/password-reset.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/pages/auth/password-reset/password-reset.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/assets/lottie/emptyOutfit.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/outfits/outfits-form/outfits-add-clothing-form/outfits-add-clothing-form.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/outfits/outfits-form/outfits-add-clothing-form/outfits-add-clothing-form.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/outfits/outfits-form/outfits-form.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/outfits/outfits-form/outfits-form.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/components/outfits/outfits-form/outfits-form.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/components/outfits/outfits-form/outfits-form.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/pages/outfits/outfits.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/pages/outfits/outfits.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/pages/outfits/outfits.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/pages/outfits/outfits.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/pages/prendas/prendas.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/pages/prendas/prendas.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/pages/prendas/prendas.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/pages/prendas/prendas.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/pages/profile/profile.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/pages/profile/profile.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/services/base-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/services/base-service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/services/clothing.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/services/clothing.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/services/password-recovery.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/services/password-recovery.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +21,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="technest-56/listar-prendas" />
+        <entry key="$PROJECT_DIR$" value="dev" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -64,31 +50,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Merging technest-/estandar-ui",
-    "last_opened_file_path": "/home/vadak/Desktop/proyecto.ps1",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_interpreter_path": "/home/vadak/.nvm/versions/node/v22.4.1/bin/node",
-    "nodejs_package_manager_path": "npm",
-    "npm.Angular CLI Server.executor": "Run",
-    "settings.editor.selected.configurable": "watcher.settings",
-    "ts.external.directory.path": "/home/vadak/Desktop/Stuff/_bisoft/Cuatrimentre_Actual/Proyecto 3/frontend/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;technest-21/RF14-Creacion__outfits__manuales&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/vadak/Desktop/Stuff/_bisoft/Cuatrimentre_Actual/Proyecto 3/frontend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;/home/vadak/.nvm/versions/node/v22.4.1/bin/node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.Angular CLI Server.executor&quot;: &quot;Run&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;watcher.settings&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/vadak/Desktop/Stuff/_bisoft/Cuatrimentre_Actual/Proyecto 3/frontend/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/assets/img/login" />
       <recent name="$PROJECT_DIR$/src/assets/lottie" />
+      <recent name="$PROJECT_DIR$/src/assets/img/login" />
       <recent name="$PROJECT_DIR$/src/assets/img/passwordRecovery" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="npm.Angular CLI Server">
+    <configuration name="Angular Application" type="JavascriptDebugType" uri="http://localhost:4200">
+      <method v="2" />
+    </configuration>
     <configuration name="Angular CLI Server" type="js.build_tools.npm">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -138,6 +127,10 @@
       <workItem from="1731385713218" duration="6298000" />
       <workItem from="1731464380897" duration="5999000" />
       <workItem from="1731470728879" duration="4839000" />
+      <workItem from="1731551073796" duration="652000" />
+      <workItem from="1731555068278" duration="2126000" />
+      <workItem from="1732063937873" duration="1529000" />
+      <workItem from="1732065922801" duration="10416000" />
     </task>
     <task id="LOCAL-00001" summary="Tema base creado. Estructura base variables&gt;themes&gt;funcitons&gt;global&gt;styles.scss">
       <option name="closed" value="true" />
