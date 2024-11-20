@@ -129,17 +129,19 @@ export class OutfitsComponent implements OnInit{
         this.manualOutfitClothing = clothing;
     }
 
-    callGetOutfitByUserRandom(){
-       this.outfitsService.getOutfitByUserRandom().subscribe({
-        next:(response) => {
-            console.log("outfitComponent", response.data);
-            response.data;
-        },
-        error:(err)=>{
-            console.error("Error", err);
-        }
-        
-       });
+    callGetOutfitByUserRandom(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.outfitsService.getOutfitByUserRandom().subscribe({
+                next: (response) => {
+                    console.log("outfitComponent", response.data);
+                    resolve(response.data); // Resolvemos la promesa con los datos
+                },
+                error: (err) => {
+                    console.error("Error", err);
+                    reject(err); // Rechazamos la promesa en caso de error
+                }
+            });
+        });
     }
     
 }
