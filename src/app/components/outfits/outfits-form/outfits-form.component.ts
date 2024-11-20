@@ -39,6 +39,7 @@ export class OutfitsFormComponent {
     clothing: IClothing[] = [];
     //Para guardar el url del la imagen a previsualizar
     previewImage?: string;
+    outfitsRandom?:IClothing[] = [];
 
     constructor(private _uploadService: UploadService,
         private _outfitsComponent : OutfitsComponent
@@ -94,15 +95,19 @@ export class OutfitsFormComponent {
         return formattedText.charAt(0).toUpperCase() + formattedText.slice(1).toLowerCase();
     }
 
-    async getOutfitRandom(){
-         await this._outfitsComponent.callGetOutfitByUserRandom();
-
-         this.otherFunction();
+    
+    async getOutfitRandom() {
+        try {
+            // Esperamos a que la promesa devuelta por callGetOutfitByUserRandom se resuelva
+            this.outfitsRandom = await this._outfitsComponent.callGetOutfitByUserRandom(); 
+            console.log("Outfits capturados:", this.outfitsRandom);
+            // Ahora puedes usar la variable `outfits` que contiene la lista de outfits
+        } catch (error) {
+            console.error("Error al obtener los outfits", error);
+        }
     }
 
-    otherFunction(){
-        
-    }
+
         
     callSetIsAddClothingModal() {
 
@@ -122,6 +127,9 @@ export class OutfitsFormComponent {
         }
         if(this.manualClothing?.length) {
             outfit.clothing = this.manualClothing;
+        }
+        if(this.outfitsRandom?.length) {
+            outfit.clothing = this.outfitsRandom;
         }
         if(outfit.id) {
             this.callUpdateMethod.emit(outfit);
