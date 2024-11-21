@@ -129,6 +129,10 @@ export class OutfitsComponent implements OnInit{
         this.manualOutfitClothing = clothing;
     }
 
+    refreshClothingContext() {
+        this.manualOutfitClothing = []
+    }
+
     callGetOutfitByUserRandom(): Promise<any> {
         return new Promise((resolve, reject) => {
             this.outfitsService.getOutfitByUserRandom().subscribe({
@@ -143,5 +147,4 @@ export class OutfitsComponent implements OnInit{
             });
         });
     }
-    
 }
