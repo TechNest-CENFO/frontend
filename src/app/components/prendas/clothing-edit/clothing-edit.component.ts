@@ -30,7 +30,6 @@ export class ClothingEditComponent implements OnInit {
 
   uniqueTypes: string[] = [];
   filteredItems: string[] = [];
-  @Output() callSaveMethod = new EventEmitter<IClothing>();
   selectedType: string = '';
   selectedName:string = '';
   selectedSubType:string='';
