@@ -33,11 +33,11 @@
     <div class="row mt-5 mb-4">
         <div class="col-6">
             <div class="col-12 mb-2">
-                <label for="name"><small>Nombre de la prenda</small></label>
+                <label for="name"><small>Nombre del outfit</small></label>
             </div>
             <div class="col-12">
                 <input formControlName="name" type="text" class="form-control" id="name"
-                       placeholder="Nombre prenda">
+                       placeholder="Nombre del outfit">
             </div>
         </div>
         @if (outfitCreationOption === 'manual') {
@@ -50,20 +50,20 @@
                         <button class="btn button-dropdown dropdown-toggle w-100 d-flex justify-content-between align-items-center"
                                 type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                            {{ dropdownOptionSelected }}
+                            {{ outfitCategory }}
                         </button>
                         <ul class="dropdown-menu w-100">
-                            <li><a class="dropdown-item" (click)="setOutfitCreationOption('CASUAL')">Casual</a></li>
-                            <li><a class="dropdown-item" (click)="setOutfitCreationOption('FORMAL')">Formal</a></li>
-                            <li><a class="dropdown-item" (click)="setOutfitCreationOption('SEMI_FORMAL')">Semi
+                            <li><a class="dropdown-item" (click)="setOutfitCategory('CASUAL')">Casual</a></li>
+                            <li><a class="dropdown-item" (click)="setOutfitCategory('FORMAL')">Formal</a></li>
+                            <li><a class="dropdown-item" (click)="setOutfitCategory('SEMI_FORMAL')">Semi
                                 Formal</a>
                             </li>
-                            <li><a class="dropdown-item" (click)="setOutfitCreationOption('SPORTSWEAR')">Deportivo</a>
+                            <li><a class="dropdown-item" (click)="setOutfitCategory('DEPORTIVO')">Deportivo</a>
                             </li>
-                            <li><a class="dropdown-item" (click)="setOutfitCreationOption('BEACHWEAR')">Playero</a></li>
-                            <li><a class="dropdown-item" (click)="setOutfitCreationOption('TRAVEL')">Viaje</a></li>
-                            <li><a class="dropdown-item" (click)="setOutfitCreationOption('FESTIVAL')">Festival</a></li>
-                            <li><a class="dropdown-item" (click)="setOutfitCreationOption('STREETWEAR')">Callejero</a>
+                            <li><a class="dropdown-item" (click)="setOutfitCategory('PLAYERO')">Playero</a></li>
+                            <li><a class="dropdown-item" (click)="setOutfitCategory('VIAJE')">Viaje</a></li>
+                            <li><a class="dropdown-item" (click)="setOutfitCategory('FESTIVAL')">Festival</a></li>
+                            <li><a class="dropdown-item" (click)="setOutfitCategory('CALLEJERO')">Callejero</a>
                             </li>
                         </ul>
                     </div>
@@ -72,7 +72,9 @@
         } @else {
             <div class="col-6 d-flex align-items-end">
                 <div class="col-12">
+                  
                     <button class="btn button-secondary w-100" data-aos="zoom-in" data-aos-duration="200"><i class="bi bi-stars" (click)="getOutfitRandom()"></i> Generar</button>
+                  
                 </div>
             </div>
         }
@@ -85,34 +87,46 @@
                     <label for="preview"><small>Previsualización</small></label>
                 </div>
                 <div class="card-custom shadow-sm d-flex justify-content-center align-items-center">
-                    <img id="preview" class="image-format"
-                         src="{{previewImage}}"
-                         alt="preview-outfit-clothing">
+                    @if (previewImage == 'lottie') {
+                        <app-lottie-component
+                                [options]="lottie"
+                                class="lottie-format"
+                                data-aos="zoom-in"
+                                data-aos-duration="200"
+                        />
+                    } @else {
+                        <img id="preview" class="image-format"
+                             src="{{previewImage}}"
+                             alt="preview-outfit-clothing"
+                             data-aos="zoom-in-left"
+                             data-aos-duration="600">
+                    }
                 </div>
             </div>
         </div>
         <div class="col-6 d-flex align-items-center justify-content-center">
             <div class="row d-flex justify-content-center gap-3">
-                @if (outfitCreationOption==='manual'){
+                @if (outfitCreationOption === 'manual') {
                     <div class="col-12">
-                        <button class="btn button-secondary w-100" data-aos="zoom-in" data-aos-duration="200" (click)="callSetIsAddClothingModal()">
+                        <button class="btn button-secondary w-100" data-aos="zoom-in" data-aos-duration="200"
+                                (click)="callSetIsAddClothingModal()">
                             Agregar prendas
                         </button>
                     </div>
-                    @for (item of manualClothing; track $index){
-                        <div class="clothing-slot col-4 p-0 shadow-sm d-flex justify-content-center align-items-center mini-preview" (mouseenter)="loadPreview(item.imageUrl!)">
+                    @for (item of manualClothing; track $index) {
+                        <div class="clothing-slot col-4 p-0 shadow-sm d-flex justify-content-center align-items-center mini-preview"
+                             (mouseenter)="loadPreview(item.imageUrl!)">
                             <img src="{{item.imageUrl}}" class="image-format">
                         </div>
                     }
                 } @else {
-                    @if (outfitCreationOption==='random') {
-                        @for (item of outfitsRandom; track $index){
+                         @if (outfitCreationOption==='random') {
+                          @for (item of outfitsRandom; track $index){
                             <div class="clothing-slot col-4 p-0 shadow-sm d-flex justify-content-center align-items-center mini-preview" (mouseenter)="loadPreview(item.imageUrl!)">
                                 <img src="{{item.imageUrl}}" class="image-format">
                             </div>
                         }
                     }
-                
                 }
             </div>
         </div>
@@ -123,7 +137,7 @@
             <button type="submit"
                     class="btn button-default"
                     (click)="callSave()"
-                    ><i class="bi bi-floppy"></i> Guardar
+            ><i class="bi bi-floppy"></i> Guardar
             </button>
         </div>
     </div>
