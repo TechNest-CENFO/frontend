@@ -1,31 +1,32 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { IClothing, IClothingType } from '../../../interfaces';
-import { ClothingCardComponent } from '../clothing-card/clothing-card.component';
-import { ReactiveFormsModule, FormBuilder, FormGroup, FormControl, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { UploadService } from '../../../services/upload.service';
 import { CommonModule } from '@angular/common';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { ClothingService } from '../../../services/clothing.service';
-import { ConsoleLogger } from '@angular/compiler-cli';
-
+import { ModalService } from '../../../services/modal.service';
 @Component({
   selector: 'app-clothing-edit',
   standalone: true,
-  imports: [ ReactiveFormsModule, CommonModule, FormsModule, NgxDropzoneModule],
+  imports: [ 
+    ReactiveFormsModule,
+    CommonModule,
+    FormsModule,
+    NgxDropzoneModule,
+  ],
   providers: [UploadService],
   templateUrl: './clothing-edit.component.html',
   styleUrl: './clothing-edit.component.scss'
 })
 export class ClothingEditComponent implements OnInit {
-  //public fb: FormBuilder = inject(FormBuilder);
   private _uploadService: UploadService = inject(UploadService);
   private clothingService: ClothingService = inject(ClothingService)
-  @Input() clothingForm!: FormGroup;
+  private modalService: ModalService = inject(ModalService)
+  @Input() clothingEditForm!: FormGroup;
   @Input() vclothingType: IClothingType[]=[];
   @Input() clothing!: IClothing;
-
-//  @Input() clothing: IClothing[] = [];
-
+  @Input() disabled: boolean = true;
 
   uniqueTypes: string[] = [];
   filteredItems: string[] = [];
@@ -36,6 +37,7 @@ export class ClothingEditComponent implements OnInit {
   uniqueSubTypes: string[] = [];
   uniqueNames: string[] = [];
   uniqueId: number = 0;
+  isImageUpdated: boolean = false;
 
 
   constructor(private fb: FormBuilder) {
@@ -46,25 +48,24 @@ export class ClothingEditComponent implements OnInit {
     this.uploadImage();
   }
 
-  private callSaveClothing() {
-    this.callForm();
-  }
-
-  callForm(): void {
-    const formValue = this.clothingForm.value;
+  private callSaveClothing(): void {
+    const formValue = this.clothingEditForm.value;
 
     // Convertir el formulario a la estructura deseada antes de emitir
     const clothingData: IClothing = {
+      id: this.clothing.id,
       name: formValue.name,
       imageUrl: formValue.imageUrl,
       season: formValue.season,
       color: formValue.color,
       clothingType: {
-        id:1,
+        id: 1
       }
     };
     this.clothingService.update(clothingData);
+    this.modalService.closeAll();
   }
+  
 
 
   callGetSubTypes():void{
@@ -129,8 +130,8 @@ export class ClothingEditComponent implements OnInit {
 
 
   private initializeForm(): void {
-    this.clothingForm = this.fb.group({
-      clothingType: [this.clothing.clothingType?.type || ''],
+    this.clothingEditForm = this.fb.group({
+      clothingType: [this.clothing.clothingType?.id || ''],
       clothingSubType: [this.clothing.clothingType?.subType || ''],
       clothingTypeName: [this.clothing.clothingType?.name || ''],
       season: [this.clothing.season || ''],
@@ -145,33 +146,38 @@ export class ClothingEditComponent implements OnInit {
   files: File[] = [];
 
   private uploadImage() {
-
-    const file_data = this.files[0];
-    const data = new FormData();
-    data.append('file', file_data);
-    data.append('upload_preset', 'technest-preset');
-    data.append('cloud_name', 'dklipon9i');
-    //sube la imagen a Cloudinary
-    this._uploadService.uploadImage(data).subscribe(async (response) => {
-      if (response) {
-        //Guarda la prenda con el seteo de la imagen
-        this.clothingForm.patchValue({
-          imageUrl: response.url
-        });
-        await this.callSaveClothing();
-      }
-    });
+    if(this.files.length > 0 && this.isImageUpdated){
+      const file_data = this.files[0];
+      const data = new FormData();
+      data.append('file', file_data);
+      data.append('upload_preset', 'technest-preset');
+      data.append('cloud_name', 'dklipon9i');
+      //sube la imagen a Cloudinary
+      this._uploadService.uploadImage(data).subscribe(async (response) => {
+        if (response) {
+          //Guarda la prenda con el seteo de la imagen
+          this.clothingEditForm.patchValue({
+            imageUrl: response.url
+          });
+          await this.callSaveClothing();
+        }
+      });
+    }else{
+      this.callSaveClothing();
+    }
   }
+
 
   onSelect(event: any){
     if(this.files.length >= 0){
       this.onRemove(event);
     }
     this.files.push(...event.addedFiles);
+    this.isImageUpdated = true;
   }
+
 
   onRemove(event: any){
     this.files.splice(this.files.indexOf(event), 1);
   }
-
 }

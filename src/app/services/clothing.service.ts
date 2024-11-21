@@ -178,7 +178,7 @@ export class ClothingService extends BaseService<IClothing> {
   
   
     update(clothing : IClothing) {
-        this.http.put(`clothing/edit/2`, clothing).subscribe({
+        this.http.put(`clothing/edit/user/${this.authService.getUser()?.id}/item/${clothing.id}`, clothing).subscribe({
             next: (response: any) =>{
                 this.clothing$
             },
