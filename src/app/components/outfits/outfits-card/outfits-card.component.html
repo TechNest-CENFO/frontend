@@ -1,12 +1,15 @@
 <div class="d-flex justify-content-between align-items-center mb-2">
     <h5 class="title-format">{{ this.outfit.name }}</h5>
     <div class="d-flex align-items-center">
-        <span>Compartir</span>
+        <span>Visibilidad</span>
         <label class="switch ms-2">
             <input type="checkbox" [checked]="outfit.isPublic" (change)="toggleIsPublic()">
             <span class="slider round"></span>
         </label>
+        <i class="ms-2 bi" [ngClass]="outfit.isPublic ? 'bi-eye' : 'bi-eye-slash'"
+            title="{{ outfit.isPublic ? 'Público' : 'Privado' }}" style="cursor: pointer;" (click)="toggleIsPublic()"></i>
     </div>
+
 </div>
 
 
@@ -18,7 +21,8 @@
     <button (click)="toggleIsFav()">
         <i [class]="isFav ? 'bi bi-star-fill favourite filled' : 'bi bi-star favourite'"></i>
     </button>
-    <button (click)="toggleDelete()"><i class="bi bi-dash-circle custom-icon delete"></i></button>
+        <button (click)="modalService.displayModal('md', DeleteClothingModal)"><i
+                class="bi bi-trash3 custom-icon delete"></i></button>
 </div>
 
 <ng-template #DeleteClothingModal>

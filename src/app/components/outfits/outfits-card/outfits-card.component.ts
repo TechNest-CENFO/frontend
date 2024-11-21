@@ -4,11 +4,12 @@ import { OutfitsService } from "../../../services/outfits.service";
 import { ModalComponent } from '../../modal/modal.component';
 import { ConfirmationFormOutfitsComponent } from "../confirmation-form-outfits/confirmation-form-outfits.component";
 import { ModalService } from '../../../services/modal.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-outfits-card',
   standalone: true,
-  imports: [ModalComponent, ConfirmationFormOutfitsComponent],
+  imports: [ModalComponent, ConfirmationFormOutfitsComponent, CommonModule],
   templateUrl: './outfits-card.component.html',
   styleUrls: ['./outfits-card.component.scss']
 })
@@ -24,9 +25,12 @@ export class OutfitsCardComponent {
         this.isFav = !this.isFav;
     }
 
-    toggleIsPublic() {
+    toggleIsPublic(): void {
         this.outfit.isPublic = !this.outfit.isPublic;
+        // Aquí puedes añadir la lógica para actualizar la visibilidad en el servidor si es necesario.
+        console.log(`El estado de visibilidad es ahora: ${this.outfit.isPublic ? 'Público' : 'Privado'}`);
     }
+
 
     toggleDelete() {
     if (confirm('¿Estás seguro de que deseas eliminar este outfit?')) {

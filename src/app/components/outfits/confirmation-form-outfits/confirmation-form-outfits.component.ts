@@ -1,6 +1,7 @@
+import { OutfitsService } from './../../../services/outfits.service';
 import { IOutfit } from './../../../interfaces/index';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ModalService } from '../../../services/modal.service';
 import { CommonModule } from '@angular/common';
 
@@ -13,18 +14,83 @@ import { CommonModule } from '@angular/common';
 })
 export class ConfirmationFormOutfitsComponent {
     @Input() confirmationForm!: FormGroup;
-    @Input() IOutfit!: IOutfit;
-    @Output() closeModal = new EventEmitter<void>();
-    @Output() delete = new EventEmitter<void>();
+    @Input() outfit!: IOutfit;
 
-    constructor(private modalService: ModalService) {}
+    public modalService: ModalService = inject(ModalService);
+    public OutfitsService: OutfitsService = inject(OutfitsService);
 
-    deleteOutfit() {
-        this.delete.emit();
+    constructor(private fb: FormBuilder) {
+  }
+
+    ngOnInit(){
+        this.confirmationForm = new FormGroup({});
     }
 
-  cancel() {
-    this.closeModal.emit(); 
-  }
+    handleDelete(){
+        if(this.outfit){
+      const deleteOutfitItem = {
+        ...this.outfit,
+        isClothingItemActive: false,
+      };
+      this.deleteOutfitItem(deleteOutfitItem);
+    }
+    }
+
+    deleteOutfitItem(outfit: IOutfit){
+        this.OutfitsService.callDelete(outfit.id);
+        this.closeModal();
+    }
+
+    closeModal(){
+        this.modalService.closeAll();
+    }
   
 }
+
+/*
+@Component({
+  selector: 'app-clothing-delete-confirmation',
+  standalone: true,
+  imports: [ReactiveFormsModule],
+  templateUrl: './clothing-delete-confirmation.component.html',
+  styleUrl: './clothing-delete-confirmation.component.scss'
+})
+export class ClothingDeleteConfirmationComponent implements OnInit{
+  @Input() clothing!: IClothing;
+  @Input() deleteClothingConfirmationForm!: FormGroup;
+
+  public clothingService: ClothingService = inject(ClothingService);
+  public modalService: ModalService = inject(ModalService);
+
+  constructor(private fb: FormBuilder) {
+  }
+
+
+  ngOnInit() {
+    this.deleteClothingConfirmationForm = this.fb.group({});
+  }
+
+
+  handleDelete() {
+    if (this.clothing) {
+      const deleteClothingItem = {
+        ...this.clothing,
+        isClothingItemActive: false,
+      };
+      this.deleteClothingItem(deleteClothingItem);
+    }
+  }
+
+  
+  deleteClothingItem(clothing: IClothing) {
+    this.clothingService.deleteClothingItem(clothing);
+    this.closeModal();
+  }
+
+  
+  closeModal() {
+    this.modalService.closeAll();
+  }
+}
+
+ */
