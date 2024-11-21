@@ -44,38 +44,31 @@ export class ClothingEditComponent implements OnInit {
 
   callSave() {
     this.uploadImage();
-    
   }
 
   private callSaveClothing() {
-    this.callForm(this.vclothingType[0]);
-
-    this.callSaveMethod.emit(this.clothingForm.value);
-    
+    this.callForm();
   }
 
-  callForm(clothingType: IClothingType): void {
+  callForm(): void {
     const formValue = this.clothingForm.value;
-      
 
-  // Convertir el formulario a la estructura deseada antes de emitir
+    // Convertir el formulario a la estructura deseada antes de emitir
     const clothingData: IClothing = {
       name: formValue.name,
       imageUrl: formValue.imageUrl,
       season: formValue.season,
       color: formValue.color,
       clothingType: {
-        id: this.uniqueId,
+        id:1,
       }
     };
-   
-    this.clothingForm.patchValue(clothingData);
-
+    this.clothingService.update(clothingData);
   }
 
 
   callGetSubTypes():void{
-    
+
     //Se filtran solo los elementos que tengan la categoría seleccionada
     this.filterItems(this.selectedType, "subType", "type");
   }
@@ -95,11 +88,11 @@ export class ClothingEditComponent implements OnInit {
     if(filter !== "id"){
       this.uniqueNames =[];
     }
-    
+
     this.selectedSubType="";
     filteredItems = this.vclothingType.filter(item => item[field] === itemSelected);
-    
-    
+
+
     if (filter === "subType") {   
       this.uniqueSubTypes = [...new Set(filteredItems.map(item => item.subType).filter((subType): subType is string => subType !== undefined))];
     } else if (filter === "name") {     
@@ -110,22 +103,16 @@ export class ClothingEditComponent implements OnInit {
         this.uniqueId = filteredItems[0].id !== undefined ? filteredItems[0].id : 0;
         this.vclothingType[0].id = this.uniqueId;
       }
-
     } 
-    
   }
 
 
-
-  ngOnInit(): void {   
+  ngOnInit(): void {
     // Extraemos los tipos y eliminamos los duplicados
     this.uniqueTypes = [...new Set(this.vclothingType.map(item => item.type).filter((type): type is string => type !== undefined))];
-    //console.log('UNIQUE TYPES: ', this.uniqueTypes);
-    console.log('ARRAY VCLOTHING: ', this.vclothingType)
 
     if (this.clothing) {
       this.initializeForm();
-      console.log('ON INIT ', this.clothing.clothingType?.name)
     }
 
     //carga la imagen que contiene actualmente clothing
@@ -156,9 +143,9 @@ export class ClothingEditComponent implements OnInit {
 
   //Sección de Imagen
   files: File[] = [];
-  
+
   private uploadImage() {
-    
+
     const file_data = this.files[0];
     const data = new FormData();
     data.append('file', file_data);

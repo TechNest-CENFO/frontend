@@ -40,7 +40,7 @@ export class ClothingDeleteConfirmationComponent implements OnInit{
 
   
   deleteClothingItem(clothing: IClothing) {
-    this.clothingService.deleteClothingItem(clothing)
+    this.clothingService.deleteClothingItem(clothing);
     this.closeModal();
   }
 

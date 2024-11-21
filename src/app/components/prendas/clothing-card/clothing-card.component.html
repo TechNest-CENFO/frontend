@@ -9,7 +9,7 @@
     <button (click)="toggleIsFav()">
         <i [class]="isFav ? 'bi bi-star-fill favourite filled' : 'bi bi-star favourite'"></i>
     </button>
-    <button (click)="modalService.displayModal('md', DeleteClothingModal)"><i class="bi bi-dash-circle custom-icon delete"></i></button>
+    <button (click)="modalService.displayModal('md', DeleteClothingModal)"><i class="bi bi-trash3 custom-icon delete"></i></button>
 </div>
 
 <ng-template #EditClothingModal>
