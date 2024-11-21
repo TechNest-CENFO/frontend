@@ -20,3 +20,11 @@
     </button>
     <button (click)="toggleDelete()"><i class="bi bi-dash-circle custom-icon delete"></i></button>
 </div>
+
+<ng-template #DeleteClothingModal>
+    <app-modal [hideFooter]="true">
+        <div>
+            <app-confirmation-form-outfits [outfit]="outfit" />
+        </div>
+    </app-modal>
+</ng-template>
