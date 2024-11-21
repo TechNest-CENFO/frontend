@@ -6,6 +6,7 @@ import {NgxDropzoneModule} from 'ngx-dropzone';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import Aos from "aos";
 import {LottieComponentComponent} from "../../../pages/lottie-component/lottie-component.component";
+import { OutfitsComponent } from '../../../pages/outfits/outfits.component';
 
 @Component({
     selector: 'app-outfits-form',
@@ -20,6 +21,7 @@ export class OutfitsFormComponent {
     @Input() outfitsForm!: FormGroup;
     @Input() manualClothing?: IClothing[];
     @Output() callSaveMethod = new EventEmitter<IOutfit>();
+    
     @Output() callUpdateMethod = new EventEmitter<IOutfit>();
     @Output() callSetIsAddClothingModalActive = new EventEmitter<unknown>();
     //Refrescar el contexto de prendas al cambiar el tipo de creacion
@@ -47,8 +49,11 @@ export class OutfitsFormComponent {
         autoplay: true
     };
 
-    constructor(private _uploadService: UploadService) {
-    }
+    outfitsRandom?:IClothing[] = [];
+
+    constructor(private _uploadService: UploadService,
+        private _outfitsComponent : OutfitsComponent
+    ) {}
 
     ngOnInit() {
         Aos.init();
@@ -107,6 +112,17 @@ export class OutfitsFormComponent {
         const formattedText = text.replace(/_/g, ' ');
         return formattedText.charAt(0).toUpperCase() + formattedText.slice(1).toLowerCase();
     }
+    
+    async getOutfitRandom() {
+        try {
+            // Esperamos a que la promesa devuelta por callGetOutfitByUserRandom se resuelva
+            this.outfitsRandom = await this._outfitsComponent.callGetOutfitByUserRandom(); 
+            console.log("Outfits capturados:", this.outfitsRandom);
+            // Ahora puedes usar la variable `outfits` que contiene la lista de outfits
+        } catch (error) {
+            console.error("Error al obtener los outfits", error);
+        }
+    }
 
     callSetIsAddClothingModal() {
 
@@ -130,7 +146,11 @@ export class OutfitsFormComponent {
         if (this.manualClothing?.length) {
             outfit.clothing = this.manualClothing;
         }
-        if (outfit.id) {
+
+        if(this.outfitsRandom?.length) {
+            outfit.clothing = this.outfitsRandom;
+        }
+        if(outfit.id) {
             this.callUpdateMethod.emit(outfit);
         } else {
             this.callSaveMethod.emit(outfit);
