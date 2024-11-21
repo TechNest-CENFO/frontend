@@ -18,5 +18,5 @@
     <button (click)="toggleIsFav()">
         <i [class]="isFav ? 'bi bi-star-fill favourite filled' : 'bi bi-star favourite'"></i>
     </button>
-    <button><i class="bi bi-dash-circle custom-icon delete"></i></button>
+    <button (click)="toggleDelete()"><i class="bi bi-dash-circle custom-icon delete"></i></button>
 </div>
