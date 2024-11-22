@@ -37,7 +37,7 @@ export class ConfirmationFormOutfitsComponent {
     }
 
     deleteOutfitItem(outfit: IOutfit){
-        this.OutfitsService.callDelete(outfit.id);
+        this.OutfitsService.callDelete(outfit.id!);
         this.closeModal();
     }
 
