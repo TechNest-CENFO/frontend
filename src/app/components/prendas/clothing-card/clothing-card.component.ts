@@ -1,19 +1,46 @@
-import {Component, Input} from '@angular/core';
-import {IClothing} from "../../../interfaces";
-
+import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
+import {IClothing, IClothingType} from "../../../interfaces";
+import { ModalService } from '../../../services/modal.service';
+import { ModalComponent } from '../../modal/modal.component';
+import { ClothingEditComponent } from '../clothing-edit/clothing-edit.component';
+import { ClothingDeleteConfirmationComponent } from '../clothing-delete-confirmation/clothing-delete-confirmation.component';
+import { ClothingTypeService } from '../../../services/clothing-type.service';
 @Component({
   selector: 'app-clothing-card',
   standalone: true,
-  imports: [],
+  imports: [ModalComponent, ClothingEditComponent, ClothingDeleteConfirmationComponent],
   templateUrl: './clothing-card.component.html',
   styleUrl: './clothing-card.component.scss'
 })
 export class ClothingCardComponent {
   @Input() clothing!: IClothing;
+  @Output() callEditAction: EventEmitter<IClothing> = new EventEmitter<IClothing>();
+  public modalService: ModalService = inject(ModalService);
+  public clothingTypeService: ClothingTypeService = inject(ClothingTypeService);
+  clothingTypeData: IClothingType[] = []; // Almacenar los datos de los tipos de prendas
 
-    isFav: boolean = false;
-
+  isFav: boolean = false;
   toggleIsFav() {
     this.isFav = !this.isFav;
+  }
+
+
+  onEdit() {
+    this.callEditAction.emit(this.clothing);
+  }
+
+
+
+  getAllTypeClothing(): void {
+    // Llamamos a getAll() y al Observable para obtener los datos
+    this.clothingTypeService.getAll().subscribe({
+        next: (response) => {
+            // Accedemos a los datos y los almacenamos en la propiedad clothingData
+            this.clothingTypeData = response.data;
+        },
+        error: (err) => {
+            err = "Ocurrió un error al cargar los datos.";
+        }
+    });
   }
 }

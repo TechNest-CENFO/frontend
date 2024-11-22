@@ -161,6 +161,37 @@ export class ClothingService extends BaseService<IClothing> {
     delete(clothing: IClothing) {
         this.delCustomSource(`${clothing.id}`)
     }
+
+    deleteClothingItem(clothing : IClothing) {
+      const payload = { isClothingItemActive: clothing.isClothingItemActive };
+  
+      this.http.patch(`clothing/delete/${clothing.id}`, payload).subscribe({
+        next: (response: any) => {
+          this.clothing$;
+          this.getAllByUser();
+          this.notyfService.success('¡Tu prenda ha sido eliminada!');
+        },
+        error: (err) =>{
+          console.error(err);
+          this.notyfService.error('Ha ocurrido un error al eliminar tu prenda.')
+        }
+      })
+    }
+  
+  
+    update(clothing : IClothing) {
+        this.http.put(`clothing/edit/user/${this.authService.getUser()?.id}/item/${clothing.id}`, clothing).subscribe({
+            next: (response: any) =>{
+                this.clothing$
+                this.getAllByUser();
+                this.notyfService.success('¡Tu prenda ha sido modificada exitosamente!');
+            },
+            error: (err) =>{
+                console.error(err);
+                this.notyfService.error('Ha ocurrido un error al actualizar tu prenda.')
+            }
+        })
+    }
       
 }
 

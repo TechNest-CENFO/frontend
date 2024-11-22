@@ -35,7 +35,7 @@ export class OutfitsCardComponent {
 
     toggleDelete() {
     if (confirm('¿Estás seguro de que deseas eliminar este outfit?')) {
-        this.outfitsService.callDelete(this.outfit.id);
+        this.outfitsService.callDelete(this.outfit.id!);
     }
 }
 }
