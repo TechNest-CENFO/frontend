@@ -59,7 +59,7 @@
             </div>
 
             <app-outfits-list
-                    (callDeleteAction)="outfitsService.delete($event)"
+                    (callDeleteAction)="outfitsService.callDelete($event.id)"
                     [outfits]="outfitsService.outfit$()"
             />
 

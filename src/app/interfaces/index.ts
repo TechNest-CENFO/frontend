@@ -110,7 +110,7 @@ export interface IClothingType {
 }
 
 export interface IOutfit{
-  id?: number;
+  id: number;
   name?: string;
   clothing:IClothing[];
   isPublic?: boolean;
@@ -118,11 +118,7 @@ export interface IOutfit{
   category?:ICategory;
   user:IUser;
   imageUrl?:string;
-  picture1?:string;
-  picture2?:string;
-  picture3?:string;
-  picture4?:string;
-  picture5?:string;
+  isDeleted?: boolean;
 }
 
 export interface ICategory{

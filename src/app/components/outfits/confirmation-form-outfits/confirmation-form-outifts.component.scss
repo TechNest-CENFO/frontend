@@ -1,0 +1,12 @@
+@import "../../../../assets/variables/variables.scss";
+
+.btn-outline-primary{
+    background-color: transparent;
+    border-color:$accent-hovered;
+    color:$accent-hovered;
+  
+    &:hover{
+      background-color: $accent-hovered;
+      color: #fff
+    }
+  }

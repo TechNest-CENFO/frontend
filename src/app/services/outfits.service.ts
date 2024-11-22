@@ -13,6 +13,7 @@ export class OutfitsService extends BaseService<IOutfit> {
 
     protected override source: string = 'outfit';
     private outfitListSignal = signal<IOutfit[]>([]);
+    ModalService: any;
 
     get outfit$() {
         return this.outfitListSignal;
@@ -26,10 +27,6 @@ export class OutfitsService extends BaseService<IOutfit> {
     public totalItems: any = [];
     private authService: AuthService = inject(AuthService);
     private notyfService: NotyfService = inject(NotyfService);
-
-    delete($event: IOutfit) {
-
-    }
 
     getAllFavoritesByUser() {
       this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/outfit/favorites`, {
@@ -93,4 +90,19 @@ export class OutfitsService extends BaseService<IOutfit> {
             }
         });
     }
+
+    callDelete(outfitId: number) {
+    this.editCustomSource(`${outfitId}/delete`, {}).subscribe({
+        next: (response: any) => {
+            this.notyfService.success('El outfit ha sido marcado como eliminado.');
+            // Opcional: Actualizar la lista local después de eliminar
+            this.getAllByUser();
+        },
+        error: (err: any) => {
+            console.error('Error al marcar como eliminado el outfit:', err);
+            this.notyfService.error('No se pudo eliminar el outfit.');
+        }
+    });
+}
+
 }
