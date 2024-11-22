@@ -19,9 +19,14 @@ export class BaseService<T> {
   }
 
   public findAllTypes(): Observable<IResponse<T[]>> {
-
     return this.http.get<IResponse<T[]>>(this.source);
   }
+
+  public getOutfitRandom(customUrlSource: string): Observable<IResponse<T[]>> {
+    console.log("customUrlSource", `${this.source}/${customUrlSource}`)
+    return this.http.get<IResponse<T[]>>(`${this.source}/${customUrlSource}`);
+  }
+
 
   public findAllWithParams(params: any = {}): Observable<IResponse<T[]>> {
     return this.http.get<IResponse<T[]>>(this.source, {params: this.buildUrlParams(params)});

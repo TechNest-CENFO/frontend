@@ -1,33 +1,69 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {IOutfit} from "../../../interfaces";
-import {FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output, SimpleChanges} from '@angular/core';
+import {IClothing, IOrder, IOutfit} from "../../../interfaces";
+import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {UploadService} from '../../../services/upload.service';
 import {NgxDropzoneModule} from 'ngx-dropzone';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import Aos from "aos";
+import {LottieComponentComponent} from "../../../pages/lottie-component/lottie-component.component";
+import { OutfitsComponent } from '../../../pages/outfits/outfits.component';
 
 @Component({
     selector: 'app-outfits-form',
     standalone: true,
-    imports: [NgxDropzoneModule, ReactiveFormsModule, CommonModule, NgOptimizedImage],
+    imports: [NgxDropzoneModule, ReactiveFormsModule, CommonModule, NgOptimizedImage, LottieComponentComponent],
     templateUrl: './outfits-form.component.html',
     styleUrl: './outfits-form.component.scss',
     providers: [UploadService]
 })
 export class OutfitsFormComponent {
+    fb: FormBuilder = Inject(FormBuilder);
     @Input() outfitsForm!: FormGroup;
+    @Input() manualClothing?: IClothing[];
     @Output() callSaveMethod = new EventEmitter<IOutfit>();
+    
+    @Output() callUpdateMethod = new EventEmitter<IOutfit>();
+    @Output() callSetIsAddClothingModalActive = new EventEmitter<unknown>();
+    //Refrescar el contexto de prendas al cambiar el tipo de creacion
+    @Output() refreshClothingContext = new EventEmitter<void>();
 
     files: File[] = [];
+
+    //Para el tipo de creacion de outfit
     outfitCreationOption: string = 'manual';
+    //Para modificar el texto dentro del dropdown
     dropdownOptionSelected: string = 'Estilo';
 
+
+    //Estas variables son para la creacion de outfits manuales
+    //Para modificar el texto dentro del dropdown de estilo (a la hora de crear outfits manuales)
+    dropdownOptionSelectedManualOutfitStyle: string = 'Estilo';
+    //Para guardar la data de las prendas seleccionadas
+    clothing: IClothing[] = [];
+    //Para guardar el url del la imagen a previsualizar
+    previewImage: string = 'lottie';
+    outfitCategory: string = 'Categoría';
+    lottie = {
+        path: './assets/lottie/emptyOutfit.json',
+        loop: true,
+        autoplay: true
+    };
+
+    outfitsRandom?:IClothing[] = [];
+
     constructor(private _uploadService: UploadService,
-    ) {
-    }
+        private _outfitsComponent : OutfitsComponent
+    ) {}
 
     ngOnInit() {
         Aos.init();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (this.manualClothing?.length) {
+            // @ts-ignore
+            this.previewImage = this.manualClothing.at(0).imageUrl;
+        }
     }
 
     private uploadImage() {
@@ -67,11 +103,81 @@ export class OutfitsFormComponent {
         } else {
             this.dropdownOptionSelected = this.capitalizeAndReplace(outfitCreationOption);
         }
+        this.refreshClothingContext.emit();
+        this.previewImage = 'lottie';
     }
 
     capitalizeAndReplace(text: string): string {
         if (!text) return '';
         const formattedText = text.replace(/_/g, ' ');
         return formattedText.charAt(0).toUpperCase() + formattedText.slice(1).toLowerCase();
+    }
+    
+    async getOutfitRandom() {
+        try {
+            // Esperamos a que la promesa devuelta por callGetOutfitByUserRandom se resuelva
+            this.outfitsRandom = await this._outfitsComponent.callGetOutfitByUserRandom(); 
+            console.log("Outfits capturados:", this.outfitsRandom);
+            // Ahora puedes usar la variable `outfits` que contiene la lista de outfits
+        } catch (error) {
+            console.error("Error al obtener los outfits", error);
+        }
+    }
+
+    callSetIsAddClothingModal() {
+
+        this.callSetIsAddClothingModalActive.emit();
+
+    }
+
+    public loadPreview(imageUrl: string) {
+        this.previewImage = imageUrl;
+    }
+
+    callSave() {
+        let outfit: IOutfit = {
+            clothing: [],
+            user: {},
+            name: this.outfitsForm.controls['name'].value,
+            category: {
+                name: this.reformat(this.outfitCategory)
+            }
+        }
+        if (this.manualClothing?.length) {
+            outfit.clothing = this.manualClothing;
+        }
+
+        if(this.outfitsRandom?.length) {
+            outfit.clothing = this.outfitsRandom;
+        }
+        if(outfit.id) {
+            this.callUpdateMethod.emit(outfit);
+        } else {
+            this.callSaveMethod.emit(outfit);
+        }
+    }
+
+    setOutfitCategory(category: string) {
+        this.outfitCategory = this.capitalizeAndReplace(category);
+        console.log(this.outfitCategory);
+    }
+
+    public reformat(text: string) {
+        if (
+            text !== 'Casual'
+            && text !== 'Formal'
+            && text !== 'Semi formal'
+            && text !== 'Casual'
+            && text !== 'Deportivo'
+            && text !== 'Playero'
+            && text !== 'Viaje'
+            && text !== 'Festival'
+            && text !== 'Callejero'
+        ) {
+            text = 'Otro';
+        } else {
+            text = text.replace(/ /g, '_');
+        }
+        return text.toUpperCase();
     }
 }
