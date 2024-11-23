@@ -32,10 +32,8 @@ export class ClothingCardComponent {
 
 
   getAllTypeClothing(): void {
-    // Llamamos a getAll() y al Observable para obtener los datos
     this.clothingTypeService.getAll().subscribe({
         next: (response) => {
-            // Accedemos a los datos y los almacenamos en la propiedad clothingData
             this.clothingTypeData = response.data;
         },
         error: (err) => {

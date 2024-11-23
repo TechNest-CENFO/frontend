@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { IClothing, IClothingType } from '../../../interfaces';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { UploadService } from '../../../services/upload.service';
@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { ClothingService } from '../../../services/clothing.service';
 import { ModalService } from '../../../services/modal.service';
+
 @Component({
   selector: 'app-clothing-edit',
   standalone: true,
@@ -23,6 +24,8 @@ export class ClothingEditComponent implements OnInit {
   private _uploadService: UploadService = inject(UploadService);
   private clothingService: ClothingService = inject(ClothingService)
   private modalService: ModalService = inject(ModalService)
+  public fb: FormBuilder = inject(FormBuilder);
+
   @Input() clothingEditForm!: FormGroup;
   @Input() vclothingType: IClothingType[]=[];
   @Input() clothing!: IClothing;
@@ -37,11 +40,7 @@ export class ClothingEditComponent implements OnInit {
   uniqueNames: string[] = [];
   uniqueId: number = 0;
   isImageUpdated: boolean = false;
-
-
-  constructor(private fb: FormBuilder) {
-  }
-
+  clothingTypeData: IClothingType[] = [];
 
   callSave() {
     this.uploadImage();
@@ -50,25 +49,22 @@ export class ClothingEditComponent implements OnInit {
   private callSaveClothing(): void {
     const formValue = this.clothingEditForm.value;
 
-    // Convertir el formulario a la estructura deseada antes de emitir
     const clothingData: IClothing = {
       id: this.clothing.id,
       name: formValue.name,
       imageUrl: formValue.imageUrl,
       season: formValue.season,
       color: formValue.color,
-      clothingType: {
-        id: 1
-      }
+      clothingType: ({
+        id: this.uniqueId,
+      }),
     };
     this.clothingService.update(clothingData);
     this.modalService.closeAll();
   }
   
 
-
   callGetSubTypes():void{
-
     //Se filtran solo los elementos que tengan la categoría seleccionada
     this.filterItems(this.selectedType, "subType", "type");
   }
@@ -93,6 +89,7 @@ export class ClothingEditComponent implements OnInit {
     filteredItems = this.vclothingType.filter(item => item[field] === itemSelected);
 
 
+
     if (filter === "subType") {   
       this.uniqueSubTypes = [...new Set(filteredItems.map(item => item.subType).filter((subType): subType is string => subType !== undefined))];
     } else if (filter === "name") {     
@@ -108,7 +105,6 @@ export class ClothingEditComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // Extraemos los tipos y eliminamos los duplicados
     this.uniqueTypes = [...new Set(this.vclothingType.map(item => item.type).filter((type): type is string => type !== undefined))];
 
     if (this.clothing) {
@@ -127,10 +123,24 @@ export class ClothingEditComponent implements OnInit {
     }
   }
 
+  ngOnChanges(): void {
+    if (this.clothing) {
+      this.initializeDropdowns();
+    }
+  }
+
+  private initializeDropdowns(): void {
+    this.uniqueTypes = [...new Set(this.vclothingType.map(item => item.type).filter((type): type is string => type !== undefined))];
+    this.uniqueSubTypes = [];
+    this.uniqueNames = [];
+    const firstItemWithId = this.vclothingType.find(item => item.id !== undefined);
+    this.uniqueId = firstItemWithId?.id || 0;
+  }
+
 
   private initializeForm(): void {
     this.clothingEditForm = this.fb.group({
-      clothingType: [this.clothing.clothingType?.id || ''],
+      clothingType: [this.clothing.clothingType?.type || ''],
       clothingSubType: [this.clothing.clothingType?.subType || ''],
       clothingTypeName: [this.clothing.clothingType?.name || ''],
       season: [this.clothing.season || ''],
