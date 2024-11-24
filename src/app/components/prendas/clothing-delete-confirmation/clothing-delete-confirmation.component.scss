@@ -10,3 +10,18 @@
       color: #fff
     }
   }
+
+  .delete-container{
+    text-align: center;
+    padding: 1em;
+  }
+
+  .btn-container{
+    justify-content: center;
+    margin: 1em 0;
+    gap: 1em;
+
+    & button{
+      padding: 0.5em 3em;
+    }
+  }
