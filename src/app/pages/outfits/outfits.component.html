@@ -35,6 +35,11 @@
                                 <li><a class="dropdown-item" (click)="setGetBy('STREETWEAR')">Callejero</a></li>
                             </ul>
                         </div>
+
+                        <app-search
+                            (searchTermChanged)="onSearchTermChanged($event)"
+                        />
+
                     </div>
                     <div>
                         <button [ngClass]="{'btn button-secondary':gridSelected, 'btn-custom': !gridSelected, 'me-4': true}"
@@ -60,7 +65,7 @@
 
             <app-outfits-list
                     (callDeleteAction)="outfitsService.callDelete($event.id!)"
-                    [outfits]="outfitsService.outfit$()"
+                    [outfits]="filteredOutfits"
             />
 
             @if (outfitsService.outfit$().length) {
