@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, effect, inject, Injector, OnInit, runInInjectionContext, ViewChild} from '@angular/core';
 import {ClothingListComponent} from "../../components/prendas/clothing-list/clothing-list.component";
 import {LoaderComponent} from "../../components/loader/loader.component";
 import {ModalComponent} from "../../components/modal/modal.component";
@@ -16,6 +16,7 @@ import {
     OutfitsAddClothingFormComponent
 } from "../../components/outfits/outfits-form/outfits-add-clothing-form/outfits-add-clothing-form.component";
 import {ClothingService} from "../../services/clothing.service";
+import { SearchComponent } from '../../components/search/search.component';
 
 @Component({
   selector: 'app-outfits',
@@ -29,7 +30,8 @@ import {ClothingService} from "../../services/clothing.service";
         NgClass,
         OutfitsListComponent,
         OutfitsFormComponent,
-        OutfitsAddClothingFormComponent
+        OutfitsAddClothingFormComponent,
+        SearchComponent
     ],
   templateUrl: './outfits.component.html',
   styleUrl: './outfits.component.scss'
@@ -40,6 +42,12 @@ export class OutfitsComponent implements OnInit{
     public ModalService: ModalService = inject(ModalService);
     public AuthService: AuthService = inject(AuthService);
     outfitRandomData:IOutfit[]=[];
+    private injector = inject(Injector);
+    outfits: IOutfit[] = [];
+    filteredOutfits: IOutfit[] = [];
+
+
+
 
     //INICIO - METODOS Y VARIABLES PARA EL SUBMODAL
     //Variable para parametrizar la busqueda de prendas desde el submodal
@@ -55,7 +63,6 @@ export class OutfitsComponent implements OnInit{
             this.clothingService.getAllByUserLongPagination();
         } else if (this.getByOption === 'favorite'){
             this.clothingService.getAllFavoritesByUserLongPagination();
-            console.log(this.getByOption)
         } else {
             this.clothingService.getAllByTypeLongPagination(this.getByOption);
         }
@@ -81,7 +88,24 @@ export class OutfitsComponent implements OnInit{
     ngOnInit(): void {
         this.callGet();
         this.setClothingSignalForSubModal();
+
+        runInInjectionContext(this.injector, () => {
+            effect(() => {
+              this.outfits = this.outfitsService.outfit$();
+              this.filteredOutfits = [...this.outfits];
+            });
+          });
+          this.clothingService.getAllByUser();
     }
+
+
+    onSearchTermChanged(searchTerm: string): void {
+        this.filteredOutfits = this.outfits.filter(item =>
+            item.name?.toLowerCase().includes(searchTerm)
+        );
+    }
+
+
 
     setGetBy(category: string) {
         this.getBy = category;
@@ -116,7 +140,6 @@ export class OutfitsComponent implements OnInit{
 
     saveOutfit(outfit: IOutfit) {
         outfit.user.id = this.AuthService.getUser()?.id;
-        console.log(outfit);
         this.outfitsService.save(outfit);
     }
 
@@ -125,7 +148,6 @@ export class OutfitsComponent implements OnInit{
     }
 
     public setClotingAddToOutfit(clothing: IClothing[]) {
-        console.log('manual clothing to add: ', clothing);
         this.manualOutfitClothing = clothing;
     }
 
@@ -137,12 +159,11 @@ export class OutfitsComponent implements OnInit{
         return new Promise((resolve, reject) => {
             this.outfitsService.getOutfitByUserRandom().subscribe({
                 next: (response) => {
-                    console.log("outfitComponent", response.data);
-                    resolve(response.data); // Resolvemos la promesa con los datos
+                    resolve(response.data);
                 },
                 error: (err) => {
                     console.error("Error", err);
-                    reject(err); // Rechazamos la promesa en caso de error
+                    reject(err);
                 }
             });
         });

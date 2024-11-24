@@ -3,3 +3,13 @@
 .form-control{
     border-color: $accent-hovered;
 }
+
+.search-container{
+    display: flex;
+}
+
+.input-group-text{
+    background-color: $accent-disabled;
+    color: $accent-default;
+    border: 1px solid $accent-hovered;
+}

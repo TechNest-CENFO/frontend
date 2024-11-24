@@ -1,8 +1,12 @@
-<div class="search-container">
+<div class="input-group mx-5">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="search-icon"><i class="bi bi-search icon"></i></span>
+  </div>
   <input
-    type="text"
+    type="search"
     class="form-control"
-    placeholder="Buscar prendas..."
+    placeholder="Buscar..."
+    aria-label="Search"
     (input)="onSearch($event)"
   />
 </div>
