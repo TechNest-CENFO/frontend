@@ -1,0 +1,45 @@
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <h5 class="title-format">{{ this.collection.name }}</h5>
+    <div class="d-flex align-items-center">
+        <span>Visibilidad</span>
+        <label class="switch ms-2">
+            <input type="checkbox" [checked]="collection.isPublic" (change)="toggleIsPublic()">
+            <span class="slider round"></span>
+        </label>
+        <i class="ms-2 bi" [ngClass]="collection.isPublic ? 'bi-eye' : 'bi-eye-slash'"
+            title="{{ collection.isPublic ? 'Público' : 'Privado' }}" style="cursor: pointer;" (click)="toggleIsPublic()"></i>
+    </div>
+
+</div>
+
+
+<div class="card-custom shadow-sm">
+    <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+        <img src="{{this.collection.imageUrl}}" class="image-format" alt="clothing-image">
+    </div>
+        <button (click)="modalService.displayModal('md', EditCollectionModal)">
+            <i class="bi bi-pencil-square edit"></i>
+        </button>
+
+    <button (click)="toggleIsFav()">
+        <i [class]="isFav ? 'bi bi-star-fill favourite filled' : 'bi bi-star favourite'"></i>
+    </button>
+        <button (click)="modalService.displayModal('md', DeleteCollectionModal)"><i
+                class="bi bi-trash3 custom-icon delete"></i></button>
+</div>
+
+<ng-template #EditCollectionModal>
+    <app-modal [hideFooter]="true">
+        <app-collections-edit [collection]="collection"></app-collections-edit>
+    </app-modal>
+</ng-template>
+
+
+
+<ng-template #DeleteCollectionModal>
+    <app-modal [hideFooter]="true">
+        <div>
+            <app-confirmation-form-collections [collection]="collection" />
+        </div>
+    </app-modal>
+</ng-template>
