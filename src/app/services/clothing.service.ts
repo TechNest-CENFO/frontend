@@ -68,7 +68,7 @@ export class ClothingService extends BaseService<IClothing> {
             },
             error: (err: any) => {
                 console.error('error', err);
-                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
+                this.notyfService.error('Ha ocurrido un error al cargar tus prendas.')
             }
         });
     }
@@ -85,7 +85,7 @@ export class ClothingService extends BaseService<IClothing> {
             },
             error: (err: any) => {
                 console.error('error', err);
-                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
+                this.notyfService.error('Ha ocurrido un error al cargar tus prendas.')
             }
         });
     }
@@ -102,7 +102,7 @@ export class ClothingService extends BaseService<IClothing> {
             },
             error: (err: any) => {
                 console.error('error', err);
-                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
+                this.notyfService.error('Ha ocurrido un error al cargar tus prendas.')
             }
         });
     }
@@ -119,7 +119,7 @@ export class ClothingService extends BaseService<IClothing> {
             },
             error: (err: any) => {
                 console.error('error', err);
-                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
+                this.notyfService.error('Ha ocurrido un error al cargar tus prendas.')
             }
         });
     }
@@ -136,7 +136,7 @@ export class ClothingService extends BaseService<IClothing> {
             },
             error: (err: any) => {
                 console.error('error', err);
-                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
+                this.notyfService.error('Ha ocurrido un error al cargar tus prendas.')
             }
         });
     }
@@ -153,7 +153,7 @@ export class ClothingService extends BaseService<IClothing> {
             },
             error: (err: any) => {
                 console.error('error', err);
-                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
+                this.notyfService.error('Ha ocurrido un error al cargar tus prendas.')
             }
         });
     }
@@ -192,7 +192,35 @@ export class ClothingService extends BaseService<IClothing> {
             }
         })
     }
-      
+
+    isFavorite(clothing: IClothing, status: boolean, getBy?: string){
+        this.http.patch(`clothing/setIsFavorite/user/${this.authService.getUser()?.id}/item/${clothing.id}`, clothing).subscribe({
+            next: (response: any) =>{
+                if (getBy == 'favorite'){
+                    if (status){
+                        this.notyfService.success('¡Prenda agregada a favoritos!');
+                        this.getAllFavoritesByUser();
+                    } else {
+                        this.notyfService.success('La prenda ha sido eliminada de favoritos');
+                        this.getAllFavoritesByUser();
+                    }
+                } else {
+                    if (status){
+                        this.notyfService.success('¡Prenda agregada a favoritos!');
+                    } else {
+                        this.notyfService.success('La prenda ha sido eliminada de favoritos');
+                    }
+                }
+            },
+            error: (err) =>{
+                if (status){
+                    this.notyfService.error('Ha ocurrido un error al agregar tu prenda a favoritos.');
+                } else {
+                    this.notyfService.error('Ha ocurrido un error al retirar tu prenda de favoritos.');
+                }
+            }
+        })
+    }
 }
 
 

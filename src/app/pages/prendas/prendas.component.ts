@@ -1,8 +1,8 @@
-import { ClothingTypeService } from './../../services/clothing-type.service';
+import {ClothingTypeService} from './../../services/clothing-type.service';
 import {AuthService} from './../../services/auth.service';
 
 import {ClothingService} from './../../services/clothing.service';
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {ModalService} from './../../services/modal.service';
 
 import {PrendasFormComponent} from "../../components/prendas/prendas-form/prendas-form.component";
@@ -15,7 +15,6 @@ import {ClothingListComponent} from "../../components/prendas/clothing-list/clot
 import {PaginationComponent} from "../../components/pagination/pagination.component";
 
 
-
 @Component({
     selector: 'app-prendas',
     standalone: true,
@@ -24,11 +23,10 @@ import {PaginationComponent} from "../../components/pagination/pagination.compon
     styleUrls: ['./prendas.component.scss']
 })
 export class PrendasComponent implements OnInit {
-  public clothingService: ClothingService = inject(ClothingService);
-  public clothtingTypeService: ClothingTypeService = inject(ClothingTypeService);
-  public ModalService: ModalService = inject(ModalService);
-  public AuthService: AuthService = inject(AuthService);
-  
+    public clothingService: ClothingService = inject(ClothingService);
+    public clothtingTypeService: ClothingTypeService = inject(ClothingTypeService);
+    public ModalService: ModalService = inject(ModalService);
+    public AuthService: AuthService = inject(AuthService);
 
 
     @ViewChild('AddClothingModal')
@@ -53,7 +51,12 @@ export class PrendasComponent implements OnInit {
     constructor() {
         this.getAllTypeClothing();
     }
+
     ngOnInit(): void {
+        this.callGet();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
         this.callGet();
     }
 
@@ -62,7 +65,6 @@ export class PrendasComponent implements OnInit {
         this.ModalService.closeAll();
 
     }
-
 
 
     getAllTypeClothing(): void {
@@ -76,7 +78,7 @@ export class PrendasComponent implements OnInit {
                 err = "Ocurrió un error al cargar los datos.";
             }
         });
-        
+
     }
 
     callGet() {
@@ -111,4 +113,11 @@ export class PrendasComponent implements OnInit {
     }
 
 
+    setIsFav(clothing: IClothing) {
+        if (clothing.isFavorite) {
+            this.clothingService.isFavorite(clothing, true, this.getBy);
+        } else {
+            this.clothingService.isFavorite(clothing, false, this.getBy);
+        }
+    }
 }

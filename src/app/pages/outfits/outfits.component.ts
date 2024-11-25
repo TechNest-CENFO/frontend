@@ -29,7 +29,7 @@ import {ClothingService} from "../../services/clothing.service";
         NgClass,
         OutfitsListComponent,
         OutfitsFormComponent,
-        OutfitsAddClothingFormComponent
+        OutfitsAddClothingFormComponent,
     ],
   templateUrl: './outfits.component.html',
   styleUrl: './outfits.component.scss'
@@ -118,6 +118,7 @@ export class OutfitsComponent implements OnInit{
         outfit.user.id = this.AuthService.getUser()?.id;
         console.log(outfit);
         this.outfitsService.save(outfit);
+        this.ModalService.closeAll();
     }
 
     toggleAddClothingModal() {
@@ -146,5 +147,27 @@ export class OutfitsComponent implements OnInit{
                 }
             });
         });
+    }
+
+    setIsFavorite(outfit: IOutfit) {
+        console.log(outfit)
+        if (outfit.isFavorite) {
+            this.outfitsService.isFavorite(outfit, true, this.getBy);
+        } else {
+            this.outfitsService.isFavorite(outfit, false, this.getBy);
+        }
+    }
+
+    setIsPublic(outfit: IOutfit) {
+        console.log(outfit);
+
+        console.log(outfit.isPublic);
+        if (outfit.isPublic) {
+            console.log('enter ispublic if');
+            this.outfitsService.isPublic(outfit, true);
+        } else {
+            console.log('enter ispublic else');
+            this.outfitsService.isPublic(outfit, false);
+        }
     }
 }

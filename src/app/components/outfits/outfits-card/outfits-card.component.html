@@ -1,28 +1,29 @@
 <div class="d-flex justify-content-between align-items-center mb-2">
     <h5 class="title-format">{{ this.outfit.name }}</h5>
     <div class="d-flex align-items-center">
-        <span>Visibilidad</span>
-        <label class="switch ms-2">
-            <input type="checkbox" [checked]="outfit.isPublic" (change)="toggleIsPublic()">
-            <span class="slider round"></span>
-        </label>
+        <span><small>Visibilidad</small></span>
         <i class="ms-2 bi" [ngClass]="outfit.isPublic ? 'bi-eye' : 'bi-eye-slash'"
             title="{{ outfit.isPublic ? 'Público' : 'Privado' }}" style="cursor: pointer;" (click)="toggleIsPublic()"></i>
     </div>
 
 </div>
 
-
 <div class="card-custom shadow-sm">
     <div class="w-100 h-100 d-flex justify-content-center align-items-center">
-        <img src="{{this.outfit.imageUrl}}" class="image-format" alt="clothing-image">
+        <swiper-container [pagination]="{type: 'bullets', clickable:true}" grab-cursor="true" loop="true" slides-per-view="1" speed="600" navigation="true" autoplay="true" effect="slide" rewind="true" allowP>
+            @for (item of outfit.clothing; track $index){
+                <swiper-slide class="w-100 d-flex justify-content-center">
+                    <img src="{{item.imageUrl}}" class="w-75 h-75" alt="clothing-image">
+                </swiper-slide>
+            }
+        </swiper-container>
     </div>
         <button (click)="modalService.displayModal('md', EditOutfitModal)">
             <i class="bi bi-pencil-square edit"></i>
         </button>
 
     <button (click)="toggleIsFav()">
-        <i [class]="isFav ? 'bi bi-star-fill favourite filled' : 'bi bi-star favourite'"></i>
+        <i [class]="outfit.isFavorite ? 'bi bi-star-fill favourite filled' : 'bi bi-star favourite'"></i>
     </button>
         <button (click)="modalService.displayModal('md', DeleteOutfitModal)"><i
                 class="bi bi-trash3 custom-icon delete"></i></button>

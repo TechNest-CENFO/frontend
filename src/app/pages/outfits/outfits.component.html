@@ -60,6 +60,9 @@
 
             <app-outfits-list
                     (callDeleteAction)="outfitsService.callDelete($event.id!)"
+                    (callSetIsFavorite)="setIsFavorite($event)"
+                    (callSetIsPublic)="setIsPublic($event)"
+                    
                     [outfits]="outfitsService.outfit$()"
             />
 

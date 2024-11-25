@@ -1,11 +1,13 @@
 <div class="row mt-4">
     @for (item of outfits; track $index) {
         <div class="col-3 d-flex justify-content-center align-content-center mb-5">
-            <app-outfits-card
-                [outfit]="item"
-                data-aos="zoom-in"
-                data-aos-duration="600"
-            />
+                <app-outfits-card
+                        [outfit]="item"
+                        (callSetIsFavorite)="triggerSetIsFav($event)"
+                        (callSetIsPublic)="triggerSetIsPublic($event)"
+                        data-aos="zoom-in"
+                        data-aos-duration="600"
+                />
         </div>
     } @empty {
         <div class="col-12 d-flex align-content-center justify-content-center">

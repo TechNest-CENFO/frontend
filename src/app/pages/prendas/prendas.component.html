@@ -23,12 +23,12 @@
                                 {{ optionSelected }}
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" (click)="setGetBy('UPPER')">Superiores</a></li>
-                                <li><a class="dropdown-item" (click)="setGetBy('BOTTOM')">Inferiores</a></li>
-                                <li><a class="dropdown-item" (click)="setGetBy('OUTWEAR')">Exteriores</a></li>
-                                <li><a class="dropdown-item" (click)="setGetBy('FOOTWEAR')">Calzado</a></li>
-                                <li><a class="dropdown-item" (click)="setGetBy('FULL_BODY')">Cuerpo Entero</a></li>
-                                <li><a class="dropdown-item" (click)="setGetBy('ACCESSORY')">Accesorios</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('SUPERIOR')">Superior</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('INFERIOR')">Inferior</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('ABRIGO')">Exterior</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('CALZADO')">Calzado</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('CUERPO_COMPLETO')">Cuerpo Completo</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('ACCESORIO')">Accesorio</a></li>
                             </ul>
                         </div>
                     </div>
@@ -56,6 +56,7 @@
 
             <app-clothing-list
                     [clothing]="clothingService.clothing$()"
+                    (callSetIsFav)="setIsFav($event)"
             />
 
             @if (clothingService.clothing$().length) {
@@ -77,11 +78,11 @@
 <ng-template #AddClothingModal>
     <app-modal [hideFooter]="true">
         <div>
-            <app-prendas-form 
-            [clothingForm]="clothingForm" (callSaveMethod)="saveClothing($event)" 
-            [vclothingType]="clothingTypeData" 
-            
-                        
+            <app-prendas-form
+            [clothingForm]="clothingForm" (callSaveMethod)="saveClothing($event)"
+            [vclothingType]="clothingTypeData"
+
+
             />
 
         </div>

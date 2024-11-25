@@ -36,7 +36,8 @@
             "styles": [
               "src/styles.scss",
               "./node_modules/aos/dist/aos.css",
-              "node_modules/bootstrap-icons/font/bootstrap-icons.css"
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+              "node_modules/swiper/swiper-bundle.min.css"
             ],
             "scripts": []
           },
