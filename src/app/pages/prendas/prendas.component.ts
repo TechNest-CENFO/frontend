@@ -1,7 +1,7 @@
-import { ClothingTypeService } from './../../services/clothing-type.service';
+import {ClothingTypeService} from './../../services/clothing-type.service';
 import {AuthService} from './../../services/auth.service';
 import {ClothingService} from './../../services/clothing.service';
-import {Component, effect, inject, Injector, OnInit, runInInjectionContext, ViewChild} from '@angular/core';
+import {Component, effect, inject, OnChanges, Injector, OnInit, SimpleChanges, runInInjectionContext, ViewChild} from '@angular/core';
 import {ModalService} from './../../services/modal.service';
 import {PrendasFormComponent} from "../../components/prendas/prendas-form/prendas-form.component";
 import {ModalComponent} from "../../components/modal/modal.component";
@@ -67,6 +67,7 @@ export class PrendasComponent implements OnInit {
     }
 
 
+
     ngOnInit(): void {
         this.callGet();
 
@@ -86,6 +87,9 @@ export class PrendasComponent implements OnInit {
             );
     }
 
+    ngOnChanges(changes: SimpleChanges): void {
+        this.callGet();
+    }
 
     saveClothing(clothing: IClothing) {
         this.clothingService.save(clothing);
@@ -136,5 +140,14 @@ export class PrendasComponent implements OnInit {
     setGetBy(type: string) {
         this.getBy = type;
         this.callGet();
+    }
+
+
+    setIsFav(clothing: IClothing) {
+        if (clothing.isFavorite) {
+            this.clothingService.isFavorite(clothing, true, this.getBy);
+        } else {
+            this.clothingService.isFavorite(clothing, false, this.getBy);
+        }
     }
 }

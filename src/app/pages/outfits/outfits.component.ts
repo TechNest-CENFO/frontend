@@ -141,6 +141,7 @@ export class OutfitsComponent implements OnInit{
     saveOutfit(outfit: IOutfit) {
         outfit.user.id = this.AuthService.getUser()?.id;
         this.outfitsService.save(outfit);
+        this.ModalService.closeAll();
     }
 
     toggleAddClothingModal() {
@@ -167,5 +168,27 @@ export class OutfitsComponent implements OnInit{
                 }
             });
         });
+    }
+
+    setIsFavorite(outfit: IOutfit) {
+        console.log(outfit)
+        if (outfit.isFavorite) {
+            this.outfitsService.isFavorite(outfit, true, this.getBy);
+        } else {
+            this.outfitsService.isFavorite(outfit, false, this.getBy);
+        }
+    }
+
+    setIsPublic(outfit: IOutfit) {
+        console.log(outfit);
+
+        console.log(outfit.isPublic);
+        if (outfit.isPublic) {
+            console.log('enter ispublic if');
+            this.outfitsService.isPublic(outfit, true);
+        } else {
+            console.log('enter ispublic else');
+            this.outfitsService.isPublic(outfit, false);
+        }
     }
 }

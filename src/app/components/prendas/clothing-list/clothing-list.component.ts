@@ -17,8 +17,15 @@ export class ClothingListComponent {
   @Input() clothing: IClothing[] = [];
   @Output() callModalAction: EventEmitter<IClothing> = new EventEmitter<IClothing>();
   @Output() callDeleteAction: EventEmitter<IClothing> = new EventEmitter<IClothing>();
+  @Output() callSetIsFav = new EventEmitter<IClothing>();
 
   ngOnInit(): void {
     Aos.init()
   }
+
+  public triggerCallSetIdFav(clothing: IClothing): void {
+    this.callSetIsFav.emit(clothing);
+  }
+
+  protected readonly event = event;
 }
