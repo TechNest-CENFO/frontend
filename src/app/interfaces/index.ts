@@ -125,3 +125,14 @@ export interface ICategory{
   id?: number;
   name: string;
 }
+
+export interface ICollection{
+  id?: number;
+  name?: string;
+  outfit:IOutfit[];
+  isPublic?: boolean;
+  isFavorite?: boolean;
+  user:IUser;
+  imageUrl?:string;
+  isDeleted?: boolean;
+}

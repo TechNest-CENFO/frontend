@@ -6,45 +6,40 @@ import {PaginationComponent} from "../../components/pagination/pagination.compon
 import {PrendasFormComponent} from "../../components/prendas/prendas-form/prendas-form.component";
 import {ModalService} from "../../services/modal.service";
 import {NgClass} from "@angular/common";
-import {OutfitsService} from "../../services/outfits.service";
 import {AuthService} from "../../services/auth.service";
-import {OutfitsListComponent} from "../../components/outfits/outfits-list/outfits-list.component";
-import {OutfitsFormComponent} from "../../components/outfits/outfits-form/outfits-form.component";
+import { CollectionsListComponent } from '../../components/collections/collections-list/collections-list.component';
 import {FormBuilder, Validators} from "@angular/forms";
-import {ICategory, IClothing, IClothingType, IOutfit, IUser} from "../../interfaces";
-import {
-    OutfitsAddClothingFormComponent
-} from "../../components/outfits/outfits-form/outfits-add-clothing-form/outfits-add-clothing-form.component";
+import {IClothing, ICollection} from "../../interfaces";
 import {ClothingService} from "../../services/clothing.service";
 import { SearchComponent } from '../../components/search/search.component';
-
+import { CollectionsFormComponent } from '../../components/collections/collections-form/collections-form.component';
+import { CollectionsService } from '../../services/collections.service';
+import { CollectionsAddOutfitsFormComponent } from '../../components/collections/collections-form/collections-add-outfit-form/collections-add-outfits-form.component';
 @Component({
-  selector: 'app-outfits',
+  selector: 'app-collections',
   standalone: true,
-    imports: [
-        ClothingListComponent,
+  imports: [ClothingListComponent,
         LoaderComponent,
         ModalComponent,
         PaginationComponent,
         PrendasFormComponent,
         NgClass,
-        OutfitsListComponent,
-        OutfitsFormComponent,
-        OutfitsAddClothingFormComponent,
-        SearchComponent
-    ],
-  templateUrl: './outfits.component.html',
-  styleUrl: './outfits.component.scss'
+        CollectionsListComponent,
+        CollectionsFormComponent,
+        SearchComponent,
+        CollectionsAddOutfitsFormComponent],
+  templateUrl: './collections.component.html',
+  styleUrl: './collections.component.scss'
 })
-export class OutfitsComponent implements OnInit{
-    public outfitsService: OutfitsService = inject(OutfitsService);
+export class CollectionsComponent implements OnInit{
+    public collectionsService: CollectionsService = inject(CollectionsService);
     public clothingService: ClothingService = inject(ClothingService);
     public ModalService: ModalService = inject(ModalService);
     public AuthService: AuthService = inject(AuthService);
-    outfitRandomData:IOutfit[]=[];
+    outfitRandomData:ICollection[]=[];
     private injector = inject(Injector);
-    outfits: IOutfit[] = [];
-    filteredOutfits: IOutfit[] = [];
+    collections: ICollection[] = [];
+    filteredCollections: ICollection[] = [];
 
 
 
@@ -69,12 +64,12 @@ export class OutfitsComponent implements OnInit{
     }
     //FIN - METODOS Y VARIABLES PARA EL SUBMODAL
 
-    //Prendas a agregar al outfitManual
-    manualOutfitClothing: IClothing[] = [];
+    //Prendas a agregar al collectionManual
+    manualCollectionClothing: IClothing[] = [];
 
-    @ViewChild('AddOutfitModal')
+    @ViewChild('AddCollectionModal')
     public fb: FormBuilder = inject(FormBuilder);
-    outfitForm = this.fb.group({
+    collectionForm = this.fb.group({
         name: ['', Validators.required],
         clothing: ['', Validators.required],
         user: this.AuthService.getUser()
@@ -91,8 +86,8 @@ export class OutfitsComponent implements OnInit{
 
         runInInjectionContext(this.injector, () => {
             effect(() => {
-              this.outfits = this.outfitsService.outfit$();
-              this.filteredOutfits = [...this.outfits];
+              this.collections = this.collectionsService.collection$();
+              this.filteredCollections = [...this.collections];
             });
           });
           this.clothingService.getAllByUser();
@@ -100,7 +95,7 @@ export class OutfitsComponent implements OnInit{
 
 
     onSearchTermChanged(searchTerm: string): void {
-        this.filteredOutfits = this.outfits.filter(item =>
+        this.filteredCollections = this.collections.filter(item =>
             item.name?.toLowerCase().includes(searchTerm)
         );
     }
@@ -118,16 +113,16 @@ export class OutfitsComponent implements OnInit{
 
     callGet() {
         if (this.getBy == 'all') {
-            this.outfitsService.getAllByUser();
+            this.collectionsService.getAllByUser();
             this.optionSelected = 'Tipo';
 
         } else if (this.getBy == 'favorite') {
-            this.outfitsService.getAllFavoritesByUser();
+            this.collectionsService.getAllFavoritesByUser();
             this.optionSelected = 'Tipo';
             
 
         } else {
-            this.outfitsService.getAllByType(this.getBy);
+            this.collectionsService.getAllByType(this.getBy);
             this.optionSelected = this.capitalizeAndReplace(this.getBy);
         }
     }
@@ -138,57 +133,21 @@ export class OutfitsComponent implements OnInit{
         return formattedText.charAt(0).toUpperCase() + formattedText.slice(1).toLowerCase();
     }
 
-    saveOutfit(outfit: IOutfit) {
-        outfit.user.id = this.AuthService.getUser()?.id;
-        this.outfitsService.save(outfit);
-        this.ModalService.closeAll();
+    saveCollection(collection: ICollection) {
+        collection.user.id = this.AuthService.getUser()?.id;
+        this.collectionsService.save(collection);
     }
 
     toggleAddClothingModal() {
         this.isAddClothingModalActive = !this.isAddClothingModalActive;
     }
 
-    public setClotingAddToOutfit(clothing: IClothing[]) {
-        this.manualOutfitClothing = clothing;
+    public setClotingAddToCollection(clothing: IClothing[]) {
+        this.manualCollectionClothing = clothing;
     }
 
     refreshClothingContext() {
-        this.manualOutfitClothing = []
+        this.manualCollectionClothing = []
     }
 
-    callGetOutfitByUserRandom(): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.outfitsService.getOutfitByUserRandom().subscribe({
-                next: (response) => {
-                    resolve(response.data);
-                },
-                error: (err) => {
-                    console.error("Error", err);
-                    reject(err);
-                }
-            });
-        });
-    }
-
-    setIsFavorite(outfit: IOutfit) {
-        console.log(outfit)
-        if (outfit.isFavorite) {
-            this.outfitsService.isFavorite(outfit, true, this.getBy);
-        } else {
-            this.outfitsService.isFavorite(outfit, false, this.getBy);
-        }
-    }
-
-    setIsPublic(outfit: IOutfit) {
-        console.log(outfit);
-
-        console.log(outfit.isPublic);
-        if (outfit.isPublic) {
-            console.log('enter ispublic if');
-            this.outfitsService.isPublic(outfit, true);
-        } else {
-            console.log('enter ispublic else');
-            this.outfitsService.isPublic(outfit, false);
-        }
-    }
 }

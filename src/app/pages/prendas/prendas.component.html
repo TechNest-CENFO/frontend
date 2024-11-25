@@ -31,7 +31,12 @@
                                 <li><a class="dropdown-item" (click)="setGetBy('ACCESORIO')">Accesorio</a></li>
                             </ul>
                         </div>
+
+                        <app-search
+                            (searchTermChanged)="onSearchTermChanged($event)"
+                        />
                     </div>
+
                     <div>
                         <button [ngClass]="{'btn button-secondary':gridSelected, 'btn-custom': !gridSelected, 'me-4': true}"
                                 (click)="toggleGirdSelected()"><i class="bi bi-grid"></i></button>
@@ -39,6 +44,7 @@
                                 (click)="toggleGirdSelected()"><i class="bi bi-list-ul"></i></button>
                     </div>
                 </div>
+
                 <div class="col-12 px-4 mt-1">
                     <div class="custom-divider"></div>
                 </div>
@@ -55,7 +61,7 @@
             </div>
 
             <app-clothing-list
-                    [clothing]="clothingService.clothing$()"
+                    [clothing]="filteredClothing"
                     (callSetIsFav)="setIsFav($event)"
             />
 
@@ -69,9 +75,7 @@
         </div>
     </section>
 } @loading (minimum 1.5s) {
-    <app-loader
-
-    />
+    <app-loader/>
 }
 
 
@@ -79,15 +83,12 @@
     <app-modal [hideFooter]="true">
         <div>
             <app-prendas-form
-            [clothingForm]="clothingForm" (callSaveMethod)="saveClothing($event)"
-            [vclothingType]="clothingTypeData"
-
-
+                [clothingForm]="clothingForm"
+                (callSaveMethod)="saveClothing($event)"
+                [vclothingType]="clothingTypeData"
             />
-
         </div>
     </app-modal>
-
 </ng-template>
 
 

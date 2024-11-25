@@ -3,11 +3,11 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12 px-4 py-5 d-flex justify-content-between">
-                    <h2>Outfits</h2>
+                    <h2>Colecciones</h2>
                     <div>
                         <button class="btn button-tertiary me-4"><i class="bi bi-download"></i></button>
-                        <button (click)="ModalService.displayModal('lg', AddOutfitModal)" type="button"
-                                class="btn button-default"><i class="bi bi-plus-lg"></i> Agregar Outfit
+                        <button (click)="ModalService.displayModal('lg', AddCollectionModal)" type="button"
+                                class="btn button-default"><i class="bi bi-plus-lg"></i> Agregar Colección
                         </button>
                     </div>
                 </div>
@@ -54,25 +54,23 @@
             </div>
             <div class="row">
                 <div class="col-12 d-flex justify-content-between px-4 mt-4">
-                    <p class="info-quantity"><span class="text-bold">{{ outfitsService.outfit$().length }}</span>
-                        @if (this.outfitsService.outfit$().length > 1 || this.outfitsService.outfit$().length === 0) {
-                            <span> outfits</span>
+                    <p class="info-quantity"><span class="text-bold">{{ collectionsService.collection$().length }}</span>
+                        @if (this.collectionsService.collection$().length > 1 || this.collectionsService.collection$().length === 0) {
+                            <span> colecciones</span>
                         } @else {
-                            <span> outfit</span>
+                            <span> colección</span>
                         }</p>
                 </div>
             </div>
 
-            <app-outfits-list
-                    (callDeleteAction)="outfitsService.callDelete($event.id!)"
-                    (callSetIsFavorite)="setIsFavorite($event)"
-                    (callSetIsPublic)="setIsPublic($event)"
-                    [outfits]="filteredOutfits"
+            <app-collections-list
+                    (callDeleteAction)="collectionsService.callDelete($event.id!)"
+                    [collections]="filteredCollections"
             />
 
-            @if (outfitsService.outfit$().length) {
+            @if (collectionsService.collection$().length) {
                 <app-pagination
-                        [service]="outfitsService"
+                        [service]="collectionsService"
                         [customCall]="true"
                         (callCustomPaginationMethod)="this.callGet()"
                 />
@@ -80,14 +78,9 @@
 
         </div>
     </section>
-} <!--@loading (minimum 1.5s) {
-    <app-loader
-
-    />
 }
--->
 
-<ng-template #AddOutfitModal class="bg-primary">
+<ng-template #AddCollectionModal class="bg-primary">
     @if (!isAddClothingModalActive) {
         <app-modal
                 [hideFooter]="true"
@@ -95,10 +88,9 @@
                 [isAddClothingModalSelected]="isAddClothingModalActive"
         >
 
-            <app-outfits-form
-                    [outfitsForm]="outfitForm"
-                    [manualClothing]="manualOutfitClothing"
-                    (callSaveMethod)="saveOutfit($event)"
+            <app-collections-form
+                    [collectionsForm]="collectionForm"
+                    (callSaveMethod)="saveCollection($event)"
                     
                     (callSetIsAddClothingModalActive)="toggleAddClothingModal()"
                     (refreshClothingContext)="refreshClothingContext()"
@@ -111,11 +103,11 @@
                 (callSetIsAddClothingModalActive)="toggleAddClothingModal()"
                 [isAddClothingModalSelected]="isAddClothingModalActive"
         >
-            <app-outfits-add-clothing-form
+            <app-collections-add-outfits-form
                 [clothingList]="clothingService.clothing$()"
-                [selectedClothing] ="manualOutfitClothing"
+                [selectedClothing] ="manualCollectionClothing"
                 (getByValue)="setGetByOption($event)"
-                (callSetClothing)="setClotingAddToOutfit($event)"
+                (callSetClothing)="setClotingAddToCollection($event)"
                 (toggleAddClothingModal)="toggleAddClothingModal()"
             />
 
