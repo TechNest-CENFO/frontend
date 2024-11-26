@@ -153,4 +153,16 @@ export class OutfitsService extends BaseService<IOutfit> {
             }
         })
     }
+update(outfit: IOutfit) {
+    this.editCustomSource(`${outfit.id}`, outfit).subscribe({
+        next: (response: any) => {
+            this.notyfService.success('¡Tu outfit ha sido actualizado con éxito!');
+            this.getAllByUser();
+        },
+        error: (err: any) => {
+            console.error('error', err);
+            this.notyfService.error('Ha ocurrido un error al actualizar tu outfit.')
+        }
+    });
+  }
 }

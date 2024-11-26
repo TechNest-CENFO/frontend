@@ -1,9 +1,14 @@
-<form class="py-4 custom-pop-up">
+<form [formGroup]="outfitsEditForm" class="py-4 custom-pop-up">
     <div class="row">
         <div class="col-12 d-flex justify-content-center">
             <div class="d-flex align-items-center">
-                <a>Manual</a>
+                <a class="custom-underline me-3" [ngClass]="{'isActive': outfitCreationOption ==='manual'}"
+                    (click)="setOutfitCreationOption('manual')">Manual</a>
                 <div class="ms-2 p-1 dropdown">
+                    <button class="btn button-dropdown dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        {{ dropdownOptionSelected }}
+                    </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" (click)="setOutfitCreationOption('CASUAL')">Casual</a></li>
                         <li><a class="dropdown-item" (click)="setOutfitCreationOption('FORMAL')">Formal</a></li>
@@ -26,13 +31,13 @@
     <div class="row mt-5 mb-4">
         <div class="col-6">
             <div class="col-12 mb-2">
-                <label for="name"><small>Nombre de la prenda</small></label>
+                <label for="name"><small>Nombre del outfit</small></label>
             </div>
             <div class="col-12">
-                <input formControlName="name" type="text" class="form-control" id="name" placeholder="Nombre prenda">
+                <input formControlName="name" type="text" class="form-control" id="name"
+                    placeholder="Nombre del outfit">
             </div>
         </div>
-        
         <div class="col-6">
             <div class="col-12 mb-2">
                 <label for="dropdown-style"><small>Estilo <span class="fst-italic">(Opcional)</span></small></label>
@@ -42,25 +47,26 @@
                     <button
                         class="btn button-dropdown dropdown-toggle w-100 d-flex justify-content-between align-items-center"
                         type="button" data-bs-toggle="dropdown" aria-expanded="false">
-
+                        {{ outfitCategory }}
                     </button>
                     <ul class="dropdown-menu w-100">
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('CASUAL')">Casual</a></li>
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('FORMAL')">Formal</a></li>
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('SEMI_FORMAL')">Semi
+                        <li><a class="dropdown-item" (click)="setOutfitCategory('CASUAL')">Casual</a></li>
+                        <li><a class="dropdown-item" (click)="setOutfitCategory('FORMAL')">Formal</a></li>
+                        <li><a class="dropdown-item" (click)="setOutfitCategory('SEMI_FORMAL')">Semi
                                 Formal</a>
                         </li>
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('SPORTSWEAR')">Deportivo</a>
+                        <li><a class="dropdown-item" (click)="setOutfitCategory('DEPORTIVO')">Deportivo</a>
                         </li>
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('BEACHWEAR')">Playero</a></li>
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('TRAVEL')">Viaje</a></li>
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('FESTIVAL')">Festival</a></li>
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('STREETWEAR')">Callejero</a>
+                        <li><a class="dropdown-item" (click)="setOutfitCategory('PLAYERO')">Playero</a></li>
+                        <li><a class="dropdown-item" (click)="setOutfitCategory('VIAJE')">Viaje</a></li>
+                        <li><a class="dropdown-item" (click)="setOutfitCategory('FESTIVAL')">Festival</a></li>
+                        <li><a class="dropdown-item" (click)="setOutfitCategory('CALLEJERO')">Callejero</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
+        
     </div>
 
     <div class="row mb-5">
@@ -70,73 +76,40 @@
                     <label for="preview"><small>Previsualización</small></label>
                 </div>
                 <div class="card-custom shadow-sm d-flex justify-content-center align-items-center">
-                    <img id="preview" class="image-format"
-                        src="https://res.cloudinary.com/dklipon9i/image/upload/v1731214811/gojirajacket2_pnrrq8.webp"
-                        alt="preview-outfit-clothing">
+                    @if (previewImage == 'lottie') {
+                    <app-lottie-component [options]="lottie" class="lottie-format" data-aos="zoom-in"
+                        data-aos-duration="200" />
+                    } @else {
+                    <img id="preview" class="image-format" src="{{previewImage}}" alt="preview-outfit-clothing"
+                        data-aos="zoom-in-left" data-aos-duration="600">
+                    }
                 </div>
             </div>
         </div>
         <div class="col-6 d-flex align-items-center justify-content-center">
             <div class="row d-flex justify-content-center gap-3">
-
+                
                 <div class="col-12">
-                    <button class="btn button-secondary w-100" data-aos="zoom-in" data-aos-duration="200">
+                    <button class="btn button-secondary w-100" data-aos="zoom-in" data-aos-duration="200"
+                        (click)="callSetIsAddClothingModal()">
                         Agregar prendas
                     </button>
                 </div>
-
-                <div class="clothing-slot col-4 p-0">
-                    <ngx-dropzone (change)="onSelect($event)" class="dropzone h-100 w-100" data-aos="zoom-in"
-                        data-aos-duration="200">
-                        <ngx-dropzone-label><i class="bi bi-suitcase-lg-fill"></i></ngx-dropzone-label>
-                        <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files"
-                            [file]="f" [removable]="true" (removed)="onRemove(f)">
-                        </ngx-dropzone-image-preview>
-                    </ngx-dropzone>
+                @for (item of manualClothing; track $index) {
+                <div class="clothing-slot col-4 p-0 shadow-sm d-flex justify-content-center align-items-center mini-preview"
+                    (mouseenter)="loadPreview(item.imageUrl!)">
+                    <img src="{{item.imageUrl}}" class="image-format">
                 </div>
-                <div class="clothing-slot col-4 p-0">
-                    <ngx-dropzone (change)="onSelect($event)" class="dropzone h-100 w-100" data-aos="zoom-in"
-                        data-aos-duration="200" data-aos-delay="50">
-                        <ngx-dropzone-label><i class="bi bi-suitcase-lg-fill"></i></ngx-dropzone-label>
-                        <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files"
-                            [file]="f" [removable]="true" (removed)="onRemove(f)">
-                        </ngx-dropzone-image-preview>
-                    </ngx-dropzone>
-                </div>
-                <div class="clothing-slot col-4 p-0">
-                    <ngx-dropzone (change)="onSelect($event)" class="dropzone h-100 w-100" data-aos="zoom-in"
-                        data-aos-duration="200" data-aos-delay="100">
-                        <ngx-dropzone-label><i class="bi bi-suitcase-lg-fill"></i></ngx-dropzone-label>
-                        <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files"
-                            [file]="f" [removable]="true" (removed)="onRemove(f)">
-                        </ngx-dropzone-image-preview>
-                    </ngx-dropzone>
-                </div>
-                <div class="clothing-slot col-4 p-0">
-                    <ngx-dropzone (change)="onSelect($event)" class="dropzone h-100 w-100" data-aos="zoom-in"
-                        data-aos-duration="200" data-aos-delay="150">
-                        <ngx-dropzone-label><i class="bi bi-suitcase-lg-fill"></i></ngx-dropzone-label>
-                        <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files"
-                            [file]="f" [removable]="true" (removed)="onRemove(f)">
-                        </ngx-dropzone-image-preview>
-                    </ngx-dropzone>
-                </div>
-                <div class="clothing-slot col-4 p-0">
-                    <ngx-dropzone (change)="onSelect($event)" class="dropzone h-100 w-100" data-aos="zoom-in"
-                        data-aos-duration="200" data-aos-delay="200">
-                        <ngx-dropzone-label><i class="bi bi-suitcase-lg-fill"></i></ngx-dropzone-label>
-                        <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files"
-                            [file]="f" [removable]="true" (removed)="onRemove(f)">
-                        </ngx-dropzone-image-preview>
-                    </ngx-dropzone>
-                </div>
+                }
+                
+                
             </div>
         </div>
     </div>
 
     <div class="row">
         <div class="col-12 d-flex justify-content-center align-items-center">
-            <button type="submit" class="btn button-default">Guardar
+            <button type="submit" class="btn button-default" (click)="callUpdate()"><i class="bi bi-floppy"></i> Guardar
             </button>
         </div>
     </div>
