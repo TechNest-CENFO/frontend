@@ -14,6 +14,7 @@ import { PrendasComponent } from './pages/prendas/prendas.component';
 import {OutfitsComponent} from "./pages/outfits/outfits.component";
 import {NotFoundComponent} from "./components/not-found/not-found.component";
 import { CollectionsComponent } from './pages/collections/collections.component';
+import { LoansComponent } from './pages/loans/loans.component';
 
 export const routes: Routes = [
   {
@@ -141,7 +142,7 @@ export const routes: Routes = [
       },
       {
         path: 'prestamos',
-        component: OutfitsComponent,
+        component: LoansComponent,
         data: { 
           authorities: [
             IRoleType.admin, 

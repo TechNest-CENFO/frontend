@@ -1,0 +1,93 @@
+@defer {
+    <section id="clothing-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 px-4 py-5 d-flex justify-content-between">
+                    <h2>Préstamos</h2>
+                    <div>
+                        <button class="btn button-tertiary me-4"><i class="bi bi-download"></i></button>
+                        <button (click)="ModalService.displayModal('md', AddClothingModal)" (click)="getAllTypeClothing()"  type="button"
+                                class="btn button-default"><i class="bi bi-plus-lg"></i> Agregar Prenda
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-between px-4">
+                    <div class="d-flex align-items-center">
+                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='all'}" (click)="setGetBy('all')">Todos</a>
+                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='favorite'}" (click)="setGetBy('favorite')">Favoritos</a>
+                        <div class="ms-2 p-1 dropdown">
+                            <button class="btn button-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                {{ optionSelected }}
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" (click)="setGetBy('UPPER')">Superiores</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('BOTTOM')">Inferiores</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('OUTWEAR')">Exteriores</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('FOOTWEAR')">Calzado</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('FULL_BODY')">Cuerpo Entero</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('ACCESSORY')">Accesorios</a></li>
+                            </ul>
+                        </div>
+
+                        <app-search
+                            (searchTermChanged)="onSearchTermChanged($event)"
+                        />
+                    </div>
+
+                    <div>
+                        <button [ngClass]="{'btn button-secondary':gridSelected, 'btn-custom': !gridSelected, 'me-4': true}"
+                                (click)="toggleGirdSelected()"><i class="bi bi-grid"></i></button>
+                        <button [ngClass]="{'btn button-secondary':!gridSelected, 'btn-custom': gridSelected}"
+                                (click)="toggleGirdSelected()"><i class="bi bi-list-ul"></i></button>
+                    </div>
+                </div>
+
+                <div class="col-12 px-4 mt-1">
+                    <div class="custom-divider"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-between px-4 mt-4">
+                    <p class="info-quantity"><span class="text-bold">{{ loansService.clothing$().length }}</span>
+                        @if (this.loansService.clothing$().length > 1 || this.loansService.clothing$().length === 0) {
+                            <span> prendas</span>
+                        } @else {
+                            <span> prenda</span>
+                        }</p>
+                </div>
+            </div>
+
+            <app-clothing-list
+                     [clothing]="filteredClothing"
+            />
+
+            @if (loansService.clothing$().length) {
+                <app-pagination
+                        [service]="loansService"
+                        [customCall]="true"
+                        (callCustomPaginationMethod)="this.callGet()"
+                />
+            }
+        </div>
+    </section>
+} @loading (minimum 1.5s) {
+    <app-loader/>
+}
+
+
+<ng-template #AddClothingModal>
+    <app-modal [hideFooter]="true">
+        <div>
+            <app-prendas-form
+                [clothingForm]="clothingForm"
+                (callSaveMethod)="saveClothing($event)"
+                [vclothingType]="clothingTypeData"
+            />
+        </div>
+    </app-modal>
+</ng-template>
+
+
