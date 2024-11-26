@@ -16,11 +16,12 @@
                         <li><a class="dropdown-item" (click)="setOutfitCreationOption('FORMAL')">Formal</a></li>
                         <li><a class="dropdown-item" (click)="setOutfitCreationOption('SEMI_FORMAL')">Semi Formal</a>
                         </li>
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('SPORTSWEAR')">Deportivo</a></li>
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('BEACHWEAR')">Playero</a></li>
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('TRAVEL')">Viaje</a></li>
+                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('DEPORTIVO')">Deportivo</a></li>
+                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('PLAYERO')">Playero</a></li>
+                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('VIAJE')">Viaje</a></li>
                         <li><a class="dropdown-item" (click)="setOutfitCreationOption('FESTIVAL')">Festival</a></li>
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('STREETWEAR')">Callejero</a></li>
+                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('CALLEJERO')">Callejero</a></li>
+                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('OTRO')">Otro</a></li>
                     </ul>
                 </div>
             </div>
@@ -72,9 +73,11 @@
         } @else {
             <div class="col-6 d-flex align-items-end">
                 <div class="col-12">
-                  
-                    <button class="btn button-secondary w-100" data-aos="zoom-in" data-aos-duration="200" (click)="getOutfitRandom()"><i class="bi bi-stars"></i> Generar</button>
-                  
+
+                    <button class="btn button-secondary w-100" data-aos="zoom-in" data-aos-duration="200"
+                            (click)="getOutfit()"><i class="bi bi-stars"></i> Generar
+                    </button>
+
                 </div>
             </div>
         }
@@ -119,14 +122,20 @@
                             <img src="{{item.imageUrl}}" class="image-format">
                         </div>
                     }
+                } @else if (outfitCreationOption === 'random') {
+                    @for (item of outfitsRandom; track $index) {
+                        <div class="clothing-slot col-4 p-0 shadow-sm d-flex justify-content-center align-items-center mini-preview"
+                             (mouseenter)="loadPreview(item.imageUrl!)">
+                            <img src="{{item.imageUrl}}" class="image-format">
+                        </div>
+                    }
                 } @else {
-                         @if (outfitCreationOption==='random') {
-                          @for (item of outfitsRandom; track $index){
-                            <div class="clothing-slot col-4 p-0 shadow-sm d-flex justify-content-center align-items-center mini-preview" (mouseenter)="loadPreview(item.imageUrl!)">
+                        @for (item of outfitByCategory?.clothing; track $index) {
+                            <div class="clothing-slot col-4 p-0 shadow-sm d-flex justify-content-center align-items-center mini-preview"
+                                 (mouseenter)="loadPreview(item.imageUrl!)">
                                 <img src="{{item.imageUrl}}" class="image-format">
                             </div>
                         }
-                    }
                 }
             </div>
         </div>
