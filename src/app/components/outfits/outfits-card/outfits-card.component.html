@@ -7,31 +7,46 @@
             <span class="slider round"></span>
         </label>
         <i class="ms-2 bi" [ngClass]="outfit.isPublic ? 'bi-eye' : 'bi-eye-slash'"
-            title="{{ outfit.isPublic ? 'Público' : 'Privado' }}" style="cursor: pointer;" (click)="toggleIsPublic()"></i>
+            title="{{ outfit.isPublic ? 'Público' : 'Privado' }}" style="cursor: pointer;"
+            (click)="toggleIsPublic()"></i>
     </div>
 
 </div>
-
 
 <div class="card-custom shadow-sm">
     <div class="w-100 h-100 d-flex justify-content-center align-items-center">
         <img src="{{this.outfit.imageUrl}}" class="image-format" alt="clothing-image">
     </div>
-        <button (click)="modalService.displayModal('md', EditOutfitModal)">
-            <i class="bi bi-pencil-square edit"></i>
-        </button>
+    <button (click)="modalService.displayModal('lg', AddOutfitModal)">
+        <i class="bi bi-pencil-square edit"></i>
+    </button>
 
     <button (click)="toggleIsFav()">
         <i [class]="isFav ? 'bi bi-star-fill favourite filled' : 'bi bi-star favourite'"></i>
     </button>
-        <button (click)="modalService.displayModal('md', DeleteOutfitModal)"><i
-                class="bi bi-trash3 custom-icon delete"></i></button>
+    <button (click)="modalService.displayModal('md', DeleteOutfitModal)"><i
+            class="bi bi-trash3 custom-icon delete"></i></button>
 </div>
 
-<ng-template #EditOutfitModal>
-    <app-modal [hideFooter]="true">
-        <app-outfits-edit [outfit]="outfit"></app-outfits-edit>
+<ng-template #AddOutfitModal class="bg-primary">
+    @if (!isAddClothingModalActive) {
+    <app-modal [hideFooter]="true" (callSetIsAddClothingModalActive)="toggleAddClothingModal()"
+        [isAddClothingModalSelected]="isAddClothingModalActive">
+
+        <app-outfits-edit [outfit]="outfit" [manualClothing]="manualOutfitClothing"
+            (callSetIsAddClothingModalActive)="toggleAddClothingModal()"
+            (refreshClothingContext)="refreshClothingContext()"  />
+
     </app-modal>
+    } @else {
+    <app-modal [hideFooter]="true" (callSetIsAddClothingModalActive)="toggleAddClothingModal()"
+        [isAddClothingModalSelected]="isAddClothingModalActive">
+        <app-outfits-add-clothing-form [clothingList]="clothingService.clothing$()"
+            [selectedClothing]="manualOutfitClothing" (getByValue)="setGetByOption($event)"
+            (callSetClothing)="setClotingAddToOutfit($event)" (toggleAddClothingModal)="toggleAddClothingModal()" />
+
+    </app-modal>
+    }
 </ng-template>
 
 
