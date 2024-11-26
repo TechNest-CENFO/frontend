@@ -97,6 +97,7 @@ export interface IClothing {
   isPublic?: boolean;
   clothingType?:IClothingType;
   imageUrl?:string;
+  categories?:ICategory[];
   //Para cambiar el estado en el modal mas facil. No viaja hacia el endpoint
   isSelectedInSubModal?: boolean;
   isClothingItemActive?: boolean
