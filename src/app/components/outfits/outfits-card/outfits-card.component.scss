@@ -118,3 +118,25 @@ input:checked+.slider {
 input:checked+.slider:before {
     transform: translateX(14px);
 }
+
+swiper-container::part(bullet-active){
+    background-color: vcloset-color(accent-default);
+}
+
+swiper-container::part(button-next){
+    color: darkgray;
+    width: 15%;
+    height: 15%;
+    &:hover{
+        color: gray;
+    }
+}
+
+swiper-container::part(button-prev){
+    color: darkgray;
+    width: 15%;
+    height: 15%;
+    &:hover{
+        color: dimgrey;
+    }
+}

@@ -1,4 +1,4 @@
-<form [formGroup]="deleteClothingConfirmationForm" class="row">
+<form [formGroup]="deleteClothingConfirmationForm" class="row delete-container">
     <div>
       <h2>Eliminar Prenda</h2>
     </div>
@@ -6,8 +6,8 @@
        <p>¿Está seguro que desea eliminar la prenda?</p>
     </div>
       
-    <div class="d-flex justify-content-end">
-      <button (click)="handleDelete()" class="btn btn-outline-primary mx-3" type="button">Sí</button>
+    <div class="d-flex btn-container ">
+      <button (click)="handleDelete()" class="btn btn-outline-primary" type="button">Sí</button>
       <button (click)="closeModal()" class="btn button-default" type="button">No</button>
     </div>
   </form>

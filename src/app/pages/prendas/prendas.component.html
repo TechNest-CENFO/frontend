@@ -23,15 +23,20 @@
                                 {{ optionSelected }}
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" (click)="setGetBy('UPPER')">Superiores</a></li>
-                                <li><a class="dropdown-item" (click)="setGetBy('BOTTOM')">Inferiores</a></li>
-                                <li><a class="dropdown-item" (click)="setGetBy('OUTWEAR')">Exteriores</a></li>
-                                <li><a class="dropdown-item" (click)="setGetBy('FOOTWEAR')">Calzado</a></li>
-                                <li><a class="dropdown-item" (click)="setGetBy('FULL_BODY')">Cuerpo Entero</a></li>
-                                <li><a class="dropdown-item" (click)="setGetBy('ACCESSORY')">Accesorios</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('SUPERIOR')">Superior</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('INFERIOR')">Inferior</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('ABRIGO')">Exterior</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('CALZADO')">Calzado</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('CUERPO_COMPLETO')">Cuerpo Completo</a></li>
+                                <li><a class="dropdown-item" (click)="setGetBy('ACCESORIO')">Accesorio</a></li>
                             </ul>
                         </div>
+
+                        <app-search
+                            (searchTermChanged)="onSearchTermChanged($event)"
+                        />
                     </div>
+
                     <div>
                         <button [ngClass]="{'btn button-secondary':gridSelected, 'btn-custom': !gridSelected, 'me-4': true}"
                                 (click)="toggleGirdSelected()"><i class="bi bi-grid"></i></button>
@@ -39,6 +44,7 @@
                                 (click)="toggleGirdSelected()"><i class="bi bi-list-ul"></i></button>
                     </div>
                 </div>
+
                 <div class="col-12 px-4 mt-1">
                     <div class="custom-divider"></div>
                 </div>
@@ -55,7 +61,8 @@
             </div>
 
             <app-clothing-list
-                    [clothing]="clothingService.clothing$()"
+                    [clothing]="filteredClothing"
+                    (callSetIsFav)="setIsFav($event)"
             />
 
             @if (clothingService.clothing$().length) {
@@ -68,25 +75,20 @@
         </div>
     </section>
 } @loading (minimum 1.5s) {
-    <app-loader
-
-    />
+    <app-loader/>
 }
 
 
 <ng-template #AddClothingModal>
     <app-modal [hideFooter]="true">
         <div>
-            <app-prendas-form 
-            [clothingForm]="clothingForm" (callSaveMethod)="saveClothing($event)" 
-            [vclothingType]="clothingTypeData" 
-            
-                        
+            <app-prendas-form
+                [clothingForm]="clothingForm"
+                (callSaveMethod)="saveClothing($event)"
+                [vclothingType]="clothingTypeData"
             />
-
         </div>
     </app-modal>
-
 </ng-template>
 
 

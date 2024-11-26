@@ -1,0 +1,14 @@
+<div class="w-100 d-flex justify-content-center align-items-center text-card-format mb-2">
+    {{item.name}}
+</div>
+<div class="card-format" (click)="toggleIsSelected()">
+    <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+        <img src="{{item.imageUrl}}" alt="clothing-image" class="image-format">
+    </div>
+    <div class="d-flex justify-content-center align-items-center" [class]='!this.item.isSelectedInSubModal? "card-checkbox" : "card-checkbox-active"'>
+        @if(!this.item.isSelectedInSubModal){
+        } @else {
+            <i class="bi bi-check-lg check-color"></i>
+        }
+    </div>
+</div>
