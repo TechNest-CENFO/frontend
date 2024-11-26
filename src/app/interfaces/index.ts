@@ -116,7 +116,7 @@ export interface IOutfit{
   isPublic?: boolean;
   isFavorite?: boolean;
   category?:ICategory;
-  user:IUser;
+  user?:IUser;
   imageUrl?:string;
   isDeleted?: boolean;
 }

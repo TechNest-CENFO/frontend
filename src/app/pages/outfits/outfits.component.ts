@@ -139,7 +139,10 @@ export class OutfitsComponent implements OnInit{
     }
 
     saveOutfit(outfit: IOutfit) {
-        outfit.user.id = this.AuthService.getUser()?.id;
+        if (outfit.user) {
+            outfit.user.id = this.AuthService.getUser()?.id;
+        }
+        console.log(outfit);
         this.outfitsService.save(outfit);
         this.ModalService.closeAll();
     }
