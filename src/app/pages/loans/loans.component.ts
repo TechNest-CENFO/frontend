@@ -1,5 +1,4 @@
 import { ClothingTypeService } from './../../services/clothing-type.service';
-import {AuthService} from './../../services/auth.service';
 import {Component, effect, inject, Injector, OnInit, runInInjectionContext, ViewChild} from '@angular/core';
 import {ModalService} from './../../services/modal.service';
 import {PrendasFormComponent} from "../../components/loans/prendas-form/prendas-form.component";
@@ -27,7 +26,7 @@ import { LoansService } from '../../services/loans.service';
         PaginationComponent,
         SearchComponent,
         ClothingCardComponent,
-        CommonModule
+        CommonModule,
     ],
     templateUrl: './loans.component.html',
     styleUrls: ['./loans.component.scss']
@@ -36,8 +35,7 @@ export class LoansComponent implements OnInit {
     public loansService: LoansService = inject(LoansService);
     public clothtingTypeService: ClothingTypeService = inject(ClothingTypeService);
     public ModalService: ModalService = inject(ModalService);
-    public AuthService: AuthService = inject(AuthService);
-  
+
     @ViewChild('AddClothingModal')
     public fb: FormBuilder = inject(FormBuilder);
     clothingForm = this.fb.group({
@@ -95,10 +93,8 @@ export class LoansComponent implements OnInit {
 
 
     getAllTypeClothing(): void {
-        // Llamamos a getAll() y al Observable para obtener los datos
         this.clothtingTypeService.getAll().subscribe({
             next: (response) => {
-                // Accedemos a los datos y los almacenamos en la propiedad clothingTypeData
                 this.clothingTypeData = response.data;
             },
             error: (err) => {

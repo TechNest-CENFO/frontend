@@ -1,5 +1,5 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { IClothing, IClothingType } from '../../../interfaces';
+import { IClothing, IClothingType, IUser } from '../../../interfaces';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { UploadService } from '../../../services/upload.service';
 import { CommonModule } from '@angular/common';
@@ -31,6 +31,7 @@ export class ClothingEditComponent implements OnInit {
   @Input() clothing!: IClothing;
   @Input() disabled: boolean = true;
 
+  associatedUser?: IUser;
   uniqueTypes: string[] = [];
   filteredItems: string[] = [];
   selectedType: string = '';
@@ -109,6 +110,7 @@ export class ClothingEditComponent implements OnInit {
 
     if (this.clothing) {
       this.initializeForm();
+      this.associatedUser = this.clothing.user;
     }
 
     //carga la imagen que contiene actualmente clothing

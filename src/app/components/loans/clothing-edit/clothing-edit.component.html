@@ -4,11 +4,14 @@
     </div>
 
     <div class="loan-profile">
-        <img style="border-radius: 100px; object-fit: cover;" width="150px" height="150px" src="agregarImagenDelUser"/>
-        <span class="mt-3">Lakshminarayana Kuruva</span>
+        <img
+            style="border-radius: 100px; object-fit: cover;"
+            width="150px"
+            height="150px"
+            src="{{associatedUser?.picture}}"/>
+        <span class="mt-3">{{ associatedUser?.name }} {{ associatedUser?.lastname }}</span>
     
     </div>
-
 
     <div class="rate mb-3 px-0 rating-container">
         <input type="radio" id="star5" name="rate" value="5" />
@@ -31,7 +34,7 @@
     <!-- Botón de envío -->
     <div class="justify-content-center">
     <button type="button"
-        class="btn col-md-4">Enviar</button>
+        class="btn col-md-4">Enviar Solicitud</button>
     </div>
 
 </form>

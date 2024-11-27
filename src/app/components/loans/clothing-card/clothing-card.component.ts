@@ -1,5 +1,5 @@
 import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
-import {IClothing, IClothingType} from "../../../interfaces";
+import {IClothing, IClothingType, IUser} from "../../../interfaces";
 import {ModalService} from '../../../services/modal.service';
 import {ModalComponent} from '../../modal/modal.component';
 import {ClothingEditComponent} from '../clothing-edit/clothing-edit.component';
@@ -7,13 +7,18 @@ import {
     ClothingDeleteConfirmationComponent
 } from '../clothing-delete-confirmation/clothing-delete-confirmation.component';
 import {ClothingTypeService} from '../../../services/clothing-type.service';
-import { ProfileService } from '../../../services/profile.service';
-import { UserService } from '../../../services/user.service';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
     selector: 'app-clothing-card',
     standalone: true,
-    imports: [ModalComponent, ClothingEditComponent, ClothingDeleteConfirmationComponent],
+    imports: [
+        ModalComponent,
+        ClothingEditComponent,
+        ClothingDeleteConfirmationComponent,
+        CommonModule
+    ],
     templateUrl: './clothing-card.component.html',
     styleUrl: './clothing-card.component.scss'
 })
@@ -22,15 +27,17 @@ export class ClothingCardComponent implements OnInit{
     @Output() callEditAction: EventEmitter<IClothing> = new EventEmitter<IClothing>();
     @Output() setIsFav: EventEmitter<IClothing> = new EventEmitter<IClothing>();
     public modalService: ModalService = inject(ModalService);
-    public userService: UserService = inject(UserService);
+    associatedUser?: IUser; 
 
     public clothingTypeService: ClothingTypeService = inject(ClothingTypeService);
     clothingTypeData: IClothingType[] = []; // Almacenar los datos de los tipos de prendas
 
     ngOnInit(){
             this.isFav! = this.clothing.isFavorite!;
-        console.log(this.userService.users$)
-        
+
+            if (this.clothing.user) {
+              this.associatedUser = this.clothing.user;
+            }
     }
 
     isFav?: boolean;
