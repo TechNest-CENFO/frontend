@@ -6,7 +6,7 @@ import {NgxDropzoneModule} from 'ngx-dropzone';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import Aos from "aos";
 import {LottieComponentComponent} from "../../../pages/lottie-component/lottie-component.component";
-import { OutfitsComponent } from '../../../pages/outfits/outfits.component';
+import {OutfitsComponent} from '../../../pages/outfits/outfits.component';
 
 @Component({
     selector: 'app-outfits-form',
@@ -21,7 +21,7 @@ export class OutfitsFormComponent {
     @Input() outfitsForm!: FormGroup;
     @Input() manualClothing?: IClothing[];
     @Output() callSaveMethod = new EventEmitter<IOutfit>();
-    
+
     @Output() callUpdateMethod = new EventEmitter<IOutfit>();
     @Output() callSetIsAddClothingModalActive = new EventEmitter<unknown>();
     //Refrescar el contexto de prendas al cambiar el tipo de creacion
@@ -49,11 +49,14 @@ export class OutfitsFormComponent {
         autoplay: true
     };
 
-    outfitsRandom?:IClothing[] = [];
+    outfitsRandom?: IClothing[] = [];
+
+    outfitByCategory?: IOutfit;
 
     constructor(private _uploadService: UploadService,
-        private _outfitsComponent : OutfitsComponent
-    ) {}
+                private _outfitsComponent: OutfitsComponent
+    ) {
+    }
 
     ngOnInit() {
         Aos.init();
@@ -112,15 +115,78 @@ export class OutfitsFormComponent {
         const formattedText = text.replace(/_/g, ' ');
         return formattedText.charAt(0).toUpperCase() + formattedText.slice(1).toLowerCase();
     }
-    
+
+    getOutfit(){
+        if(this.outfitCreationOption==='random') {
+            console.log(this.outfitCreationOption);
+            this.getOutfitRandom();
+        } else {
+            console.log(this.outfitCreationOption);
+            this.generateOutfitByCategory(this.outfitCreationOption);
+        }
+    }
     async getOutfitRandom() {
         try {
             // Esperamos a que la promesa devuelta por callGetOutfitByUserRandom se resuelva
-            this.outfitsRandom = await this._outfitsComponent.callGetOutfitByUserRandom(); 
+            this.outfitsRandom = await this._outfitsComponent.callGetOutfitByUserRandom();
             console.log("Outfits capturados:", this.outfitsRandom);
             // Ahora puedes usar la variable `outfits` que contiene la lista de outfits
         } catch (error) {
             console.error("Error al obtener los outfits", error);
+        }
+    }
+
+    public getRandomItem<T>(array: T[]): T {
+        const randomIndex = Math.floor(Math.random() * array.length);
+        return array[randomIndex];
+    }
+
+    public generateOutfitByCategory(categoryName: string) {
+        this._outfitsComponent.clothingService.getAllByUser();
+        this.manualClothing = this._outfitsComponent.clothingService.clothing$()
+        const filteredByCategory: IClothing[] = this.manualClothing!.filter(c =>
+            c.categories?.some(cat => cat.name === categoryName)
+        );
+        console.log(filteredByCategory);
+        if (filteredByCategory.length) {
+            const byUpper: IClothing[] = filteredByCategory.filter(c => c.clothingType?.type == 'SUPERIOR');
+            const byBottom: IClothing[] = filteredByCategory.filter(c => c.clothingType?.type == 'INFERIOR');
+            const byOuter: IClothing[] = filteredByCategory.filter(c => c.clothingType?.type == 'ABRIGO');
+            const byFootwear: IClothing[] = filteredByCategory.filter(c => c.clothingType?.type == 'CALZADO');
+            const byFullBody: IClothing[] = filteredByCategory.filter(c => c.clothingType?.type == 'CUERPO_COMPLETO');
+            const byAccessory: IClothing[] = filteredByCategory.filter(c => c.clothingType?.type == 'ACCESORIO');
+
+            const values: number[] = [1,2];
+
+            const outfit:IOutfit={
+                name: '',
+                user: this._outfitsComponent.AuthService.getUser()!,
+                clothing: []
+            }
+
+            if (byUpper.length && byBottom.length && byFootwear.length) {
+                if (byFullBody.length) {
+                    if (this.getRandomItem(values) == 1) {
+                        outfit.clothing.push(this.getRandomItem(byBottom));
+                    } else {
+                        outfit.clothing.push(this.getRandomItem(byFullBody));
+                    }
+                    if (this.getRandomItem(values) == 1) {
+                        outfit.clothing.push(this.getRandomItem(byUpper));
+                    } else {
+                        if (!outfit.clothing.some(c=> c.clothingType?.type == 'CUERPO_COMPLETO')){
+                            outfit.clothing.push(this.getRandomItem(byFullBody));
+                        }
+                    }
+                } else {
+                    outfit.clothing.push(this.getRandomItem(byBottom));
+                }
+                outfit.clothing.push(this.getRandomItem(byFootwear));
+            }
+
+
+            this.outfitByCategory = outfit;
+            console.log(this.outfitByCategory)
         }
     }
 
@@ -147,10 +213,15 @@ export class OutfitsFormComponent {
             outfit.clothing = this.manualClothing;
         }
 
-        if(this.outfitsRandom?.length) {
+        if (this.outfitsRandom?.length) {
             outfit.clothing = this.outfitsRandom;
         }
-        if(outfit.id) {
+
+        if (this.outfitByCategory?.clothing.length) {
+            outfit.clothing = this.outfitByCategory.clothing;
+        }
+
+        if (outfit.id) {
             this.callUpdateMethod.emit(outfit);
         } else {
             this.callSaveMethod.emit(outfit);
