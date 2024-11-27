@@ -1,0 +1,24 @@
+<div class="collage-container">
+  <!-- Area to display draggable images -->
+  <div class="image-gallery">
+    <div
+      *ngFor="let image of imageList"
+      class="gallery-item"
+      draggable="true"
+      (dragstart)="onDragStart($event, image)"
+    >
+      <img width="200" height="200" [src]="image.url" alt="Draggable Image" />
+    </div>
+  </div>
+
+  <!-- Collage area for dropping images -->
+  <div
+    class="collage-area"
+    (drop)="onDrop($event)"
+    (dragover)="onDragOver($event)"
+  >
+    <canvas #canvas width="800" height="600"></canvas> <!-- Collage Canvas -->
+    
+  </div>
+  <button (click)="saveCollage()">Save Collage</button>
+</div>
