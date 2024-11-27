@@ -100,7 +100,8 @@ export interface IClothing {
   categories?:ICategory[];
   //Para cambiar el estado en el modal mas facil. No viaja hacia el endpoint
   isSelectedInSubModal?: boolean;
-  isClothingItemActive?: boolean
+  isClothingItemActive?: boolean;
+  user?: IUser;
 }
 
 export interface IClothingType {

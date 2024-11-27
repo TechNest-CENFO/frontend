@@ -23,7 +23,6 @@ export class BaseService<T> {
   }
 
   public getOutfitRandom(customUrlSource: string): Observable<IResponse<T[]>> {
-    console.log("customUrlSource", `${this.source}/${customUrlSource}`)
     return this.http.get<IResponse<T[]>>(`${this.source}/${customUrlSource}`);
   }
 
