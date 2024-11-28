@@ -22,7 +22,7 @@ export class BaseService<T> {
     return this.http.get<IResponse<T[]>>(this.source);
   }
 
-  public getOutfitRandom(customUrlSource: string): Observable<IResponse<T[]>> {
+  public getCustomUrl(customUrlSource: string): Observable<IResponse<T[]>> {
     return this.http.get<IResponse<T[]>>(`${this.source}/${customUrlSource}`);
   }
 

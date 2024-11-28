@@ -138,3 +138,12 @@ export interface ICollection{
   imageUrl?:string;
   isDeleted?: boolean;
 }
+
+export interface IWeather{
+  lon?: string;
+  lat?: string;
+  id?: string;
+  main?: string;
+  feels_like?: string;
+  description?:string;
+  name?:string;

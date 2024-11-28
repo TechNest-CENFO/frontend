@@ -6,3 +6,8 @@ import {register as registerSwiperElements} from 'swiper/element/bundle';
 registerSwiperElements();
 bootstrapApplication(AppComponent, appConfig)
   .catch((err) => console.error(err));
+
+  if(!navigator.geolocation){
+    console.error("Navegador no soporta la Geolocalización");
+    throw new Error("Navegador no soporta la Geolocalización")
+  }
