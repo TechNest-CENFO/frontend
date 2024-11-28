@@ -30,7 +30,7 @@ export class ClothingCardComponent implements OnInit{
     associatedUser?: IUser; 
 
     public clothingTypeService: ClothingTypeService = inject(ClothingTypeService);
-    clothingTypeData: IClothingType[] = []; // Almacenar los datos de los tipos de prendas
+    clothingTypeData: IClothingType[] = [];
 
     ngOnInit(){
             this.isFav! = this.clothing.isFavorite!;

@@ -1,18 +1,8 @@
 @import "../../../../assets/functions/functions.scss";
 @import "../../../../assets/variables/variables.scss";
 
-
-
 ul li{
   list-style: none;
-}
-
-.card-custom{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-self: center;
-  align-content: center;
 }
 
 .btn{
@@ -28,12 +18,13 @@ ul li{
   margin: 2em 0;
 }
 
-// rating
-
-*{
-  margin: 0;
-  padding: 0;
+.card-body{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
+// rating
 .rate {
   float: left;
   height: 46px;

@@ -195,7 +195,7 @@ export class LoansService extends BaseService<IClothing> {
 
 
     getAllPublicClothingLongPagination() {
-        this.findAllWithParamsAndCustomSource(`public`, {
+        this.findAllWithParamsAndCustomSource(`${this.authService.getUser()?.id}/public`, {
             page: this.searchExtended.page,
             size: this.searchExtended.size
         }).subscribe({
