@@ -147,3 +147,4 @@ export interface IWeather{
   feels_like?: string;
   description?:string;
   name?:string;
+}
