@@ -34,22 +34,21 @@ export class WeatherServiceTEst extends BaseService<IWeather>{
 
   
 
-    getWeatherWithLatAndLong(lat:string, lon:string): Observable<IResponse<any>>{
-        console.log("weatherservice");
-        console.log("lat", lat);
-        console.log("lon", lon);
+    getWeatherWithLatAndLong(lat:string, lon:string){
         //getOutfitRandom
-        this.getCustomUrl(`${lat}/${lon}`).subscribe({
-            next: async (response: any) => {
-                await this.weatherSubject.next(response.data);
-            },
-            error: (err) => {
-                this.alertService.displayAlert('error', 'An error occurred deleting the user','center', 'top', ['error-snackbar']);
-            }
-        });
+        if(lat !=="" ){
 
+            this.getCustomUrl(`${lat}/${lon}`).subscribe({
+                next: async (response: any) => {
+                    this.weatherSubject.next(response.data);
+                },
+                error: (err) => {
+                    this.alertService.displayAlert('error', err,'center', 'top', ['error-snackbar']);
+                }
+    
+            });
 
-        return this.http.get<IResponse<any>>(`${this.source}/${lat}/${lon}`);
+        }        
         
     }
 
