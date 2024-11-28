@@ -1,3 +1,5 @@
+@import "../../../assets/variables/variables.scss";
+
 body {
     color: #fff;
     overflow-x: hidden;
@@ -41,4 +43,14 @@ body {
 .right-align {
     margin-left: auto;
     margin-right: 0;
-  }
+}
+
+.input-group-text{
+    background-color: $accent-disabled;
+    color: $accent-default;
+    border: 1px solid $accent-hovered;
+}
+
+.form-control{
+    border-color: $accent-hovered;
+}
