@@ -30,7 +30,7 @@ export class DashboardComponent implements OnInit {
   public weatherService: WeatherServiceTEst = inject(WeatherServiceTEst)
   private _placesService:PlacesService = inject(PlacesService);
 
-  ngOnInit(): void {    
+  ngOnInit(): void {   
     
     this.getLocation();   
     this.getWeatherBylatAndlon(); 

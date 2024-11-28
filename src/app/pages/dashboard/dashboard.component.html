@@ -1,9 +1,31 @@
 <div>
-    <h1> Clima</h1>
-
+    <div class="px-4 py-5 d-flex justify-content-between">
+        <h1> Clima</h1>
+    </div>
+    
     <form>
-        <input type="text" name="cityName" [(ngModel)]="city">
-        <button type="button" class="btn button-default" (click)="getWeather()">Obtener clima</button>
+        <div class="row">
+            <div class="col-5 offset-3">
+                <div class="input-group mx-5">
+                    <div class="input-group-prepend">
+   
+                    </div>
+                        <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Buscar..."
+                        aria-label="Search"
+                        name="cityName"
+                        [(ngModel)]="city"
+                        
+                    />
+                    <button type="button" class="btn button-default" style="margin-left: 50px;" (click)="getWeather()">Obtener clima</button>
+                </div>
+                
+            </div>
+
+        </div>
+        
     </form>
 
 </div>
