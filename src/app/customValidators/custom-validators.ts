@@ -1,6 +1,6 @@
 export class CustomValidators{
     //La contraseña no es nula, o en blanco 
-    static passwordIsNull(value:string):boolean{
+    static passwordIsNull(value:string |null|undefined):boolean{
         let isValid = true;
         if (value === null || value === undefined || value === "") {
             isValid = false;

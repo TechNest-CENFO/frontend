@@ -73,8 +73,7 @@ export class OutfitsService extends BaseService<IOutfit> {
 
 
     getOutfitByUserRandom(): Observable<IResponse<any[]>> {
-        console.log(this.authService.getUser()?.id);
-        return this.getOutfitRandom(`${this.authService.getUser()?.id}/random`);
+	return this.getCustomUrl(`${this.authService.getUser()?.id}/random`);
     }
 
     save(outfit: IOutfit) {
