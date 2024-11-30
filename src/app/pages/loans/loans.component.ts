@@ -74,7 +74,7 @@ export class LoansComponent implements OnInit {
               this.filteredClothing = [...this.clothing];
             });
           });
-          this.loansService.getAllPublicClothingLongPagination();
+          this.loansService.getAllPublicClothing();
     }
 
 

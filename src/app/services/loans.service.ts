@@ -1,6 +1,6 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {BaseService} from './base-service';
-import {IClothing, IClothingType, IResponse, ISearch} from '../interfaces';
+import {IClothing, IClothingType, ILoan, IResponse, ISearch} from '../interfaces';
 import {AuthService} from './auth.service';
 import {AlertService} from './alert.service';
 import {Observable} from 'rxjs';
@@ -13,8 +13,14 @@ export class LoansService extends BaseService<IClothing> {
 
     protected override source: string = 'clothing';
     private clothingListSignal = signal<IClothing[]>([]);
+    private loanListSignal = signal<ILoan[]>([]);
+
 
     get clothing$() {
+        return this.clothingListSignal;
+    }
+
+    get loan$() {
         return this.clothingListSignal;
     }
 
@@ -194,19 +200,36 @@ export class LoansService extends BaseService<IClothing> {
     }
 
 
-    getAllPublicClothingLongPagination() {
+    getAllPublicClothing() {
         this.findAllWithParamsAndCustomSource(`${this.authService.getUser()?.id}/public`, {
-            page: this.searchExtended.page,
-            size: this.searchExtended.size
+            page: this.search.page,
+            size: this.search.size
         }).subscribe({
             next: (response: any) => {
-                this.searchExtended = {...this.searchExtended, ...response.meta};
-                this.totalItems = Array.from({length: this.searchExtended.totalPages ? this.searchExtended.totalPages : 0}, (_, i) => i + 1);
+                this.search = {...this.search, ...response.meta};
+                this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
                 this.clothingListSignal.set(response.data);
             },
             error: (err: any) => {
                 console.error('error', err);
                 this.notyfService.error('Ha ocurrido un error al cargas las prendas.')
+            }
+        });
+    }
+
+
+    requestClothingItem(loan : ILoan) {
+        console.log('EN EL LOAN SERVICE!!!!!!', loan)
+        this.http.post(`loan/request`, loan).subscribe({
+            next: (response: any) => {
+                this.search = {...this.search, ...response.meta};
+           //     this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
+                this.loanListSignal.set(response.data);
+                this.notyfService.success('Se ha solicitado la prenda exitosamente.')
+            },
+            error: (err: any) => {
+                console.error('error', err);
+                this.notyfService.error('Ha ocurrido un error al solicitar la prenda.')
             }
         });
     }

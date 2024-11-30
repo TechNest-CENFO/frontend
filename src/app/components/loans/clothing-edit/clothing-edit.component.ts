@@ -1,11 +1,12 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { IClothing, IClothingType, IUser } from '../../../interfaces';
+import { IClothing, IClothingType, ILoan, IUser } from '../../../interfaces';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { UploadService } from '../../../services/upload.service';
 import { CommonModule } from '@angular/common';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { ClothingService } from '../../../services/clothing.service';
 import { ModalService } from '../../../services/modal.service';
+import { LoansService } from '../../../services/loans.service';
 
 @Component({
   selector: 'app-clothing-edit',
@@ -24,6 +25,7 @@ export class ClothingEditComponent implements OnInit {
   private _uploadService: UploadService = inject(UploadService);
   private clothingService: ClothingService = inject(ClothingService)
   private modalService: ModalService = inject(ModalService)
+  private loanService: LoansService = inject(LoansService);
   public fb: FormBuilder = inject(FormBuilder);
 
   @Input() clothingEditForm!: FormGroup;
@@ -190,5 +192,26 @@ export class ClothingEditComponent implements OnInit {
 
   onRemove(event: any){
     this.files.splice(this.files.indexOf(event), 1);
+  }
+
+
+  requestClothingItem(){
+   let loan: ILoan =   {
+      isItemBorrowed: false,
+      lenderScore: 4,
+      loanerScore: 5,
+      clothing: {
+        id: 9
+      },
+      lenderUser: {
+        id: 5
+      },
+      loanerUser: {
+        id: 1
+      }
+    }
+
+    this.loanService.requestClothingItem(loan)
+    this.modalService.closeAll();
   }
 }
