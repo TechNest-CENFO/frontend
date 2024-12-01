@@ -168,7 +168,7 @@ export class RecommendationsComponent implements OnInit{
 
     callGetOutfitByUserRandom(): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.outfitsService.getOutfitByUserRandom(this.weatherData.feels_like).subscribe({
+            this.outfitsService.getOutfitByUserRandom(this.weatherData.feels_like ?? '22').subscribe({
                 next: (response) => {
                     resolve(response.data);
                 },
