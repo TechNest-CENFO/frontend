@@ -9,7 +9,7 @@ import { AlertService } from "./alert.service";
     providedIn:'root'
 })
 
-export class WeatherServiceTEst extends BaseService<IWeather>{
+export class WeatherService extends BaseService<IWeather>{
     private weatherSubject = new BehaviorSubject<any>(null); 
     protected override source: string  = 'weather';
     public foundWeather: IWeather = {};
@@ -35,9 +35,8 @@ export class WeatherServiceTEst extends BaseService<IWeather>{
   
 
     getWeatherWithLatAndLong(lat:string, lon:string){
-        //getOutfitRandom
+        
         if(lat !=="" ){
-
             this.getCustomUrl(`${lat}/${lon}`).subscribe({
                 next: async (response: any) => {
                     this.weatherSubject.next(response.data);
@@ -45,7 +44,6 @@ export class WeatherServiceTEst extends BaseService<IWeather>{
                 error: (err) => {
                     this.alertService.displayAlert('error', err,'center', 'top', ['error-snackbar']);
                 }
-    
             });
 
         }        

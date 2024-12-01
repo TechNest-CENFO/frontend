@@ -3,9 +3,10 @@ import { PlacesService } from './../../services/places.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { WeatherServiceTEst } from '../../services/weather.service';
 import { IWeather } from '../../interfaces';
-import { firstValueFrom, lastValueFrom } from 'rxjs';
+import { WeatherService } from '../../services/weather.service';
+
+
 
 @Component({
   selector: 'app-dashboard',
@@ -27,11 +28,14 @@ export class DashboardComponent implements OnInit {
 
   public militaryTime!:string;
   public formattedDate!:string ;
-  public weatherService: WeatherServiceTEst = inject(WeatherServiceTEst)
+  public weatherService: WeatherService = inject(WeatherService)
   private _placesService:PlacesService = inject(PlacesService);
+ 
+   
 
-  ngOnInit(): void {   
-    
+
+  constructor(){}
+  ngOnInit(): void {       
     this.getLocation();   
     this.getWeatherBylatAndlon(); 
     this.formattedDate=this.getFormattedDate();
@@ -51,7 +55,6 @@ export class DashboardComponent implements OnInit {
           if (data) {
             this.weatherData = data;
             this.imageUrl=this.getImageForWeather(Number(this.weatherData.id));
-       
           }
         }
       });
@@ -114,7 +117,6 @@ export class DashboardComponent implements OnInit {
     this.lat = this.location[1].toString();
     this.lon = this.location[0].toString();
     this.getWeatherBylatAndlon();
-
     
   }
 

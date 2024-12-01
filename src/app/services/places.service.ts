@@ -20,8 +20,7 @@ export class PlacesService{
     public async getUserLocation(): Promise<[number,number]>{
         return new Promise ((resolve, reject)=>{
             navigator.geolocation.getCurrentPosition(                
-                ({ coords }) => {
-                    console.log(coords.longitude, coords.latitude);
+                ({ coords }) => {                    
                     this.useLocation = [coords.longitude, coords.latitude];
                     resolve(this.useLocation);
                 },
@@ -38,5 +37,5 @@ export class PlacesService{
     }
     
 
-    //`
+    
 }
