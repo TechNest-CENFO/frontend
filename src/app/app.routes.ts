@@ -15,6 +15,10 @@ import {OutfitsComponent} from "./pages/outfits/outfits.component";
 import {NotFoundComponent} from "./components/not-found/not-found.component";
 import { CollectionsComponent } from './pages/collections/collections.component';
 import { LoansComponent } from './pages/loans/loans.component';
+import { RecommendationsComponent } from './pages/recommendations/recommendations.component';
+import { ReportsComponent } from './pages/reports/reports.component';
+
+
 
 export const routes: Routes = [
   {
@@ -128,7 +132,7 @@ export const routes: Routes = [
       },
       {
         path: 'recomendaciones',
-        component: OutfitsComponent,
+        component: RecommendationsComponent,
         data: { 
           authorities: [
             IRoleType.admin, 
@@ -156,7 +160,7 @@ export const routes: Routes = [
       },
       {
         path: 'reportes',
-        component: OutfitsComponent,
+        component: ReportsComponent,
         data: {
           authorities: [
             IRoleType.admin, 

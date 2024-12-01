@@ -14,6 +14,7 @@ export class OutfitsService extends BaseService<IOutfit> {
     protected override source: string = 'outfit';
     private outfitListSignal = signal<IOutfit[]>([]);
     ModalService: any;
+    
 
     get outfit$() {
         return this.outfitListSignal;
@@ -71,9 +72,12 @@ export class OutfitsService extends BaseService<IOutfit> {
 
     }
 
-
-    getOutfitByUserRandom(): Observable<IResponse<any[]>> {
-	return this.getCustomUrl(`${this.authService.getUser()?.id}/random`);
+    getOutfitByUserRandom(temp:string): Observable<IResponse<any[]>> {
+        if(temp === undefined || temp === ""){
+            temp = '22';
+        }
+        console.log("outfitserviceRamdon", temp);  
+	    return this.getCustomUrl(`${this.authService.getUser()?.id}/${temp}/random`);
     }
 
     save(outfit: IOutfit) {

@@ -20,7 +20,6 @@ import { SearchComponent } from '../../components/search/search.component';
 import { PlacesService } from '../../services/places.service';
 import { WeatherService } from '../../services/weather.service';
 
-
 @Component({
   selector: 'app-outfits',
   standalone: true,
@@ -33,10 +32,10 @@ import { WeatherService } from '../../services/weather.service';
         OutfitsAddClothingFormComponent,
         SearchComponent
     ],
-  templateUrl: './outfits.component.html',
-  styleUrl: './outfits.component.scss'
+  templateUrl: './recommendations.component.html',
+  styleUrl: './recommendations.component.scss'
 })
-export class OutfitsComponent implements OnInit{
+export class RecommendationsComponent implements OnInit{
     public outfitsService: OutfitsService = inject(OutfitsService);
     public clothingService: ClothingService = inject(ClothingService);
     public ModalService: ModalService = inject(ModalService);
@@ -52,6 +51,8 @@ export class OutfitsComponent implements OnInit{
     lat:string = '';
     lon:string ='';
     weatherData!: IWeather;
+
+
 
     //INICIO - METODOS Y VARIABLES PARA EL SUBMODAL
     //Variable para parametrizar la busqueda de prendas desde el submodal
@@ -100,10 +101,9 @@ export class OutfitsComponent implements OnInit{
             });
           });
           this.clothingService.getAllByUser();
-          this.getLocation(); 
-          
     }
-  
+
+
     onSearchTermChanged(searchTerm: string): void {
         this.filteredOutfits = this.outfits.filter(item =>
             item.name?.toLowerCase().includes(searchTerm)
@@ -113,7 +113,9 @@ export class OutfitsComponent implements OnInit{
 
 
     setGetBy(category: string) {
-        this.getBy = category;
+        console.log("setGetBy")
+        this.optionSelected=category; 
+      
         this.callGet();
     }
 
@@ -122,13 +124,13 @@ export class OutfitsComponent implements OnInit{
     }
 
     callGet() {
-        if (this.getBy == 'all') {
+        if (this.getBy == 'weekly') {            
             this.outfitsService.getAllByUser();
-            this.optionSelected = 'Tipo';
+            this.optionSelected = 'Semanal';
 
-        } else if (this.getBy == 'favorite') {
+        } else if (this.getBy == 'Tendencias') {
             this.outfitsService.getAllFavoritesByUser();
-            this.optionSelected = 'Tipo';
+            this.optionSelected = 'Tendencias';
             
 
         } else {
@@ -165,7 +167,7 @@ export class OutfitsComponent implements OnInit{
     }
 
     callGetOutfitByUserRandom(): Promise<any> {
-        return new Promise((resolve, reject) => {           
+        return new Promise((resolve, reject) => {
             this.outfitsService.getOutfitByUserRandom(this.weatherData.feels_like ?? '22').subscribe({
                 next: (response) => {
                     resolve(response.data);
@@ -200,7 +202,6 @@ export class OutfitsComponent implements OnInit{
         }
     }
 
-
     public async getLocation(): Promise<void> {
         await this._placesService.getUserLocation();
         this.location = this._placesService.getLocation();
@@ -227,6 +228,4 @@ export class OutfitsComponent implements OnInit{
         }
        
       }
-
-   
 }
