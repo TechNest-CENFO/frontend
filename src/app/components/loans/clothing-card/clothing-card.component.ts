@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {IClothing, IClothingType, IUser} from "../../../interfaces";
 import {ModalService} from '../../../services/modal.service';
 import {ModalComponent} from '../../modal/modal.component';
@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
     templateUrl: './clothing-card.component.html',
     styleUrl: './clothing-card.component.scss'
 })
-export class ClothingCardComponent implements OnInit{
+export class ClothingCardComponent implements OnChanges{
     @Input() clothing!: IClothing;
     @Output() callEditAction: EventEmitter<IClothing> = new EventEmitter<IClothing>();
     public modalService: ModalService = inject(ModalService);
@@ -24,7 +24,7 @@ export class ClothingCardComponent implements OnInit{
 
     clothingTypeData: IClothingType[] = [];
 
-    ngOnInit(){
+    ngOnChanges(){
             if (this.clothing.user) {
               this.associatedUser = this.clothing.user;
             }

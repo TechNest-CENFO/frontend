@@ -1,17 +1,16 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {BaseService} from './base-service';
-import {IClothing, IClothingType, ILoan, IResponse, ISearch} from '../interfaces';
+import {IClothing, ILoan, IResponse, ISearch} from '../interfaces';
 import {AuthService} from './auth.service';
-import {AlertService} from './alert.service';
-import {catchError, map, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {NotyfService} from "./notyf.service";
 
 @Injectable({
     providedIn: 'root'
 })
-export class LoansService extends BaseService<IClothing> {
+export class LoansService extends BaseService<IClothing>{
 
-    protected override source: string = 'clothing';
+    protected override source: string = 'loan';
     private clothingListSignal = signal<IClothing[]>([]);
     private loanListSignal = signal<ILoan[]>([]);
 
@@ -36,21 +35,8 @@ export class LoansService extends BaseService<IClothing> {
 
     public totalItems: any = [];
     private authService: AuthService = inject(AuthService);
-    private alertService: AlertService = inject(AlertService);
     private notyfService: NotyfService = inject(NotyfService);
 
-    save(clothing: IClothing) {
-        this.addCustomSource(`user/${this.authService.getUser()?.id}`, clothing).subscribe({
-            next: (response: any) => {
-                this.notyfService.success('¡Tu prenda ha sido agregada exitosamente!');
-
-                this.getAllByUser();
-            },
-            error: (err: any) => {
-                this.notyfService.error('Ha ocurrido un error al agregar la prenda.');
-            }
-        });
-    }
 
     getAll(): Observable<IResponse<IClothing[]>> {
         return this.findAllTypes();
@@ -59,7 +45,8 @@ export class LoansService extends BaseService<IClothing> {
 
     ngOnInit() {
         this.getAll();
-        this.getAllByUser();
+        this.getAllPublicClothing();
+        this.getMyRequests();
     }
 
     getAllByUser() {
@@ -78,140 +65,7 @@ export class LoansService extends BaseService<IClothing> {
             }
         });
     }
-
-    getAllFavoritesByUser() {
-        this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/clothing/isFavorite`, {
-            page: this.search.page,
-            size: this.search.size
-        }).subscribe({
-            next: (response: any) => {
-                this.search = {...this.search, ...response.meta};
-                this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
-                this.clothingListSignal.set(response.data);
-            },
-            error: (err: any) => {
-                console.error('error', err);
-                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
-            }
-        });
-    }
-
-    getAllByType(type: string) {
-        this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/clothing/${type}`, {
-            page: this.search.page,
-            size: this.search.size
-        }).subscribe({
-            next: (response: any) => {
-                this.search = {...this.search, ...response.meta};
-                this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
-                this.clothingListSignal.set(response.data);
-            },
-            error: (err: any) => {
-                console.error('error', err);
-                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
-            }
-        });
-    }
-
-    getAllByUserLongPagination() {
-        this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/clothing`, {
-            page: this.searchExtended.page,
-            size: this.searchExtended.size
-        }).subscribe({
-            next: (response: any) => {
-                this.searchExtended = {...this.searchExtended, ...response.meta};
-                this.totalItems = Array.from({length: this.searchExtended.totalPages ? this.searchExtended.totalPages : 0}, (_, i) => i + 1);
-                this.clothingListSignal.set(response.data);
-            },
-            error: (err: any) => {
-                console.error('error', err);
-                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
-            }
-        });
-    }
-
-    getAllFavoritesByUserLongPagination() {
-        this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/clothing/isFavorite`, {
-            page: this.searchExtended.page,
-            size: this.searchExtended.size
-        }).subscribe({
-            next: (response: any) => {
-                this.searchExtended = {...this.searchExtended, ...response.meta};
-                this.totalItems = Array.from({length: this.searchExtended.totalPages ? this.searchExtended.totalPages : 0}, (_, i) => i + 1);
-                this.clothingListSignal.set(response.data);
-            },
-            error: (err: any) => {
-                console.error('error', err);
-                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
-            }
-        });
-    }
-
-    getAllByTypeLongPagination(type: string) {
-        this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/clothing/${type}`, {
-            page: this.searchExtended.page,
-            size: this.searchExtended.size
-        }).subscribe({
-            next: (response: any) => {
-                this.searchExtended = {...this.searchExtended, ...response.meta};
-                this.totalItems = Array.from({length: this.searchExtended.totalPages ? this.searchExtended.totalPages : 0}, (_, i) => i + 1);
-                this.clothingListSignal.set(response.data);
-            },
-            error: (err: any) => {
-                console.error('error', err);
-                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
-            }
-        });
-    }
-
-    delete(clothing: IClothing) {
-        this.delCustomSource(`${clothing.id}`)
-    }
-
-    deleteClothingItem(clothing : IClothing) {
-      const payload = { isClothingItemActive: clothing.isClothingItemActive };
   
-      this.http.patch(`clothing/delete/${clothing.id}`, payload).subscribe({
-        next: (response: any) => {
-          this.clothing$;
-          this.getAllByUser();
-          this.notyfService.success('¡Tu prenda ha sido eliminada!');
-        },
-        error: (err) =>{
-          console.error(err);
-          this.notyfService.error('Ha ocurrido un error al eliminar tu prenda.')
-        }
-      })
-    }
-  
-  
-    update(clothing : IClothing) {
-        this.http.put(`clothing/edit/user/${this.authService.getUser()?.id}/item/${clothing.id}`, clothing).subscribe({
-            next: (response: any) =>{
-                this.clothing$
-                this.getAllByUser();
-                this.notyfService.success('¡Tu prenda ha sido modificada exitosamente!');
-            },
-            error: (err) =>{
-                console.error(err);
-                this.notyfService.error('Ha ocurrido un error al actualizar tu prenda.')
-            }
-        })
-    }
-
-    getAllPublicClothing(): Observable<IClothing[]> {
-        return this.findAllWithParamsAndCustomSource(`${this.authService.getUser()?.id}/public`, {
-            page: this.search.page,
-            size: this.search.size
-        }).pipe(
-            map((response: any) => response.data),
-            catchError((error) => {
-                console.error('Error fetching public clothing:', error);
-                this.notyfService.error('Ha ocurrido un error al cargar las prendas públicas.');
-                return [];
-            })
-        );
-    }
 
 
     requestClothingItem(loan : ILoan) {
@@ -220,7 +74,6 @@ export class LoansService extends BaseService<IClothing> {
                 this.search = {...this.search, ...response.meta};
            //     this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
                 this.loanListSignal.set(response.data);
-                console.log(response.data)
                 this.notyfService.success('Se ha solicitado la prenda exitosamente.')
             },
             error: (err: any) => {
@@ -229,8 +82,76 @@ export class LoansService extends BaseService<IClothing> {
             }
         });
     }
+
+
+    getAllPublicClothing() {
+        this.findAllWithParamsAndCustomSource(`${this.authService.getUser()?.id}/public`, {
+            page: this.search.page,
+            size: this.search.size
+        }).subscribe({
+            next: (response: any) => {
+                this.search = {...this.search, ...response.meta};
+                this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
+                this.clothingListSignal.set(response.data);
+            },
+            error: (err: any) => {
+                console.error('error', err);
+                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
+            }
+        });
+    }
+
+    getMyRequests() {
+        this.findAllWithParamsAndCustomSource(`${this.authService.getUser()?.id}/my-requests`, {
+            page: this.search.page,
+            size: this.search.size
+        }).subscribe({
+            next: (response: any) => {
+                this.search = {...this.search, ...response.meta};
+                this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
+                this.clothingListSignal.set(response.data);
+            },
+            error: (err: any) => {
+                console.error('error', err);
+                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
+            }
+        });
+    }
+
+
+    getMyLoans() {
+        this.findAllWithParamsAndCustomSource(`${this.authService.getUser()?.id}/public`, {
+            page: this.search.page,
+            size: this.search.size
+        }).subscribe({
+            next: (response: any) => {
+                this.search = {...this.search, ...response.meta};
+                this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
+                this.clothingListSignal.set(response.data);
+            },
+            error: (err: any) => {
+                console.error('error', err);
+                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
+            }
+        });
+    }
+
+
+    getMyLends() {
+        this.findAllWithParamsAndCustomSource(`${this.authService.getUser()?.id}/public`, {
+            page: this.search.page,
+            size: this.search.size
+        }).subscribe({
+            next: (response: any) => {
+                this.search = {...this.search, ...response.meta};
+                this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
+                this.clothingListSignal.set(response.data);
+            },
+            error: (err: any) => {
+                console.error('error', err);
+                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
+            }
+        });
+    }
       
 }
-
-
-

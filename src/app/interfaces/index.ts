@@ -151,6 +151,7 @@ export interface IWeather{
 
 export interface ILoan{
   id?: number;
+  isItemRequested?: boolean;
   isItemBorrowed?: boolean;
   lenderScore?: number;
   loanerScore?: number;

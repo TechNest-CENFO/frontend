@@ -1,11 +1,8 @@
-import { ClothingTypeService } from './../../services/clothing-type.service';
-import {Component, inject, Injector, OnInit, ViewChild} from '@angular/core';
-import {ModalService} from './../../services/modal.service';
+import {Component, effect, inject, Injector, OnInit, runInInjectionContext} from '@angular/core';
 import {PrendasFormComponent} from "../../components/loans/prendas-form/prendas-form.component";
 import {ModalComponent} from "../../components/modal/modal.component";
-import {FormBuilder} from '@angular/forms';
 import {LoaderComponent} from '../../components/loader/loader.component';
-import {IClothing, IClothingType} from '../../interfaces';
+import {IClothing} from '../../interfaces';
 import {NgClass} from "@angular/common";
 import {ClothingListComponent} from "../../components/loans/clothing-list/clothing-list.component";
 import {PaginationComponent} from "../../components/pagination/pagination.component";
@@ -33,51 +30,29 @@ import { LoansService } from '../../services/loans.service';
 })
 export class LoansComponent implements OnInit {
     public loansService: LoansService = inject(LoansService);
-    public clothtingTypeService: ClothingTypeService = inject(ClothingTypeService);
-    public ModalService: ModalService = inject(ModalService);
+    private injector = inject(Injector);
 
-    @ViewChild('AddClothingModal')
-    public fb: FormBuilder = inject(FormBuilder);
-    clothingForm = this.fb.group({
-        name: [''],
-        isFavorite: [false],
-        isPublic: [false],
-        imageUrl: [''],
-        season: [''],
-        color: [''],
-        clothingTypeName: [''],
-        clothingSubType: [''],
-        clothingType: ['']
-    });
-    clothingTypeData: IClothingType[] = [];
     gridSelected: boolean = true;
     protected getBy: string = 'all';
     protected optionSelected: string = 'Tipo';
     searchTerm: string = '';
     filteredClothing: IClothing[] = [];
-    clothingList: IClothing[] = [];
     clothing: IClothing[] = [];
-    private injector = inject(Injector);
+    requestType: string = '';
 
-
-    constructor() {
-        this.getAllTypeClothing();
-    }
 
     ngOnInit(): void {
-        this.loansService.getAllPublicClothing().subscribe({
-            next: (publicClothing) => {
-                this.clothing = publicClothing;
-                this.filteredClothing = [...publicClothing];
-            },
-            error: (err) => {
-                console.error('Failed to fetch public clothing:', err);
-            }
-        });
-    
-      //  this.callGet();
+        runInInjectionContext(this.injector, () => {
+            effect(() => {
+              this.clothing = this.loansService.clothing$();
+              this.filteredClothing = [...this.clothing];
+            });
+          });
+          this.callGet();
     }
-    
+
+
+      
     searchClothing(searchTerm: string): void {
         if (!searchTerm.trim()) {
             this.filteredClothing = [...this.clothing];
@@ -97,47 +72,31 @@ export class LoansComponent implements OnInit {
     }
 
 
-    saveClothing(clothing: IClothing) {
-        this.loansService.save(clothing);
-        this.ModalService.closeAll();
-
-    }
-
-
-    getAllTypeClothing(): void {
-        this.clothtingTypeService.getAll().subscribe({
-            next: (response) => {
-                this.clothingTypeData = response.data;
-            },
-            error: (err) => {
-                err = "Ocurrió un error al cargar los datos.";
-            }
-        });
-    }
-
     callGet() {
         if (this.getBy == 'all') {
-            this.loansService.getAllByUser();
-            this.optionSelected = 'Tipo';
+            this.loansService.getAllPublicClothing();
+            this.requestType = 'all'
+       //     this.optionSelected = this.capitalizeAndReplace(this.getBy);
 
-        } else if (this.getBy == 'solicitudes') {
-            this.loansService.getAllFavoritesByUser();
-            this.optionSelected = this.capitalizeAndReplace(this.getBy);
-
+        } else if (this.getBy == 'requests') {
+            this.loansService.getMyRequests();
+            this.requestType = 'requests'
+      //      this.optionSelected = this.capitalizeAndReplace(this.getBy);
+     
         } else if (this.getBy == 'loans') {
-            this.loansService.getAllFavoritesByUser();
-            this.optionSelected = this.capitalizeAndReplace(this.getBy);
+            this.loansService.getMyLoans();
+             this.requestType = 'loans'
+      //      this.optionSelected = this.capitalizeAndReplace(this.getBy);
 
-        } else if(this.getBy == 'lends') {
-            this.loansService.getAllFavoritesByUser();
-            this.optionSelected = this.capitalizeAndReplace(this.getBy);
-            
         } else{
-            this.loansService.getAllByType(this.getBy);
-            this.optionSelected = this.capitalizeAndReplace(this.getBy);
-            
+            this.loansService.getMyLends();
+            this.requestType = 'lends'
+
+      //      this.optionSelected = this.capitalizeAndReplace(this.getBy);
+
         }
     }
+
 
     capitalizeAndReplace(text: string): string {
         if (!text) return '';
@@ -145,9 +104,11 @@ export class LoansComponent implements OnInit {
         return formattedText.charAt(0).toUpperCase() + formattedText.slice(1).toLowerCase();
     }
 
-    toggleGirdSelected() {
+
+    toggleGridSelected() {
         this.gridSelected = !this.gridSelected;
     }
+
 
     setGetBy(type: string) {
         this.getBy = type;

@@ -1,0 +1,109 @@
+@import "../../../../assets/functions/functions.scss";
+@import "../../../../assets/variables/variables.scss";
+
+
+.btn-outline-primary{
+    background-color: transparent;
+    border-color:$accent-hovered;
+    color:$accent-hovered;
+  
+    &:hover{
+      background-color: $accent-hovered;
+      color: #fff
+    }
+  }
+
+  .delete-container{
+    text-align: center;
+    padding: 1em;
+  }
+
+  .btn-container{
+    justify-content: center;
+    margin: 1em 0;
+    gap: 1em;
+
+    & button{
+      padding: 0.5em 3em;
+    }
+  }
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 250px;
+}
+
+.image-format {
+  max-width: 70%;
+  max-height: 70%;
+  margin: 2em 0;
+  object-fit: contain;
+}
+
+.card-custom {
+  width: 450px;
+  height: 470px;
+  border-radius: 1vmin;
+  position: relative;
+  background-color: white;
+
+  &:hover {
+    .image-format {
+      transition: transform 0.2s ease-in-out, max-width 0.2s ease-in-out, max-height 0.2s ease-in-out;
+      max-width: 75%;
+      max-height: 75%;
+    }
+  }
+}
+
+
+ul li{
+  list-style: none;
+}
+
+
+// rating
+.rate {
+  float: left;
+  height: 46px;
+  padding: 0 10px;
+}
+.rate:not(:checked) > input {
+  position:absolute;
+  top:-9999px;
+}
+.rate:not(:checked) > label {
+  float:right;
+  width:1em;
+  overflow:hidden;
+  white-space:nowrap;
+  cursor:pointer;
+  font-size:30px;
+  color:#ccc;
+}
+.rate:not(:checked) > label:before {
+  content: '★ ';
+}
+.rate > input:checked ~ label {
+  color: #ffc700;    
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+  color: #deb217;  
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+  color: #c59b08;
+}

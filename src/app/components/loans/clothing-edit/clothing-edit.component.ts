@@ -199,7 +199,6 @@ export class ClothingEditComponent implements OnInit {
 
   requestClothingItem(){
    let loan: ILoan =   {
-      isItemBorrowed: true,
       lenderScore: 4,
       loanerScore: 5,
       clothing: {
@@ -213,7 +212,7 @@ export class ClothingEditComponent implements OnInit {
       }
     }
 
-    this.loanService.requestClothingItem(loan)
+    this.loanService.requestClothingItem(loan);
     this.modalService.closeAll();
   }
 }

@@ -4,21 +4,15 @@
             <div class="row">
                 <div class="col-12 px-4 py-5 d-flex justify-content-between">
                     <h2>Préstamos</h2>
-                    <div>
-                        <button class="btn button-tertiary me-4"><i class="bi bi-download"></i></button>
-                        <button (click)="ModalService.displayModal('md', AddClothingModal)" (click)="getAllTypeClothing()"  type="button"
-                                class="btn button-default"><i class="bi bi-plus-lg"></i> Agregar Prenda
-                        </button>
-                    </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12 d-flex justify-content-between px-4">
                     <div class="d-flex align-items-center">
                         <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='all'}" (click)="setGetBy('all')">Todos</a>
-                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='solicitudes'}" (click)="setGetBy('favorite')">Mis Solicitudes</a>
-                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='loans'}" (click)="setGetBy('favorite')">Mis Préstamos</a>
-                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='lends'}" (click)="setGetBy('favorite')">Prendas Prestadas</a>
+                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='requests'}" (click)="setGetBy('requests')">Mis Solicitudes</a>
+                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='loans'}" (click)="setGetBy('loans')">Mis Préstamos</a>
+                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='lends'}" (click)="setGetBy('lends')">Prendas Prestadas</a>
                         
                         <app-search
                             (searchTermChanged)="onSearchTermChanged($event)"
@@ -27,9 +21,9 @@
 
                     <div>
                         <button [ngClass]="{'btn button-secondary':gridSelected, 'btn-custom': !gridSelected, 'me-4': true}"
-                                (click)="toggleGirdSelected()"><i class="bi bi-grid"></i></button>
+                                (click)="toggleGridSelected()"><i class="bi bi-grid"></i></button>
                         <button [ngClass]="{'btn button-secondary':!gridSelected, 'btn-custom': gridSelected}"
-                                (click)="toggleGirdSelected()"><i class="bi bi-list-ul"></i></button>
+                                (click)="toggleGridSelected()"><i class="bi bi-list-ul"></i></button>
                     </div>
                 </div>
 
@@ -50,6 +44,7 @@
 
             <app-clothing-list
                      [clothing]="filteredClothing"
+                     [type] = "requestType"
             />
 
             @if (loansService.clothing$().length) {
@@ -64,18 +59,3 @@
 } @loading (minimum 1.5s) {
     <app-loader/>
 }
-
-
-<ng-template #AddClothingModal>
-    <app-modal [hideFooter]="true">
-        <div>
-            <app-prendas-form
-                [clothingForm]="clothingForm"
-                (callSaveMethod)="saveClothing($event)"
-                [vclothingType]="clothingTypeData"
-            />
-        </div>
-    </app-modal>
-</ng-template>
-
-

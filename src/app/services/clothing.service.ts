@@ -1,8 +1,7 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {BaseService} from './base-service';
-import {IClothing, IClothingType, IResponse, ISearch} from '../interfaces';
+import {IClothing, IResponse, ISearch} from '../interfaces';
 import {AuthService} from './auth.service';
-import {AlertService} from './alert.service';
 import {Observable} from 'rxjs';
 import {NotyfService} from "./notyf.service";
 
@@ -30,7 +29,6 @@ export class ClothingService extends BaseService<IClothing> {
 
     public totalItems: any = [];
     private authService: AuthService = inject(AuthService);
-    private alertService: AlertService = inject(AlertService);
     private notyfService: NotyfService = inject(NotyfService);
 
     save(clothing: IClothing) {
