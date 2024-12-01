@@ -18,7 +18,7 @@ export class ReportsComponent implements  OnInit{
     public reportService: ReportsService = inject(ReportsService);
     counts: any[] = [];
     monthAndYear:string[] = [];
-    lineChart: Highcharts.Chart;
+    lineChart: Highcharts.Chart | undefined;
     active:Number=0;
     clothing:Number=0;
     outfit:Number=0;

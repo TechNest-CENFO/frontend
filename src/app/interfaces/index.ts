@@ -4,6 +4,10 @@ export interface ILoginResponse {
 }
 
 export interface IResponse<T> {
+  Active?: number;
+  Clothing?: number;
+  Outfit?: number;
+  Inactive?: number;
   data: T;
 }
 
