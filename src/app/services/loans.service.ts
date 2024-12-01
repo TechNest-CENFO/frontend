@@ -3,7 +3,7 @@ import {BaseService} from './base-service';
 import {IClothing, IClothingType, ILoan, IResponse, ISearch} from '../interfaces';
 import {AuthService} from './auth.service';
 import {AlertService} from './alert.service';
-import {Observable} from 'rxjs';
+import {catchError, map, Observable} from 'rxjs';
 import {NotyfService} from "./notyf.service";
 
 @Injectable({
@@ -199,22 +199,18 @@ export class LoansService extends BaseService<IClothing> {
         })
     }
 
-
-    getAllPublicClothing() {
-        this.findAllWithParamsAndCustomSource(`${this.authService.getUser()?.id}/public`, {
+    getAllPublicClothing(): Observable<IClothing[]> {
+        return this.findAllWithParamsAndCustomSource(`${this.authService.getUser()?.id}/public`, {
             page: this.search.page,
             size: this.search.size
-        }).subscribe({
-            next: (response: any) => {
-                this.search = {...this.search, ...response.meta};
-                this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
-                this.clothingListSignal.set(response.data);
-            },
-            error: (err: any) => {
-                console.error('error', err);
-                this.notyfService.error('Ha ocurrido un error al cargas las prendas.')
-            }
-        });
+        }).pipe(
+            map((response: any) => response.data),
+            catchError((error) => {
+                console.error('Error fetching public clothing:', error);
+                this.notyfService.error('Ha ocurrido un error al cargar las prendas públicas.');
+                return [];
+            })
+        );
     }
 
 

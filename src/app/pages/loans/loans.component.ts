@@ -1,5 +1,5 @@
 import { ClothingTypeService } from './../../services/clothing-type.service';
-import {Component, effect, inject, Injector, OnInit, runInInjectionContext, ViewChild} from '@angular/core';
+import {Component, inject, Injector, OnInit, ViewChild} from '@angular/core';
 import {ModalService} from './../../services/modal.service';
 import {PrendasFormComponent} from "../../components/loans/prendas-form/prendas-form.component";
 import {ModalComponent} from "../../components/modal/modal.component";
@@ -64,35 +64,26 @@ export class LoansComponent implements OnInit {
         this.getAllTypeClothing();
     }
 
-
     ngOnInit(): void {
-        this.callGet();
-    
-        // Configuramos el efecto reactivo.
-        runInInjectionContext(this.injector, () => {
-            effect(() => {
-                // Nos suscribimos a las prendas públicas cargadas del servicio.
-                const publicClothing = this.loansService.clothing$();
-                if (publicClothing) {
-                    this.clothing = publicClothing; // Almacenamos todas las prendas.
-                    this.filteredClothing = [...publicClothing]; // Copiamos para búsquedas.
-                }
-            });
+        this.loansService.getAllPublicClothing().subscribe({
+            next: (publicClothing) => {
+                this.clothing = publicClothing;
+                this.filteredClothing = [...publicClothing];
+            },
+            error: (err) => {
+                console.error('Failed to fetch public clothing:', err);
+            }
         });
     
-        // Llamamos una vez para cargar todas las prendas públicas.
-        this.loansService.getAllPublicClothing();
+      //  this.callGet();
     }
     
-    // Método de búsqueda para filtrar las prendas cargadas.
     searchClothing(searchTerm: string): void {
         if (!searchTerm.trim()) {
-            // Si no hay término de búsqueda, restauramos la lista completa.
             this.filteredClothing = [...this.clothing];
             return;
         }
     
-        // Filtramos prendas cuyo nombre coincida con el término de búsqueda.
         this.filteredClothing = this.clothing.filter((item) =>
             item.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
@@ -148,10 +139,9 @@ export class LoansComponent implements OnInit {
         }
     }
 
-    //Función para formatear string
     capitalizeAndReplace(text: string): string {
-        if (!text) return ''; // Manejo de valores vacíos o nulos
-        const formattedText = text.replace(/_/g, ' '); // Reemplaza '_' por espacios
+        if (!text) return '';
+        const formattedText = text.replace(/_/g, ' ');
         return formattedText.charAt(0).toUpperCase() + formattedText.slice(1).toLowerCase();
     }
 
