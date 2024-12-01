@@ -1,7 +1,9 @@
-<div class="card shadow-sm" style="width: 18rem; height: 462px;">
+<div class="card shadow-sm card-custom" style="width: 18rem; ">
   <div class="card-body">
-    <img class="card-img-top" src="{{this.clothing.imageUrl}}" alt="Card image cap">
-    <h5 class="card-title mb-3 ">{{ this.clothing.name }}</h5>
+    <div class="img-container">
+      <img class="image-format" src="{{this.clothing.imageUrl}}" alt="Card image cap">
+    </div>
+      <h5 class="card-title mb-3 ">{{ this.clothing.name }}</h5>
     <div class="card-text mb-1"
     *ngIf="associatedUser">
       <img

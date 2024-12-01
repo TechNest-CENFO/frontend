@@ -7,6 +7,7 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { ClothingService } from '../../../services/clothing.service';
 import { ModalService } from '../../../services/modal.service';
 import { LoansService } from '../../../services/loans.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-clothing-edit',
@@ -26,6 +27,7 @@ export class ClothingEditComponent implements OnInit {
   private clothingService: ClothingService = inject(ClothingService)
   private modalService: ModalService = inject(ModalService)
   private loanService: LoansService = inject(LoansService);
+  private authService: AuthService = inject(AuthService);
   public fb: FormBuilder = inject(FormBuilder);
 
   @Input() clothingEditForm!: FormGroup;
@@ -197,17 +199,17 @@ export class ClothingEditComponent implements OnInit {
 
   requestClothingItem(){
    let loan: ILoan =   {
-      isItemBorrowed: false,
+      isItemBorrowed: true,
       lenderScore: 4,
       loanerScore: 5,
       clothing: {
-        id: 9
+        id: this.clothing.id
       },
       lenderUser: {
-        id: 5
+        id: this.clothing.user?.id
       },
       loanerUser: {
-        id: 1
+        id: this.authService.getUser()?.id
       }
     }
 

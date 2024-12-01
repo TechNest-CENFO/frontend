@@ -21,7 +21,7 @@ export class LoansService extends BaseService<IClothing> {
     }
 
     get loan$() {
-        return this.clothingListSignal;
+        return this.loanListSignal;
     }
 
     public search: ISearch = {
@@ -219,12 +219,12 @@ export class LoansService extends BaseService<IClothing> {
 
 
     requestClothingItem(loan : ILoan) {
-        console.log('EN EL LOAN SERVICE!!!!!!', loan)
         this.http.post(`loan/request`, loan).subscribe({
             next: (response: any) => {
                 this.search = {...this.search, ...response.meta};
            //     this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
                 this.loanListSignal.set(response.data);
+                console.log(response.data)
                 this.notyfService.success('Se ha solicitado la prenda exitosamente.')
             },
             error: (err: any) => {

@@ -67,16 +67,37 @@ export class LoansComponent implements OnInit {
 
     ngOnInit(): void {
         this.callGet();
-
+    
+        // Configuramos el efecto reactivo.
         runInInjectionContext(this.injector, () => {
             effect(() => {
-              this.clothing = this.loansService.clothing$();
-              this.filteredClothing = [...this.clothing];
+                // Nos suscribimos a las prendas públicas cargadas del servicio.
+                const publicClothing = this.loansService.clothing$();
+                if (publicClothing) {
+                    this.clothing = publicClothing; // Almacenamos todas las prendas.
+                    this.filteredClothing = [...publicClothing]; // Copiamos para búsquedas.
+                }
             });
-          });
-          this.loansService.getAllPublicClothing();
+        });
+    
+        // Llamamos una vez para cargar todas las prendas públicas.
+        this.loansService.getAllPublicClothing();
     }
-
+    
+    // Método de búsqueda para filtrar las prendas cargadas.
+    searchClothing(searchTerm: string): void {
+        if (!searchTerm.trim()) {
+            // Si no hay término de búsqueda, restauramos la lista completa.
+            this.filteredClothing = [...this.clothing];
+            return;
+        }
+    
+        // Filtramos prendas cuyo nombre coincida con el término de búsqueda.
+        this.filteredClothing = this.clothing.filter((item) =>
+            item.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }
+    
 
     onSearchTermChanged(searchTerm: string): void {
         this.filteredClothing = this.clothing.filter(item =>
@@ -108,13 +129,22 @@ export class LoansComponent implements OnInit {
             this.loansService.getAllByUser();
             this.optionSelected = 'Tipo';
 
-        } else if (this.getBy == 'favorite') {
+        } else if (this.getBy == 'solicitudes') {
             this.loansService.getAllFavoritesByUser();
-            this.optionSelected = 'Tipo';
+            this.optionSelected = this.capitalizeAndReplace(this.getBy);
 
-        } else {
+        } else if (this.getBy == 'loans') {
+            this.loansService.getAllFavoritesByUser();
+            this.optionSelected = this.capitalizeAndReplace(this.getBy);
+
+        } else if(this.getBy == 'lends') {
+            this.loansService.getAllFavoritesByUser();
+            this.optionSelected = this.capitalizeAndReplace(this.getBy);
+            
+        } else{
             this.loansService.getAllByType(this.getBy);
             this.optionSelected = this.capitalizeAndReplace(this.getBy);
+            
         }
     }
 

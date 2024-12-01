@@ -16,22 +16,10 @@
                 <div class="col-12 d-flex justify-content-between px-4">
                     <div class="d-flex align-items-center">
                         <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='all'}" (click)="setGetBy('all')">Todos</a>
-                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='favorite'}" (click)="setGetBy('favorite')">Mis Solicitudes</a>
-                        <div class="ms-2 p-1 dropdown">
-                            <button class="btn button-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                {{ optionSelected }}
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" (click)="setGetBy('UPPER')">Superiores</a></li>
-                                <li><a class="dropdown-item" (click)="setGetBy('BOTTOM')">Inferiores</a></li>
-                                <li><a class="dropdown-item" (click)="setGetBy('OUTWEAR')">Exteriores</a></li>
-                                <li><a class="dropdown-item" (click)="setGetBy('FOOTWEAR')">Calzado</a></li>
-                                <li><a class="dropdown-item" (click)="setGetBy('FULL_BODY')">Cuerpo Entero</a></li>
-                                <li><a class="dropdown-item" (click)="setGetBy('ACCESSORY')">Accesorios</a></li>
-                            </ul>
-                        </div>
-
+                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='solicitudes'}" (click)="setGetBy('favorite')">Mis Solicitudes</a>
+                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='loans'}" (click)="setGetBy('favorite')">Mis Préstamos</a>
+                        <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='lends'}" (click)="setGetBy('favorite')">Prendas Prestadas</a>
+                        
                         <app-search
                             (searchTermChanged)="onSearchTermChanged($event)"
                         />
