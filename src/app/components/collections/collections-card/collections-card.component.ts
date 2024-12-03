@@ -6,6 +6,7 @@ import { ModalComponent } from '../../modal/modal.component';
 import { CommonModule } from '@angular/common';
 import { ConfirmationFormCollectionsComponent } from '../confirmation-form-collections/confirmation-form-collections.component';
 import { CollectionsEditComponent } from '../collections-edit/collections-edit.component';
+import {refCount} from "rxjs";
 
 @Component({
   selector: 'app-collections-card',
@@ -20,6 +21,7 @@ export class CollectionsCardComponent {
 
     isFav: boolean = false;
 
+    colors: string [] = ['#c447a5', '#cd6969', '#55a6bb', '#c6bd58', '#60bb7b'];
     constructor(private collectionsService: CollectionsService) {}
 
     toggleIsFav() {
@@ -36,4 +38,6 @@ export class CollectionsCardComponent {
         this.collectionsService.callDelete(this.collection.id!);
     }
 }
+
+  protected readonly refCount = refCount;
 }

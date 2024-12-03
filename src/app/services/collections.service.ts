@@ -20,7 +20,7 @@ export class CollectionsService extends BaseService<ICollection> {
 
     public search: ISearch = {
         page: 1,
-        size: 8
+        size: 6
     }
 
     public totalItems: any = [];
@@ -45,7 +45,7 @@ export class CollectionsService extends BaseService<ICollection> {
     }
 
     getAllByUser() {
-      this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}`, {
+      this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/collection`, {
         page: this.search.page,
         size: this.search.size
       }).subscribe({

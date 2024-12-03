@@ -4,52 +4,28 @@
             <div class="row">
                 <div class="col-12 px-4 py-5 d-flex justify-content-between">
                     <h2>Recomendaciones</h2>
-                    <div>
-                        <button class="btn button-tertiary me-4"><i class="bi bi-download"></i></button>
-                        <button (click)="ModalService.displayModal('lg', AddOutfitModal)" type="button"
-                                class="btn button-default"><i class="bi bi-plus-lg"></i> Agregar Outfit
-                        </button>
-                    </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12 d-flex justify-content-between px-4">
-                    <div class="d-flex align-items-center">                   
-                        <div class="ms-2 p-1 dropdown">
-                            <button class="btn button-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                {{ optionSelected }}
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" (click)="setGetBy('weekly')">Semanal</a></li>
-                                <li><a class="dropdown-item" (click)="setGetBy('Tendencias')">Tendencias</a></li>
-                                
-                            </ul>
-                        </div>
-                        <div class="col-5" style="margin-left: 25px;">
-                            <button class="btn button-default w-100" data-aos="zoom-in" data-aos-duration="200"
-                            ><i class="bi bi-stars"></i> Generar
-                            </button>
-                        </div>
-
-                        <div class="col-8">
-                            <app-search
-                            (searchTermChanged)="onSearchTermChanged($event)"
-                        />
-                        </div>
-
-
+                    <div class="d-flex align-items-center">
+                        <a class="custom-underline me-3" [ngClass]="{'isActive': recommendationOption ==='weekly'}"
+                           (click)="setRecommendationOption('weekly')">Semanal</a>
+                        <a class="custom-underline me-3" [ngClass]="{'isActive': recommendationOption ==='trend'}"
+                           (click)="setRecommendationOption('trend')">Tendencia</a>
                     </div>
+
                     <div>
-                        <button [ngClass]="{'btn button-secondary':gridSelected, 'btn-custom': !gridSelected, 'me-4': true}"
-                                (click)="toggleGirdSelected()"><i class="bi bi-grid"></i></button>
-                        <button [ngClass]="{'btn button-secondary':!gridSelected, 'btn-custom': gridSelected}"
-                                (click)="toggleGirdSelected()"><i class="bi bi-list-ul"></i></button>
+                        <button class="btn button-secondary" (click)="generateRecommendation()"><i
+                                class="bi bi-stars"></i> Generar
+                        </button>
                     </div>
+
+
                 </div>
-                <div class="col-12 px-4 mt-1">
-                    <div class="custom-divider"></div>
-                </div>
+            </div>
+            <div class="col-12 px-4 mt-1">
+                <div class="custom-divider"></div>
             </div>
             <div class="row">
                 <div class="col-12 d-flex justify-content-between px-4 mt-4">
@@ -62,12 +38,55 @@
                 </div>
             </div>
 
-            <app-outfits-list
-                    (callDeleteAction)="outfitsService.callDelete($event.id!)"
-                    (callSetIsFavorite)="setIsFavorite($event)"
-                    (callSetIsPublic)="setIsPublic($event)"
-                    [outfits]="filteredOutfits"
-            />
+            @if (recommendationOption === 'weekly') {
+                <div class="col-12 w-100 h-100">
+                    <swiper-container navigation="true" class="mb-5">
+                        <swiper-slide class="d-flex justify-content-center align-items-center">
+                            <app-recommendation-card
+                            />
+                        </swiper-slide>
+                        <swiper-slide class="d-flex justify-content-center align-items-center">
+                            <app-recommendation-card
+                            />
+                        </swiper-slide>
+                        <swiper-slide class="d-flex justify-content-center align-items-center">
+                            <app-recommendation-card
+                            />
+                        </swiper-slide>
+                        <swiper-slide class="d-flex justify-content-center align-items-center">
+                            <app-recommendation-card
+                            />
+                        </swiper-slide>
+                        <swiper-slide class="d-flex justify-content-center align-items-center">
+                            <app-recommendation-card
+                            />
+                        </swiper-slide>
+                        <swiper-slide class="d-flex justify-content-center align-items-center">
+                            <app-recommendation-card
+                            />
+                        </swiper-slide>
+                        <swiper-slide class="d-flex justify-content-center align-items-center">
+                            <app-recommendation-card
+                            />
+                        </swiper-slide>
+                    </swiper-container>
+                </div>
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center align-items-center">
+                        <button class="btn button-default">
+                            <i class="bi bi-floppy edit"></i> Guardar en Outfits
+                        </button>
+                    </div>
+                </div>
+            } @else {
+                <div class="col-12 w-100 h-100">
+                    <swiper-container navigation="true" class="mb-5">
+                        <swiper-slide class="d-flex justify-content-center align-items-center">
+                            <app-recommendation-card
+                            />
+                        </swiper-slide>
+                    </swiper-container>
+                </div>            }
 
             @if (outfitsService.outfit$().length) {
                 <app-pagination
@@ -76,7 +95,6 @@
                         (callCustomPaginationMethod)="this.callGet()"
                 />
             }
-
         </div>
     </section>
 } <!--@loading (minimum 1.5s) {
@@ -85,41 +103,3 @@
     />
 }
 -->
-
-<ng-template #AddOutfitModal class="bg-primary">
-    @if (!isAddClothingModalActive) {
-        <app-modal
-                [hideFooter]="true"
-                (callSetIsAddClothingModalActive)="toggleAddClothingModal()"
-                [isAddClothingModalSelected]="isAddClothingModalActive"
-        >
-
-            <app-outfits-form
-                    [outfitsForm]="outfitForm"
-                    [manualClothing]="manualOutfitClothing"
-                    (callSaveMethod)="saveOutfit($event)"
-                    
-                    (callSetIsAddClothingModalActive)="toggleAddClothingModal()"
-                    (refreshClothingContext)="refreshClothingContext()"
-            />
-
-        </app-modal>
-    } @else {
-        <app-modal
-                [hideFooter]="true"
-                (callSetIsAddClothingModalActive)="toggleAddClothingModal()"
-                [isAddClothingModalSelected]="isAddClothingModalActive"
-        >
-            <app-outfits-add-clothing-form
-                [clothingList]="clothingService.clothing$()"
-                [selectedClothing] ="manualOutfitClothing"
-                (getByValue)="setGetByOption($event)"
-                (callSetClothing)="setClotingAddToOutfit($event)"
-                (toggleAddClothingModal)="toggleAddClothingModal()"
-            />
-
-        </app-modal>
-    }
-</ng-template>
-
-
