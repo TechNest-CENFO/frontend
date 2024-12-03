@@ -67,14 +67,14 @@ export class LoansComponent implements OnInit {
         }
     
         this.filteredClothing = this.clothing.filter((item) =>
-            item.name?.toLowerCase().includes(searchTerm.toLowerCase())
+            item.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
     }
     
 
     onSearchTermChanged(searchTerm: string): void {
         this.filteredClothing = this.clothing.filter(item =>
-            item.name?.toLowerCase().includes(searchTerm)
+            item.name.toLowerCase().includes(searchTerm)
             );
     }
 
