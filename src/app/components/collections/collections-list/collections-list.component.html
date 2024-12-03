@@ -1,10 +1,11 @@
 <div class="row mt-4">
     @for (item of collections; track $index) {
-        <div class="col-3 d-flex justify-content-center align-content-center mb-5">
+        <div class="col-6 d-flex justify-content-center align-content-center mb-5">
             <app-collections-card
                 [collection]="item"
                 data-aos="zoom-in"
                 data-aos-duration="600"
+                class="rounded-lg"
             />
         </div>
     } @empty {

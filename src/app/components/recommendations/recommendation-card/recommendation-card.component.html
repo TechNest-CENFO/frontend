@@ -1,0 +1,18 @@
+<div class="d-flex justify-content-center align-items-center mb-2">
+    <h5 class="title-format">{{ this.outfit.name }}</h5>
+</div>
+
+<div class="card-custom shadow-sm">
+    <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+        <swiper-container class="swiper-style" pagination="true" grab-cursor="true" loop="true" slides-per-view="1" speed="600" autoplay="true" effect="slide" rewind="true" >
+            @for (item of outfit.clothing; track $index){
+                <swiper-slide class="w-100 d-flex justify-content-center">
+                    <img src="{{item.imageUrl}}" class="w-75 h-75" alt="clothing-image">
+                </swiper-slide>
+            }
+        </swiper-container>
+    </div>
+    <button>
+        <i class="bi bi-arrow-clockwise edit"></i>
+    </button>
+</div>
