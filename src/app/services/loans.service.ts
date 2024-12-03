@@ -102,11 +102,31 @@ export class LoansService extends BaseService<IClothing>{
         });
     }
 
-    getRequestsSent() {
-        this.findAllWithParamsAndCustomSource(`${this.authService.getUser()?.id}/requests-sent`, {
+    getMyRelatedLoans() {
+        this.findAllWithParamsAndCustomSource(`related-loans`, {
             page: this.search.page,
             size: this.search.size
         }).subscribe({
+            next: (response: any) => {
+                this.search = {...this.search, ...response.meta};
+                this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
+                this.loanListSignal.set(response.data);
+            },
+            error: (err: any) => {
+                console.error('error', err);
+                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
+            }
+        });
+    }
+
+    getRequestsSent() {
+        const params = {
+            page: this.search.page,
+            size: this.search.size,
+            loanerId: this.authService.getUser()?.id
+        };
+
+        this.findAllWithParamsAndCustomSource(`requests-sent`, params).subscribe({
             next: (response: any) => {
                 this.search = {...this.search, ...response.meta};
                 this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
@@ -121,10 +141,13 @@ export class LoansService extends BaseService<IClothing>{
 
 
     getRequestsReceived() {
-        this.findAllWithParamsAndCustomSource(`${this.authService.getUser()?.id}/requests-received`, {
+        const params = {
             page: this.search.page,
-            size: this.search.size
-        }).subscribe({
+            size: this.search.size,
+            lenderId: this.authService.getUser()?.id
+        };
+    
+        this.findAllWithParamsAndCustomSource(`requests-received`, params).subscribe({
             next: (response: any) => {
                 this.search = {...this.search, ...response.meta};
                 this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
@@ -133,7 +156,7 @@ export class LoansService extends BaseService<IClothing>{
             },
             error: (err: any) => {
                 console.error('error', err);
-                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
+                this.notyfService.error('Ha ocurrido un error al cargar tus prendas.')
             }
         });
     }

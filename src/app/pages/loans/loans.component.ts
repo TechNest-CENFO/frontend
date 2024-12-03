@@ -42,7 +42,7 @@ export class LoansComponent implements OnInit {
     requestType: string = '';
     loan: ILoan[]= [];
     loanSubscription: Subscription | undefined;
-
+    loanObj: ILoan = {}
 
     ngOnInit(): void {
         
@@ -53,7 +53,6 @@ export class LoansComponent implements OnInit {
                   });
               this.clothing = this.loansService.clothing$();
               this.filteredClothing = [...this.clothing];
-           
             });
           });
           this.callGet();
@@ -80,9 +79,9 @@ export class LoansComponent implements OnInit {
 
 
     callGet() {
-
         if (this.getBy == 'all') {
             this.loansService.getAllPublicClothing();
+            this.loansService.getMyRelatedLoans();
             this.requestType = 'all'
 
         } else if (this.getBy == 'requestSent') {
@@ -92,7 +91,6 @@ export class LoansComponent implements OnInit {
             this.requestType = 'requestSent'
      
         }  else if (this.getBy == 'requestReceived') {
-
             this.loansService.getRequestsReceived();
             this.loan = this.loansService.loan$();
             this.requestType = 'requestReceived'
