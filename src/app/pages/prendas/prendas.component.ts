@@ -83,7 +83,7 @@ export class PrendasComponent implements OnInit {
 
     onSearchTermChanged(searchTerm: string): void {
         this.filteredClothing = this.clothing.filter(item =>
-            item.name?.toLowerCase().includes(searchTerm)
+            item.name.toLowerCase().includes(searchTerm)
             );
     }
 
