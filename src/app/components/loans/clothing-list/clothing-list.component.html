@@ -1,22 +1,52 @@
 <div class="row mt-4">
-    @for (item of clothing; track $index) {
-        <div class="col-3 d-flex justify-content-center align-content-center mb-5">
-            @if(type == 'all') {
-            <app-clothing-card
-                [clothing]="item"
+    @if(type == 'all') {
+        @for (item of clothing; track $index) {
+            <div class="col-3 d-flex justify-content-center align-content-center mb-5">
+
+                <app-clothing-card
+                    [clothing]="item"
+                    data-aos="zoom-in"
+                    data-aos-duration="600"
+                />
+
+            </div>
+
+        }
+    }
+
+    @if(type == 'requestReceived') {
+        @for (item of loan; track $index) {
+            <div class="col-3 d-flex justify-content-center align-content-center mb-5">
+
+                <app-loan-approval
                 data-aos="zoom-in"
                 data-aos-duration="600"
-            />
-            } @else{
-                <app-loan-approval
-         
-            />
-            }
-    
-        </div>
-    } @empty {
-        <div class="col-12 d-flex align-content-center justify-content-center">
-            <h5 class="">No tienes prendas</h5>
-        </div>
+                [loan]="item"
+                />
+            </div>
+
+        } @empty {
+            <div class="col-12 d-flex align-content-center justify-content-center">
+                <h5 class="">No tienes prendas</h5>
+            </div>
+        }
+    }
+
+    @if(type == 'requestSent') {
+        @for (item of loan; track $index) {
+            <div class="col-3 d-flex justify-content-center align-content-center mb-5">
+
+                <app-loan-request-sent
+                data-aos="zoom-in"
+                data-aos-duration="600"
+                [loan]="item"
+                />
+            </div>
+
+        } @empty {
+            <div class="col-12 d-flex align-content-center justify-content-center">
+                <h5 class="">No tienes prendas</h5>
+            </div>
+        }
     }
 </div>

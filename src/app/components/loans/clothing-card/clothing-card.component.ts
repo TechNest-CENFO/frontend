@@ -28,6 +28,5 @@ export class ClothingCardComponent implements OnChanges{
             if (this.clothing.user) {
               this.associatedUser = this.clothing.user;
             }
-
     }
 }

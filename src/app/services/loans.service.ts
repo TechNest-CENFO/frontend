@@ -46,7 +46,8 @@ export class LoansService extends BaseService<IClothing>{
     ngOnInit() {
         this.getAll();
         this.getAllPublicClothing();
-        this.getMyRequests();
+        this.getRequestsSent();
+        this.getRequestsReceived();
     }
 
     getAllByUser() {
@@ -101,8 +102,8 @@ export class LoansService extends BaseService<IClothing>{
         });
     }
 
-    getMyRequests() {
-        this.findAllWithParamsAndCustomSource(`${this.authService.getUser()?.id}/my-requests`, {
+    getRequestsSent() {
+        this.findAllWithParamsAndCustomSource(`${this.authService.getUser()?.id}/requests-sent`, {
             page: this.search.page,
             size: this.search.size
         }).subscribe({
@@ -110,6 +111,25 @@ export class LoansService extends BaseService<IClothing>{
                 this.search = {...this.search, ...response.meta};
                 this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
                 this.clothingListSignal.set(response.data);
+            },
+            error: (err: any) => {
+                console.error('error', err);
+                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
+            }
+        });
+    }
+
+
+    getRequestsReceived() {
+        this.findAllWithParamsAndCustomSource(`${this.authService.getUser()?.id}/requests-received`, {
+            page: this.search.page,
+            size: this.search.size
+        }).subscribe({
+            next: (response: any) => {
+                this.search = {...this.search, ...response.meta};
+                this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
+                this.clothingListSignal.set(response.data);
+                this.loanListSignal.set(response.data);
             },
             error: (err: any) => {
                 console.error('error', err);
@@ -153,5 +173,46 @@ export class LoansService extends BaseService<IClothing>{
             }
         });
     }
+
+
+    getLoans() {
+        this.findAllWithParamsAndCustomSource(`${this.authService.getUser()?.id}/loan/all`, {
+            page: this.search.page,
+            size: this.search.size
+        }).subscribe({
+            next: (response: any) => {
+                this.search = {...this.search, ...response.meta};
+                this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
+                this.clothingListSignal.set(response.data);
+            },
+            error: (err: any) => {
+                console.error('error', err);
+                this.notyfService.error('Ha ocurrido un error al cargas tus prendas.')
+            }
+        });
+    }
+
+    setItemAsBorrowed(loan: ILoan){
+        this.http.patch(`loan/approval`, loan).subscribe({
+            next: (response: any) => {
+                this.search = {...this.search, ...response.meta};
+                this.loanListSignal.set(response.data);
+                if(loan.itemBorrowed){
+                    this.notyfService.success('Se ha aceptado el préstamo exitosamente.')
+                }else{
+                    this.notyfService.success('Se ha denegado el préstamo exitosamente.')
+                }
+            },
+            error: (err: any) => {
+                console.error('error', err);
+                if(loan.itemBorrowed){
+                    this.notyfService.error('Ha ocurrido un error al aceptar el préstamo.')
+                }else{
+                    this.notyfService.error('Ha ocurrido un error al denegar el préstamo.')
+                }
+            }
+        });
+    }
+    
       
 }

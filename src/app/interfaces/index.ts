@@ -155,11 +155,11 @@ export interface IWeather{
 
 export interface ILoan{
   id?: number;
-  isItemRequested?: boolean;
-  isItemBorrowed?: boolean;
+  itemRequested?: boolean;
+  itemBorrowed?: boolean;
   lenderScore?: number;
   loanerScore?: number;
-  clothing?: IClothingType;
+  clothing?: IClothing;
   lenderUser?:IUser;
   loanerUser?:IUser;
 }

@@ -202,7 +202,10 @@ export class ClothingEditComponent implements OnInit {
       lenderScore: 4,
       loanerScore: 5,
       clothing: {
-        id: this.clothing.id
+        id: this.clothing.id,
+        name: this.clothing.name,
+        season: this.clothing.season,
+        color: this.clothing.color
       },
       lenderUser: {
         id: this.clothing.user?.id
