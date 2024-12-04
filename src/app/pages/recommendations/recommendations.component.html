@@ -83,23 +83,14 @@
                     <swiper-container navigation="true" class="mb-5">
                         <swiper-slide class="d-flex justify-content-center align-items-center">
                             <app-recommendation-card
+                            
                             />
                         </swiper-slide>
                     </swiper-container>
-                </div>            }
-
-            @if (outfitsService.outfit$().length) {
-                <app-pagination
-                        [service]="outfitsService"
-                        [customCall]="true"
-                        (callCustomPaginationMethod)="this.callGet()"
-                />
+                </div>            
             }
+
+            
         </div>
     </section>
-} <!--@loading (minimum 1.5s) {
-    <app-loader
-
-    />
-}
--->
+} 

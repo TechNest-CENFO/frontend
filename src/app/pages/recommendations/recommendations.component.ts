@@ -124,20 +124,13 @@ export class RecommendationsComponent implements OnInit {
         );
     }
 
-
-
     callGet() {
-        if (this.getBy == 'weekly') {
-            this.outfitsService.getAllByUser();
-
-        } else if (this.getBy == 'Tendencias') {
-            this.outfitsService.getAllFavoritesByUser();
-
-
-        } else {
-            this.outfitsService.getAllByType(this.getBy);
-        }
-    }
+    if (this.getBy === 'weekly') {
+        this.outfitsService.getAllByUser();
+    } else if (this.getBy === 'Tendencias') {
+        
+    } 
+}
 
     capitalizeAndReplace(text: string): string {
         if (!text) return ''; // Manejo de valores vacíos o nulos
@@ -176,28 +169,6 @@ export class RecommendationsComponent implements OnInit {
         });
     }
 
-    setIsFavorite(outfit: IOutfit) {
-        console.log(outfit)
-        if (outfit.isFavorite) {
-            this.outfitsService.isFavorite(outfit, true, this.getBy);
-        } else {
-            this.outfitsService.isFavorite(outfit, false, this.getBy);
-        }
-    }
-
-    setIsPublic(outfit: IOutfit) {
-        console.log(outfit);
-
-        console.log(outfit.isPublic);
-        if (outfit.isPublic) {
-            console.log('enter ispublic if');
-            this.outfitsService.isPublic(outfit, true);
-        } else {
-            console.log('enter ispublic else');
-            this.outfitsService.isPublic(outfit, false);
-        }
-    }
-
     public async getLocation(): Promise<void> {
         await this._placesService.getUserLocation();
         this.location = this._placesService.getLocation();
@@ -232,9 +203,8 @@ export class RecommendationsComponent implements OnInit {
 
     generateRecommendation() {
         if (this.recommendationOption==='weekly'){
-            //this.recommendationService.generateWeeklyRecommendation();
-        } else {
-            //this.recommendationService.generateTrendRecommendation();
+        } else  {
+            this.outfitsService.getTrendigOutfits();
         }
     }
 }

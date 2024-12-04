@@ -17,70 +17,26 @@ import { ClothingService } from '../../../services/clothing.service';
 })
 export class RecommendationCardComponent implements OnInit {
     @Input() outfit!: IOutfit;
+    @Input() clothing!: IClothing[];
     @Output() callSetIsFavorite: EventEmitter<IOutfit> = new EventEmitter();
     @Output() callSetIsPublic: EventEmitter<IOutfit> = new EventEmitter();
     @Output() callEditAction: EventEmitter<IOutfit> = new EventEmitter<IOutfit>();
+
     public modalService: ModalService = inject(ModalService);
     public AuthService: AuthService = inject(AuthService);
     public clothingService: ClothingService = inject(ClothingService);
 
-    onEdit() {
-        this.callEditAction.emit(this.outfit);
-    }
-
-    constructor(private outfitsService: OutfitsService) {
-    }
     isAddClothingModalActive: boolean = false;
     manualOutfitClothing: IClothing[] = [];
     getByOption: string = 'all';
 
+    constructor(private outfitsService: OutfitsService) {}
+
     ngOnInit() {
-        console.log('estado: ', this.outfit);
+        this.getTrendingOutfits();
     }
 
-    toggleIsFav() {
-        this.outfit.isFavorite = !this.outfit.isFavorite;
-        this.callSetIsFavorite.emit(this.outfit);
-    }
-
-    toggleIsPublic(): void {
-        this.outfit.isPublic = !this.outfit.isPublic;
-        console.log('Nuevo estado de isPublic:', this.outfit.isPublic);
-        this.callSetIsPublic.emit(this.outfit);
-    }
-
-    toggleAddClothingModal() {
-        this.isAddClothingModalActive = !this.isAddClothingModalActive;
-    }
-
-    updateOutfit(outfit: IOutfit) {
-        console.log("Actualizando outfit con ID:", outfit.id, "con los siguientes datos:", outfit);
-        this.outfitsService.update(outfit);
-    }
-
-
-    refreshClothingContext() {
-        this.manualOutfitClothing = []
-    }
-
-    public setGetByOption(getByOption: string) {
-        this.getByOption = getByOption;
-        this.setClothingSignalForSubModal();
-    }
-
-    public setClothingSignalForSubModal() {
-        if (this.getByOption==='all'){
-            this.clothingService.getAllByUserLongPagination();
-        } else if (this.getByOption === 'favorite'){
-            this.clothingService.getAllFavoritesByUserLongPagination();
-            console.log(this.getByOption)
-        } else {
-            this.clothingService.getAllByTypeLongPagination(this.getByOption);
-        }
-    }
-
-    public setClotingAddToOutfit(clothing: IClothing[]) {
-        console.log('manual clothing to add: ', clothing);
-        this.manualOutfitClothing = clothing;
+    getTrendingOutfits() {
+        this.outfitsService.getTrendigOutfits();
     }
 }
