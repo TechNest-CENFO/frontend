@@ -50,13 +50,13 @@ export class LoanViewRequestComponent {
   }
 
   getStatus(){
-    if(this.loanData.itemBorrowed){
+    if(this.loanData.requestStatus == 'APPROVED'){
       this.statusMessage = 'Aprobado'
       this.statusClass = 'text-success'
-    }else if (!this.loanData.itemBorrowed && this.loanData.itemRequested){
+    }else if (this.loanData.requestStatus == 'PENDING'){
       this.statusMessage = 'Pendiente'
       this.statusClass = 'text-warning'
-    }else {
+    }else if(this.loanData.requestStatus == 'REJECTED') {
       this.statusMessage = 'Rechazado'
       this.statusClass = 'text-danger'
     }

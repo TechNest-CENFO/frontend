@@ -41,15 +41,23 @@ export class LoanApprovalComponent implements OnInit{
 
   setBorrowItemStatus(status: string){
     let value: boolean
+    let loanStatusTxt: string;
+
     if(status == 'approved'){
      value = true
-    }else{
-      value = false
+     loanStatusTxt = 'APPROVED'
+    }else if(status == 'rejected'){
+      value = false;
+      loanStatusTxt = 'REJECTED'
+    } else {
+      loanStatusTxt = 'PENDING'
+      value = false;
     }
 
      let loan: ILoan ={
-      id: 1,
+      id: this.loan.id,
       itemBorrowed: value,
+      requestStatus : loanStatusTxt
       }
 
     this.loanService.setItemAsBorrowed(loan);

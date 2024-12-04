@@ -212,7 +212,9 @@ export class ClothingEditComponent implements OnInit {
       },
       loanerUser: {
         id: this.authService.getUser()?.id
-      }
+      },
+      itemRequested: true,
+      requestStatus: 'PENDING'
     }
 
     this.loanService.requestClothingItem(loan);

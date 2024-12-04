@@ -163,5 +163,5 @@ export interface ILoan{
   lenderUser?:IUser;
   loanerUser?:IUser;
   createdAt?: Date;
-
+  requestStatus?: string;
 }
