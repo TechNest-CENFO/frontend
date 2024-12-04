@@ -30,21 +30,20 @@
   
 
       <div class="d-flex btn-container ">
-          <button class="btn button-default" type="button">Ver Solicitud</button>
-         
+        <a (click)="modalService.displayModal('md', ViewRequestModal)" class="btn button-default">Ver Solicitud</a>
       </div>
 
     </div>
   </div>
   
-  <!-- <ng-template #ClothingLoanModal>
+  <ng-template #ViewRequestModal>
     <app-modal [hideFooter]="true">
       <div>
-        <app-clothing-edit
-          [clothing]="clothing"
-          [vclothingType]="clothingTypeData"
+        <app-loan-view-request
+          [loan]="loan"
+         
         />
       </div>
     </app-modal>
-  </ng-template> -->
+  </ng-template>
   

@@ -162,4 +162,6 @@ export interface ILoan{
   clothing?: IClothing;
   lenderUser?:IUser;
   loanerUser?:IUser;
+  createdAt?: Date;
+
 }

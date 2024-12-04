@@ -3,9 +3,9 @@ import { IClothing, IUser } from '../../../interfaces';
 import { ModalService } from '../../../services/modal.service';
 import { CommonModule } from '@angular/common';
 import { ModalComponent } from '../../modal/modal.component';
-import { ClothingEditComponent } from '../clothing-edit/clothing-edit.component';
 import { LoansService } from '../../../services/loans.service';
 import { ILoan } from '../../../interfaces';
+import { ClothingEditComponent } from '../clothing-edit/clothing-edit.component';
 
 @Component({
   selector: 'app-loan-approval',

@@ -48,6 +48,7 @@ export class LoansService extends BaseService<IClothing>{
         this.getAllPublicClothing();
         this.getRequestsSent();
         this.getRequestsReceived();
+        this.getMyRelatedLoans();
     }
 
     getAllByUser() {
@@ -131,6 +132,8 @@ export class LoansService extends BaseService<IClothing>{
                 this.search = {...this.search, ...response.meta};
                 this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
                 this.clothingListSignal.set(response.data);
+                this.loanListSignal.set(response.data);
+
             },
             error: (err: any) => {
                 console.error('error', err);

@@ -34,12 +34,11 @@ export class LoansComponent implements OnInit {
     private injector = inject(Injector);
 
     gridSelected: boolean = true;
-    protected getBy: string = 'all';
+    public getBy: string = 'all';
     protected optionSelected: string = 'Tipo';
     searchTerm: string = '';
     filteredClothing: IClothing[] = [];
     clothing: IClothing[] = [];
-    requestType: string = '';
     loan: ILoan[]= [];
     loanSubscription: Subscription | undefined;
     loanObj: ILoan = {}
@@ -81,27 +80,21 @@ export class LoansComponent implements OnInit {
     callGet() {
         if (this.getBy == 'all') {
             this.loansService.getAllPublicClothing();
-            this.loansService.getMyRelatedLoans();
-            this.requestType = 'all'
+           // this.loansService.getMyRelatedLoans();
 
         } else if (this.getBy == 'requestSent') {
-
             this.loansService.getRequestsSent();
             this.loan = this.loansService.loan$();
-            this.requestType = 'requestSent'
      
         }  else if (this.getBy == 'requestReceived') {
             this.loansService.getRequestsReceived();
             this.loan = this.loansService.loan$();
-            this.requestType = 'requestReceived'
      
         } else if (this.getBy == 'loans') {
             this.loansService.getMyLoans();
-             this.requestType = 'loans'
 
         } else{
             this.loansService.getMyLends();
-            this.requestType = 'lends'
         }
 }
 

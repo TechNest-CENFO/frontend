@@ -27,10 +27,5 @@ export class ClothingListComponent {
     Aos.init()
   }
 
-
-  public triggerCallSetIdFav(clothing: IClothing): void {
-    this.callSetIsFav.emit(clothing);
-  }
-
   protected readonly event = event;
 }
