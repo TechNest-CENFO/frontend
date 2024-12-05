@@ -7,13 +7,7 @@
   position: relative;
   background-color: white;
 
-  &:hover {
-    .image-format {
-      transition: transform 0.2s ease-in-out, max-width 0.2s ease-in-out, max-height 0.2s ease-in-out;
-      max-width: 75%;
-      max-height: 75%;
-    }
-  }
+
 }
 
 ul li {

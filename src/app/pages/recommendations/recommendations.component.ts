@@ -110,14 +110,7 @@ export class RecommendationsComponent implements OnInit {
         return formattedText.charAt(0).toUpperCase() + formattedText.slice(1).toLowerCase();
     }
 
-    saveOutfit(outfit: IOutfit) {
-        if (outfit.user) {
-            outfit.user.id = this.AuthService.getUser()?.id;
-        }
-        console.log(outfit);
-        this.outfitsService.save(outfit);
-        this.ModalService.closeAll();
-    }
+
 
     public setClotingAddToOutfit(clothing: IClothing[]) {
         this.manualOutfitClothing = clothing;
@@ -171,6 +164,14 @@ export class RecommendationsComponent implements OnInit {
             this.outfitsService.getWeeklyOutfitByUser(this.tempCache ?? '22').subscribe({
                 next: (response) => {                    
                     this.outfits = response.data;
+                    
+                    this.outfits[0].name = "Lunes";
+                    this.outfits[1].name = "Martes";
+                    this.outfits[2].name = "Miercoles";
+                    this.outfits[3].name = "Jueves";
+                    this.outfits[4].name = "Viernes";
+                    this.outfits[5].name = "Sabado";
+                    this.outfits[6].name = "Domingo";
                     console.log("this.outfits", this.outfits);                 
                     
                 },
