@@ -83,4 +83,13 @@ export class RecommendationCardComponent implements OnInit {
         console.log('manual clothing to add: ', clothing);
         this.manualOutfitClothing = clothing;
     }
+
+    saveOutfit(outfit: IOutfit) {
+        if (outfit.user) {
+            outfit.user.id = this.AuthService.getUser()?.id;
+        }
+        console.log(outfit);
+        this.outfitsService.save(outfit);
+        
+    }
 }
