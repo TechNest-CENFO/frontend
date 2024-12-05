@@ -39,36 +39,17 @@
             </div>
 
             @if (recommendationOption === 'weekly') {
-                <div class="col-12 w-100 h-100">
-                    <swiper-container navigation="true" class="mb-5">
-                        <swiper-slide class="d-flex justify-content-center align-items-center">
-                            <app-recommendation-card
-                            />
-                        </swiper-slide>
-                        <swiper-slide class="d-flex justify-content-center align-items-center">
-                            <app-recommendation-card
-                            />
-                        </swiper-slide>
-                        <swiper-slide class="d-flex justify-content-center align-items-center">
-                            <app-recommendation-card
-                            />
-                        </swiper-slide>
-                        <swiper-slide class="d-flex justify-content-center align-items-center">
-                            <app-recommendation-card
-                            />
-                        </swiper-slide>
-                        <swiper-slide class="d-flex justify-content-center align-items-center">
-                            <app-recommendation-card
-                            />
-                        </swiper-slide>
-                        <swiper-slide class="d-flex justify-content-center align-items-center">
-                            <app-recommendation-card
-                            />
-                        </swiper-slide>
-                        <swiper-slide class="d-flex justify-content-center align-items-center">
-                            <app-recommendation-card
-                            />
-                        </swiper-slide>
+                <div class="col-12 w-100 h-100">                    
+                    <swiper-container navigation="true" grab-cursor="false" class="mb-5">
+                        @for (item of outfits; track $index) {
+                            <swiper-slide class="d-flex justify-content-center align-items-center">
+                                <app-recommendation-card 
+                                [outfit]="item"
+                                />
+                            </swiper-slide>
+                        }
+
+                      
                     </swiper-container>
                 </div>
                 <div class="row">
@@ -92,7 +73,7 @@
                 <app-pagination
                         [service]="outfitsService"
                         [customCall]="true"
-                        (callCustomPaginationMethod)="this.callGet()"
+                        
                 />
             }
         </div>

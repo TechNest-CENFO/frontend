@@ -7,13 +7,7 @@
   position: relative;
   background-color: white;
 
-  &:hover {
-    .image-format {
-      transition: transform 0.2s ease-in-out, max-width 0.2s ease-in-out, max-height 0.2s ease-in-out;
-      max-width: 75%;
-      max-height: 75%;
-    }
-  }
+
 }
 
 ul li {
@@ -139,4 +133,11 @@ swiper-container::part(button-prev){
   &:hover{
     color: dimgrey;
   }
+}
+
+.image-format {
+  max-width: 70%;
+  max-height: 70%;
+  margin: 2em 0;
+  object-fit: contain;
 }
