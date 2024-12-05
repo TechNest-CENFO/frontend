@@ -90,8 +90,9 @@ export class LoansComponent implements OnInit {
             this.loansService.getRequestsReceived();
             this.loan = this.loansService.loan$();
      
-        } else if (this.getBy == 'loans') {
+        } else if (this.getBy == 'myLoans') {
             this.loansService.getMyLoans();
+            this.loan = this.loansService.loan$();
 
         } else{
             this.loansService.getMyLends();

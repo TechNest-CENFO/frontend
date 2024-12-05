@@ -49,6 +49,7 @@ export class LoansService extends BaseService<IClothing>{
         this.getRequestsSent();
         this.getRequestsReceived();
         this.getMyRelatedLoans();
+        this.getMyLoans();
     }
 
     getAllByUser() {
@@ -166,14 +167,18 @@ export class LoansService extends BaseService<IClothing>{
 
 
     getMyLoans() {
-        this.findAllWithParamsAndCustomSource(`${this.authService.getUser()?.id}/public`, {
+        const params = {
             page: this.search.page,
-            size: this.search.size
-        }).subscribe({
+            size: this.search.size,
+            loanerId: this.authService.getUser()?.id
+        };
+        this.findAllWithParamsAndCustomSource(`my-loans`, params).subscribe({
             next: (response: any) => {
                 this.search = {...this.search, ...response.meta};
                 this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
                 this.clothingListSignal.set(response.data);
+                this.loanListSignal.set(response.data);
+
             },
             error: (err: any) => {
                 console.error('error', err);
@@ -184,14 +189,19 @@ export class LoansService extends BaseService<IClothing>{
 
 
     getMyLends() {
-        this.findAllWithParamsAndCustomSource(`${this.authService.getUser()?.id}/public`, {
+        const params = {
             page: this.search.page,
-            size: this.search.size
-        }).subscribe({
+            size: this.search.size,
+            lenderId: this.authService.getUser()?.id
+        };
+
+        this.findAllWithParamsAndCustomSource(`my-lends`, params).subscribe({
             next: (response: any) => {
                 this.search = {...this.search, ...response.meta};
                 this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
                 this.clothingListSignal.set(response.data);
+                this.loanListSignal.set(response.data);
+
             },
             error: (err: any) => {
                 console.error('error', err);

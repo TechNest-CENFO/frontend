@@ -24,9 +24,22 @@ export class ClothingCardComponent implements OnChanges{
 
     clothingTypeData: IClothingType[] = [];
 
+
+  stars: number[] = [1, 2, 3, 4, 5];
+  selectedRating: number = 0;
+
     ngOnChanges(){
             if (this.clothing.user) {
               this.associatedUser = this.clothing.user;
             }
     }
+
+
+    rate(rating: number): void {
+        this.selectedRating = rating;
+      }
+    
+      hoverRating(rating: number): void {
+        this.selectedRating = rating;
+      }
 }

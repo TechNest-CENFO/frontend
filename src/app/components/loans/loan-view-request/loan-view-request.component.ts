@@ -19,8 +19,6 @@ import { CommonModule } from '@angular/common';
 })
 export class LoanViewRequestComponent {
   private modalService: ModalService = inject(ModalService)
-  private loanService: LoansService = inject(LoansService);
-  private authService: AuthService = inject(AuthService);
   public fb: FormBuilder = inject(FormBuilder);
 
 
@@ -51,13 +49,13 @@ export class LoanViewRequestComponent {
 
   getStatus(){
     if(this.loanData.requestStatus == 'APPROVED'){
-      this.statusMessage = 'Aprobado'
+      this.statusMessage = 'Aprobada'
       this.statusClass = 'text-success'
     }else if (this.loanData.requestStatus == 'PENDING'){
       this.statusMessage = 'Pendiente'
       this.statusClass = 'text-warning'
     }else if(this.loanData.requestStatus == 'REJECTED') {
-      this.statusMessage = 'Rechazado'
+      this.statusMessage = 'Rechazada'
       this.statusClass = 'text-danger'
     }
   }
