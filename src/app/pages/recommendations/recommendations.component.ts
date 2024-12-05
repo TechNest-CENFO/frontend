@@ -1,3 +1,4 @@
+import { IOutfit } from './../../interfaces/index';
 import {
     Component,
     CUSTOM_ELEMENTS_SCHEMA,
@@ -8,22 +9,15 @@ import {
     runInInjectionContext,
     ViewChild
 } from '@angular/core';
-import {ModalComponent} from "../../components/modal/modal.component";
+
 import {PaginationComponent} from "../../components/pagination/pagination.component";
 import {ModalService} from "../../services/modal.service";
 import {CommonModule, NgClass} from "@angular/common";
 import {OutfitsService} from "../../services/outfits.service";
 import {AuthService} from "../../services/auth.service";
-import {OutfitsListComponent} from "../../components/outfits/outfits-list/outfits-list.component";
-import {OutfitsFormComponent} from "../../components/outfits/outfits-form/outfits-form.component";
 import {FormBuilder, Validators} from "@angular/forms";
-import {IClothing, IOutfit, IWeather} from "../../interfaces";
-import {
-    OutfitsAddClothingFormComponent
-} from "../../components/outfits/outfits-form/outfits-add-clothing-form/outfits-add-clothing-form.component";
+import {IClothing, IWeather} from "../../interfaces";
 import {ClothingService} from "../../services/clothing.service";
-import {SearchComponent} from '../../components/search/search.component';
-import {PlacesService} from '../../services/places.service';
 import {WeatherService} from '../../services/weather.service';
 import {
     RecommendationCardComponent
@@ -33,6 +27,7 @@ import {
     selector: 'app-outfits',
     standalone: true,
     imports: [
+        PaginationComponent,
         NgClass,
         RecommendationCardComponent,
         CommonModule
@@ -50,21 +45,20 @@ export class RecommendationsComponent implements OnInit {
     outfitRandomData: IOutfit[] = [];
     private injector = inject(Injector);
     outfits: IOutfit[] = [];
-    filteredOutfits: IOutfit[] = [];
-    temp: string = '0';
-    private _placesService: PlacesService = inject(PlacesService);
+    filteredOutfits: IOutfit[] = [];   
     public weatherService: WeatherService = inject(WeatherService)
     public location?: [number, number];
     lat: string = '';
     lon: string = '';
     weatherData!: IWeather;
-    outfitTrendings: IOutfit[] = [];
 
     outfit? = [1, 2, 3, 4, 5]
 
     outfitTrendingData:  IOutfit = {
     clothing:[]
     };
+
+    outfitTrendings: IOutfit[] = [];
 
 
     //INICIO - METODOS Y VARIABLES PARA EL SUBMODAL
@@ -140,14 +134,7 @@ export class RecommendationsComponent implements OnInit {
         return formattedText.charAt(0).toUpperCase() + formattedText.slice(1).toLowerCase();
     }
 
-    saveOutfit(outfit: IOutfit) {
-        if (outfit.user) {
-            outfit.user.id = this.AuthService.getUser()?.id;
-        }
-        console.log(outfit);
-        this.outfitsService.save(outfit);
-        this.ModalService.closeAll();
-    }
+
 
     public setClotingAddToOutfit(clothing: IClothing[]) {
         this.manualOutfitClothing = clothing;
@@ -157,46 +144,7 @@ export class RecommendationsComponent implements OnInit {
         this.manualOutfitClothing = []
     }
 
-    callGetOutfitByUserRandom(): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.outfitsService.getOutfitByUserRandom(this.weatherData.feels_like ?? '22').subscribe({
-                next: (response) => {
-                    resolve(response.data);
-                },
-                error: (err) => {
-                    console.error("Error", err);
-                    reject(err);
-                }
-            });
-        });
-    }
-
-    public async getLocation(): Promise<void> {
-        await this._placesService.getUserLocation();
-        this.location = this._placesService.getLocation();
-        this.lat = this.location[1].toString();
-        this.lon = this.location[0].toString();
-        this.getWeatherBylatAndlon();
-
-    }
-
-    async getWeatherBylatAndlon(): Promise<void> {
-        try {
-            await this.weatherService.getWeatherWithLatAndLong(this.lat, this.lon);
-            this.weatherService.weather$.subscribe({
-                next: (data: any) => {
-                    if (data) {
-                        this.weatherData = data;
-
-
-                    }
-                }
-            });
-        } catch (error) {
-            console.error('Error al obtener el clima:', error);
-        }
-
-    }
+ 
 
     setRecommendationOption(recommendationOption: string) {
         this.recommendationOption = recommendationOption;

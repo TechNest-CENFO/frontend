@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center align-items-center mb-2">
-    <h5 class="title-format">Mira lo que te recomendamos</h5>
+    <h5 class="title-format">{{ this.outfit }}</h5>
 </div>
 
 <div class="card-custom shadow-sm">
@@ -16,6 +16,6 @@
     </div>
 
     <button>
-        <i class="bi bi-arrow-clockwise edit"></i>
+        <i class="bi bi-arrow-clockwise edit" (click)="saveOutfit(outfit)"></i>
     </button>
 </div>

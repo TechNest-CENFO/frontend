@@ -32,4 +32,14 @@ export class RecommendationCardComponent implements OnInit {
     ngOnInit(): void {
         console.log("outfit: ", this.outfit);
     }
+
+    saveOutfit(outfit: IOutfit) {
+        if (outfit.user) {
+            outfit.user.id = this.authService.getUser()?.id;
+            
+        }
+        console.log(outfit);
+        this.outfitsService.save(outfit);
+        
+    }
 }
