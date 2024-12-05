@@ -168,4 +168,12 @@ update(outfit: IOutfit) {
         }
     });
   }
+
+  getWeeklyOutfitByUser(temp:string): Observable<IResponse<any[]>> {
+    if(temp === undefined || temp === ""){
+        temp = '22';
+    }
+    console.log("getWeeklyOutfitByUser", temp);  
+    return this.getCustomUrl(`${this.authService.getUser()?.id}/weekly/${temp}`);
+    }
 }

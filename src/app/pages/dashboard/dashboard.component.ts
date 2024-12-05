@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit {
     this.intervalId = setInterval(() => {
       this.updateDateTime();      
     }, 1000);
-
+    //this.weatherService.saveWeatherCache(this.weatherData.feels_like);
   }
 
   //API para 5 días dejar prevista
@@ -55,6 +55,7 @@ export class DashboardComponent implements OnInit {
           if (data) {
             this.weatherData = data;
             this.imageUrl=this.getImageForWeather(Number(this.weatherData.id));
+            this.weatherService.saveWeatherCache(this.weatherData.feels_like!);
           }
         }
       });
@@ -69,7 +70,8 @@ export class DashboardComponent implements OnInit {
       this.weatherService.weather$.subscribe({
         next: (data:any) => {
           if (data) {
-            this.weatherData = data;     
+            this.weatherData = data;
+            this.weatherService.saveWeatherCache(this.weatherData.feels_like!);     
             this.imageUrl=this.getImageForWeather(Number(this.weatherData.id));
        
           }

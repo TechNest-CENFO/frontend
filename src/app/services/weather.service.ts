@@ -15,6 +15,7 @@ export class WeatherService extends BaseService<IWeather>{
     public foundWeather: IWeather = {};
     private alertService: AlertService = inject(AlertService);
     private foundSignal = signal<IWeather>({});
+    private readonly TEMPERATURE_KEY = 'userTempreatureWithGeolocation';
     
     public weather$ = this.weatherSubject.asObservable();
 
@@ -48,6 +49,24 @@ export class WeatherService extends BaseService<IWeather>{
 
         }        
         
+    }
+
+    //Guardar la temperatura promedio del día en cache para ser utiliza en los outfits
+    saveWeatherCache(_temp:string){
+        console.log("SAVE", _temp)
+        const temp ={temperature: _temp};
+        sessionStorage.setItem(this.TEMPERATURE_KEY, JSON.stringify(temp));
+    }
+
+    //Obtener la temperatura promedio del día en cache para ser utiliza en los outfits
+    getWeatherCache(): { _temp: string}{
+        const temp = sessionStorage.getItem(this.TEMPERATURE_KEY);
+        return temp ? JSON.parse(temp) : null;
+    }
+
+    //Eliminar la temperatura promedio del día en cache para ser utiliza en los outfits
+    clearGeolocation(): void {
+        sessionStorage.removeItem(this.TEMPERATURE_KEY);
     }
 
     
