@@ -11,7 +11,7 @@ import {
 import {ModalComponent} from "../../components/modal/modal.component";
 import {PaginationComponent} from "../../components/pagination/pagination.component";
 import {ModalService} from "../../services/modal.service";
-import {NgClass} from "@angular/common";
+import {CommonModule, NgClass} from "@angular/common";
 import {OutfitsService} from "../../services/outfits.service";
 import {AuthService} from "../../services/auth.service";
 import {OutfitsListComponent} from "../../components/outfits/outfits-list/outfits-list.component";
@@ -33,14 +33,9 @@ import {
     selector: 'app-outfits',
     standalone: true,
     imports: [
-        ModalComponent,
-        PaginationComponent,
         NgClass,
-        OutfitsListComponent,
-        OutfitsFormComponent,
-        OutfitsAddClothingFormComponent,
-        SearchComponent,
         RecommendationCardComponent,
+        CommonModule
     ],
     templateUrl: './recommendations.component.html',
     styleUrl: './recommendations.component.scss',
@@ -63,8 +58,13 @@ export class RecommendationsComponent implements OnInit {
     lat: string = '';
     lon: string = '';
     weatherData!: IWeather;
+    outfitTrendings: IOutfit[] = [];
 
     outfit? = [1, 2, 3, 4, 5]
+
+    outfitTrendingData:  IOutfit = {
+    clothing:[]
+    };
 
 
     //INICIO - METODOS Y VARIABLES PARA EL SUBMODAL
@@ -115,6 +115,8 @@ export class RecommendationsComponent implements OnInit {
             });
         });
         this.clothingService.getAllByUser();
+        this.getTrendingOutfits();
+
     }
 
 
@@ -204,7 +206,18 @@ export class RecommendationsComponent implements OnInit {
     generateRecommendation() {
         if (this.recommendationOption==='weekly'){
         } else  {
-            this.outfitsService.getTrendigOutfits();
+            
         }
     }
+
+        getTrendingOutfits(): void {
+        this.outfitsService.getTrendigOutfits().subscribe({
+            next: (response) => {
+                this.outfitTrendings = response.data; 
+            },
+            error: (err) => console.error(err),
+        });
+    }
+
+    
 }

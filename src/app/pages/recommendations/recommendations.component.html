@@ -79,15 +79,24 @@
                     </div>
                 </div>
             } @else {
-                <div class="col-12 w-100 h-100">
-                    <swiper-container navigation="true" class="mb-5">
-                        <swiper-slide class="d-flex justify-content-center align-items-center">
-                            <app-recommendation-card
-                            
-                            />
-                        </swiper-slide>
-                    </swiper-container>
-                </div>            
+                <section id="clothing-section">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 px-4 py-5 d-flex justify-content-between">
+                                <h2>Recomendaciones</h2>
+                            </div>
+                        </div>
+                
+                        <div class="row">
+                            <div class="col-12 d-flex flex-wrap justify-content-center">
+                                <app-recommendation-card *ngFor="let outfit of outfitTrendings" [outfit]=[outfit]
+                                    [clothing]="outfit.clothing">
+                                </app-recommendation-card>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            
             }
 
             

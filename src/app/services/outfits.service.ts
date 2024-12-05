@@ -169,22 +169,9 @@ update(outfit: IOutfit) {
     });
   }
 
-  getTrendigOutfits()  {
-    this.findAllWithParamsAndCustomSource(`${this.authService.getUser()?.id}/trending`, {
-        page: this.search.page,
-        size: this.search.size
-    }).subscribe({
-        next: (response: any) => {
-            this.search = {...this.search, ...response.meta};
-            this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
-            this.outfitListSignal.set(response.data);
-            console.log('response', response);
-        },
-        error: (err: any) => {
-            console.error('error', err);
-            this.notyfService.error('Ha ocurrido un error al cargar tus outfits.')
-        }
-    });
+  getTrendigOutfits() {
+    const url = `outfit/${this.authService.getUser()?.id}/trending`;
+    return this.http.get<{ message: string; data: IOutfit[] }>(url);
+}
 
-  }
 }

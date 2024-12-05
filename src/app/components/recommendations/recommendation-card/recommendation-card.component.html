@@ -7,7 +7,7 @@
         <!-- Swiper Carrusel -->
         <swiper-container class="swiper-style" pagination="true" grab-cursor="true" loop="true" slides-per-view="1"
             speed="600" autoplay="true" effect="slide" rewind="true">
-            @for (item of clothing; track $index) {
+            @for (item of outfitTrendingData.clothing; track $index) {
             <swiper-slide class="w-100 d-flex justify-content-center">
                 <img src="{{item.imageUrl}}" class="w-75 h-75" alt="clothing-image">
             </swiper-slide>
@@ -15,7 +15,6 @@
         </swiper-container>
     </div>
 
-    <!-- Botón de Acción (placeholder según diseño original) -->
     <button>
         <i class="bi bi-arrow-clockwise edit"></i>
     </button>
