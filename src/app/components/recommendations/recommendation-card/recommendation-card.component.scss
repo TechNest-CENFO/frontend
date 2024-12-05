@@ -140,3 +140,10 @@ swiper-container::part(button-prev){
     color: dimgrey;
   }
 }
+
+.image-format {
+  max-width: 70%;
+  max-height: 70%;
+  margin: 2em 0;
+  object-fit: contain;
+}
