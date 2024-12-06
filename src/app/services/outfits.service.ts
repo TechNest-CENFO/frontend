@@ -176,4 +176,10 @@ update(outfit: IOutfit) {
     console.log("getWeeklyOutfitByUser", temp);  
     return this.getCustomUrl(`${this.authService.getUser()?.id}/weekly/${temp}`);
     }
+
+  getTrendigOutfits() {
+    const url = `outfit/${this.authService.getUser()?.id}/trending`;
+    return this.http.get<{ message: string; data: IOutfit[] }>(url);
+}
+
 }
