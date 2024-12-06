@@ -1,14 +1,21 @@
-<div class="w-100 d-flex justify-content-center align-items-center text-card-format mb-2">
-    {{item.name}}
-</div>
-<div class="card-format" (click)="toggleIsSelected()">
-    <div class="w-100 h-100 d-flex justify-content-center align-items-center">
-        <img src="{{item.imageUrl}}" alt="clothing-image" class="image-format">
-    </div>
-    <div class="d-flex justify-content-center align-items-center" [class]='!this.item.isSelectedInSubModal? "card-checkbox" : "card-checkbox-active"'>
-        @if(!this.item.isSelectedInSubModal){
+<div class="d-flex justify-content-start align-items-center mb-2">
+    <div class="d-flex justify-content-center align-items-center mb-2 me-5" [class]='!this.outfit.isSelectedInSubModal? "card-checkbox" : "card-checkbox-active"' (click)="toggleIsSelected()">
+        @if(!this.outfit.isSelectedInSubModal){
+            <i class="bi bi-check-lg check-color"></i>
         } @else {
             <i class="bi bi-check-lg check-color"></i>
         }
+    </div>
+    <h5 class="title-format">{{ this.outfit.name }}</h5>
+</div>
+<div class="card-custom shadow-sm mb-3">
+    <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+        <swiper-container [pagination]="{type: 'bullets', clickable:true}" grab-cursor="true" slides-per-view="1" effect="slide" navigation="true">
+            @for (item of outfit.clothing; track $index){
+                <swiper-slide class="w-100 d-flex justify-content-center">
+                    <img src="{{item.imageUrl}}" class="image-format" alt="clothing-image">
+                </swiper-slide>
+            }
+        </swiper-container>
     </div>
 </div>
