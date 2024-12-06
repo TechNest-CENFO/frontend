@@ -31,7 +31,20 @@
 </div>
 
 <div class="container-fluid px-1 px-md-4 py-5 mx-auto colorFont">
-    <div class="row d-flex justify-content-center px-3">
+
+    <div class="row d-flex px-3">
+        <div class="column left-align" style="width: 40%;">
+            <google-map height="450px"
+                    width="800px"
+                    [center]="center"
+                    [zoom]="zoom"
+                    (mapClick)="moveMap($event)"
+                    (mapMousemove)="move($event)"
+                    (mapClick)="onMapClick($event)">
+            </google-map>
+
+
+        </div>
         <div class="card right-align" [style.background-image]="'url(' + imageUrl + ')'">
             <div *ngIf="weatherData">
                 <h2 class="ml-auto mr-4 mt-3 mb-0">{{weatherData.name}}</h2>
@@ -41,5 +54,9 @@
                 <p class="sm-font ml-4 mb-4">{{formattedDate}}</p>
             </div>
         </div>
+
     </div>
 </div>
+
+
+

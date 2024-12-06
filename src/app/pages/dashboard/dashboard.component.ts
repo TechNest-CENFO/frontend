@@ -1,17 +1,18 @@
 import { inject } from '@angular/core';
 import { PlacesService } from './../../services/places.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IWeather } from '../../interfaces';
 import { WeatherService } from '../../services/weather.service';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [FormsModule, CommonModule ],
+  imports: [FormsModule, CommonModule, GoogleMapsModule ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -42,9 +43,38 @@ export class DashboardComponent implements OnInit {
     this.intervalId = setInterval(() => {
       this.updateDateTime();      
     }, 1000);
-    //this.weatherService.saveWeatherCache(this.weatherData.feels_like);
+    
+  }
+  display: any;
+  center: google.maps.LatLngLiteral = {
+      lat: 9.933437,
+      lng: -84.0875204
+  };
+  zoom = 8;
+
+    moveMap(event: google.maps.MapMouseEvent) {
+      if (event.latLng != null) this.center = (event.latLng.toJSON());
   }
 
+
+  move(event: google.maps.MapMouseEvent) {
+      if (event.latLng != null) this.display = event.latLng.toJSON();
+  }
+
+  onMapClick(event: google.maps.MapMouseEvent): void {
+    // Obtener la latitud y longitud del lugar donde se hizo clic
+    const lat = event.latLng!.lat();  // Extrae la latitud
+    const lng = event.latLng!.lng();  // Extrae la longitud
+    
+    this.lat=lat.toString();
+    this.lon=lng.toString();
+    this.getWeatherBylatAndlon()
+    // Almacenar las coordenadas en la propiedad display
+    this.display = { lat, lng };
+
+    // Opcional: Actualizar el centro del mapa a las nuevas coordenadas
+    this.center = { lat, lng };
+  }
   //API para 5 días dejar prevista
   async getWeather(){   
     try {    
