@@ -150,13 +150,29 @@ export class RecommendationsComponent implements OnInit {
     }
 
     generateRecommendation() {
-        if (this.recommendationOption==='weekly'){
-            this.getWeeklyOutfits();
-        } else {
-            //this.recommendationService.generateTrendRecommendation();
-        }
+    if (this.recommendationOption === 'weekly') {
+        this.getWeeklyOutfits();
+    } else if (this.recommendationOption === 'trend') {
+        this.getTrendingOutfits();
     }
+}
 
+getTrendingOutfits(): void {
+    this.outfitsService.getTrendigOutfits().subscribe({
+        next: (response) => {
+            
+            this.filteredOutfits = response.data.map(outfit => ({
+                ...outfit,
+                clothing: outfit.clothing.length ? outfit.clothing : [{ imageUrl: outfit.imageUrl, name: '', season: '', color: '' } as IClothing]
+            }));
+
+            console.log("Outfit generado por tendencias:", this.outfits);
+        },
+        error: (err) => {
+            console.error("Error al obtener outfits de tendencias:", err);
+        },
+    });
+}
 
     getWeeklyOutfits(): Promise<any> {
         return new Promise((resolve, reject) => {
