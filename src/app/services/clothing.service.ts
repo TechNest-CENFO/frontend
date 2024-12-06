@@ -73,6 +73,23 @@ export class ClothingService extends BaseService<IClothing> {
         });
     }
 
+    getAllByUserByCategory() {
+        this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/clothing`, {
+            page: this.search.page,
+            size: 100
+        }).subscribe({
+            next: (response: any) => {
+                this.search = {...this.search, ...response.meta};
+                this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
+                this.clothingListSignal.set(response.data);
+            },
+            error: (err: any) => {
+                console.error('error', err);
+                this.notyfService.error('Ha ocurrido un error al cargar tus prendas.')
+            }
+        });
+    }
+
     getAllFavoritesByUser() {
         this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/clothing/isFavorite`, {
             page: this.search.page,
