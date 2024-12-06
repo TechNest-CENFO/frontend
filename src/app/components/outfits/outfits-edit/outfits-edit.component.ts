@@ -51,13 +51,12 @@ export class OutfitsEditComponent  {
 
   callUpdate() {
     const formValue = this.outfitsEditForm.value;
-    console.log("Actualizando outfit con ID:", formValue.id, "con los siguientes datos:", formValue);
+
 
     const outfitData: IOutfit = {
       id: this.outfit.id,
       name: formValue.name,
       category: {
-        id: 1,
         name: this.reformat(formValue.category)
       },
       imageUrl: formValue.imageUrl,
@@ -67,7 +66,7 @@ export class OutfitsEditComponent  {
     };
     this.outfitsService.update(outfitData);
     this.modalService.closeAll();
-    console.log("Outfit actualizado con éxito con los siguientes datos:", outfitData);
+
 
   }
 
@@ -77,8 +76,10 @@ export class OutfitsEditComponent  {
   }
 
   callSetIsAddClothingModal(): void {
-    this.callSetIsAddClothingModalActive.emit();
-  }
+  
+  this.callSetIsAddClothingModalActive.emit();
+}
+
 
   private capitalizeAndReplace(text: string): string {
     if (!text) return '';
@@ -120,22 +121,29 @@ export class OutfitsEditComponent  {
         this.previewImage = imageUrl;
     }
 
-    ngOnInit(): void {
-
-      if(this.outfit){
-          this.initializeForm();
-      }
+  ngOnInit(): void {
+    if (this.outfit) {
+      this.initializeFormWithOutfitData();
     }
+  }
 
-    private initializeForm(): void {
-        this.outfitsEditForm = this.fb.group({
-          id:this.outfit.id,
-          name: ['', Validators.required],
-          category: ['', Validators.required],
-          imageUrl: ['', Validators.required]
-        });
-      }
+    ngOnChanges(changes: SimpleChanges): void {
+  if (changes['outfit']?.currentValue) {
+    this.initializeFormWithOutfitData();
+  }
+}
 
-      
+private initializeFormWithOutfitData(): void {
+    if (!this.outfitsEditForm || !this.outfitsEditForm.get('name')?.value) {
+      this.outfitsEditForm = this.fb.group({
+        id: [this.outfit?.id || null],
+        name: [this.outfit?.name || '', Validators.required],
+        category: [this.outfit?.category?.name || '', Validators.required],
+        imageUrl: [this.outfit?.imageUrl || '', Validators.required],
+      });
+
+      this.outfitCategory = this.capitalizeAndReplace(this.outfit?.category?.name || 'Categoría');
+    }
+  }
 
 }

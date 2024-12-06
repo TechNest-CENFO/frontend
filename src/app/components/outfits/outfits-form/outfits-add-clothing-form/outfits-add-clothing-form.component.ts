@@ -27,23 +27,18 @@ export class OutfitsAddClothingFormComponent implements OnInit {
 
     private notyfService: NotyfService = inject(NotyfService);
 
-    //Array que guarda las prednas que luego se despliegan en la lista del submodal para luego poder ser seleccionadas como prendas a agregar
     clothing: IClothing[] = [];
-    //Parametro para filtrar las prendas del mostradas en el submodal
+
     getBy: string = 'all';
     dropdownOptionSelected: string = 'Tipo';
 
-    //Array para guardar las prendas seleccionadas en el submodal
     clothingToAdd: IClothing[] = [];
 
-    //
 
     ngOnInit() {
-        console.log('on inint selected clothing: ', this.selectedClothing);
         if (this.selectedClothing.length) {
             this.clothingToAdd = this.selectedClothing;
         }
-        console.log('on init to add> ', this.clothingToAdd);
     }
 
     public setGetBy(getBy: string) {
@@ -53,13 +48,12 @@ export class OutfitsAddClothingFormComponent implements OnInit {
         } else {
             this.dropdownOptionSelected = 'Tipo';
         }
-        console.log(this.getBy)
         this.getByValue.emit(getBy);
     }
 
     public capitalizeAndReplace(text: string): string {
-        if (!text) return ''; // Manejo de valores vacíos o nulos
-        const formattedText = text.replace(/_/g, ' '); // Reemplaza '_' por espacios
+        if (!text) return ''; 
+        const formattedText = text.replace(/_/g, ' ');
         return formattedText.charAt(0).toUpperCase() + formattedText.slice(1).toLowerCase();
     }
 

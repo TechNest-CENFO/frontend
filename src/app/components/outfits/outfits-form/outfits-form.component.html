@@ -37,7 +37,8 @@
             </div>
             <div class="col-12">
                 <input formControlName="name" type="text" class="form-control" id="name"
-                       placeholder="Nombre del outfit">
+                       placeholder="Nombre del outfit"       
+                        required>
             </div>
         </div>
         @if (outfitCreationOption === 'manual') {
@@ -145,7 +146,9 @@
             <button type="submit"
                     class="btn button-default"
                     (click)="callSave()"
-            ><i class="bi bi-floppy"></i> Guardar
+                    [disabled]="outfitsForm.invalid || isButtonDisabled"
+                    >
+            <i class="bi bi-floppy"></i> Guardar
             </button>
         </div>
     </div>

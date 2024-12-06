@@ -152,3 +152,16 @@ export interface IWeather{
   description?:string;
   name?:string;
 }
+
+export interface ILoan{
+  id?: number;
+  itemRequested?: boolean;
+  itemBorrowed?: boolean;
+  lenderScore?: number;
+  loanerScore?: number;
+  clothing?: IClothing;
+  lenderUser?:IUser;
+  loanerUser?:IUser;
+  createdAt?: Date;
+  requestStatus?: string;
+}
