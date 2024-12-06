@@ -1,5 +1,6 @@
 @import "../../../../../assets/functions/functions.scss";
 
+
 .text-card-format{
   font-weight: lighter;
 }
@@ -24,22 +25,20 @@
 }
 
 .card-checkbox {
-  position: absolute;
-  top: 5%;
-  left: 5%;
-  width: 15%;
-  height: 15%;
+  width: 25px;
+  height: 25px;
   border-radius: 0.5vmin;
   border: 1px solid gray;
   background-color: white;
+  .check-color{
+    width: 90%;
+    color: white;
+  }
 }
 
 .card-checkbox-active {
-  position: absolute;
-  top: 5%;
-  left: 5%;
-  width: 15%;
-  height: 15%;
+  width: 25px;
+  height: 25px;
   border-radius: 0.5vmin;
   padding: 0 0 0 1.5%;
   background-color: vcloset-color(accent-default);
@@ -47,5 +46,45 @@
   .check-color{
     width: 90%;
     color: white;
+  }
+}
+
+.highlight{
+  border: 2px solid vcloset-color(accent-default);
+}
+.title-format{
+  font-size: medium;
+  font-weight: lighter;
+  color: dimgrey;
+}
+
+input:checked+.slider {
+  background-color: #FF4C3C;
+}
+
+input:checked+.slider:before {
+  transform: translateX(14px);
+}
+
+swiper-container::part(bullet-active){
+  background-color: vcloset-color(accent-default);
+}
+
+swiper-container::part(button-next){
+  color: darkgray;
+  width: 15%;
+  height: 15%;
+  &:hover{
+    color: gray;
+  }
+}
+
+swiper-container::part(button-prev) {
+  color: darkgray;
+  width: 15%;
+  height: 15%;
+
+  &:hover {
+    color: dimgrey;
   }
 }

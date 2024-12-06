@@ -6,14 +6,6 @@
     border-radius: 1vmin;
     position: relative;
     background-color: white;
-
-    &:hover {
-        .image-format {
-            transition: transform 0.2s ease-in-out, max-width 0.2s ease-in-out, max-height 0.2s ease-in-out;
-            max-width: 75%;
-            max-height: 75%;
-        }
-    }
 }
 
 ul li {
@@ -38,12 +30,14 @@ button {
     position: absolute;
     top: 3%;
     left: 3%;
+    z-index: 1;
 }
 
 .favourite {
     position: absolute;
     bottom: 3%;
     left: 3%;
+    z-index: 1;
     font-size: 1.5em;
     color: grey;
     transition: color 0.3s ease, transform 0.3s ease;
@@ -62,6 +56,7 @@ button {
     position: absolute;
     top: 3%;
     right: 3%;
+    z-index: 1;
 }
 
 .image-format {
@@ -139,4 +134,9 @@ swiper-container::part(button-prev){
     &:hover{
         color: dimgrey;
     }
+}
+
+.swiper-slider-style{
+    width: 300px;
+    height: 300px;
 }

@@ -1,58 +1,75 @@
-import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
-import {IClothing} from "../../../../interfaces";
+import {
+    Component,
+    CUSTOM_ELEMENTS_SCHEMA, effect,
+    EventEmitter,
+    Inject,
+    inject, Injector,
+    Input,
+    OnInit,
+    Output, runInInjectionContext,
+    ViewChild
+} from '@angular/core';
+import {IClothing, ICollection, IOutfit} from "../../../../interfaces";
 import {NgClass} from "@angular/common";
 import {emit} from "@angular-devkit/build-angular/src/tools/esbuild/angular/compilation/parallel-worker";
 
 import {NotyfService} from "../../../../services/notyf.service";
 import {filter} from "rxjs";
-import { CollectionsManualOutfitCardComponent } from '../collections-manual-outfit-card/collections-manual-outfit-card.component';
+import {
+    CollectionsManualOutfitCardComponent
+} from '../collections-manual-outfit-card/collections-manual-outfit-card.component';
+import {OutfitsCardComponent} from "../../../outfits/outfits-card/outfits-card.component";
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {RecommendationCardComponent} from "../../../recommendations/recommendation-card/recommendation-card.component";
+import {SearchComponent} from "../../../search/search.component";
+import {OutfitsService} from "../../../../services/outfits.service";
 
 @Component({
     selector: 'app-collections-add-outfits-form',
     standalone: true,
     imports: [
         NgClass,
-        CollectionsManualOutfitCardComponent
+        CollectionsManualOutfitCardComponent,
+        OutfitsCardComponent,
+        RecommendationCardComponent,
+        FormsModule,
+        ReactiveFormsModule,
+        SearchComponent
     ],
     templateUrl: './collections-add-outfits-form.component.html',
-    styleUrl: './collections-add-outfits-form.component.scss'
+    styleUrl: './collections-add-outfits-form.component.scss',
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CollectionsAddOutfitsFormComponent implements OnInit {
-    @Input() clothingList!: IClothing[];
-    @Input() selectedClothing!: IClothing[];
-    @Output() callSetClothing = new EventEmitter<IClothing[]>();
+    fb: FormBuilder = Inject(FormBuilder);
+    @Input() collectionForm!: FormGroup;
+
+    @Input() outfits!: IOutfit[];
+    @Output() callSaveMethod = new EventEmitter<ICollection>();
+    @Output() callUpdateMethod = new EventEmitter<ICollection>();
     @Output() getByValue = new EventEmitter<string>();
-    @Output() toggleAddClothingModal = new EventEmitter<void>();
 
-    private notyfService: NotyfService = inject(NotyfService);
+    public outfitsService: OutfitsService = inject(OutfitsService);
+    private injector = inject(Injector);
 
-    //Array que guarda las prednas que luego se despliegan en la lista del submodal para luego poder ser seleccionadas como prendas a agregar
     clothing: IClothing[] = [];
-    //Parametro para filtrar las prendas del mostradas en el submodal
     getBy: string = 'all';
     dropdownOptionSelected: string = 'Tipo';
 
-    //Array para guardar las prendas seleccionadas en el submodal
-    clothingToAdd: IClothing[] = [];
-
-    //
+    selectedOutfits: IOutfit[] = [];
+    filteredOutfits: IOutfit[] = [];
 
     ngOnInit() {
-        console.log('on inint selected clothing: ', this.selectedClothing);
-        if (this.selectedClothing.length) {
-            this.clothingToAdd = this.selectedClothing;
-        }
-        console.log('on init to add> ', this.clothingToAdd);
+        runInInjectionContext(this.injector, () => {
+            effect(() => {
+                this.outfits = this.outfitsService.outfit$();
+                this.filteredOutfits = [...this.outfits];
+            });
+        });
     }
 
     public setGetBy(getBy: string) {
         this.getBy = getBy;
-        if (getBy != 'all' && getBy != 'favorite') {
-            this.dropdownOptionSelected = this.capitalizeAndReplace(getBy);
-        } else {
-            this.dropdownOptionSelected = 'Tipo';
-        }
-        console.log(this.getBy)
         this.getByValue.emit(getBy);
     }
 
@@ -62,27 +79,36 @@ export class CollectionsAddOutfitsFormComponent implements OnInit {
         return formattedText.charAt(0).toUpperCase() + formattedText.slice(1).toLowerCase();
     }
 
-    public addClothing(item: IClothing) {
-        this.clothingToAdd = [];
-        if (item.isSelectedInSubModal && !this.selectedClothing.includes(item)) {
-            this.selectedClothing.push(item);
+    public addOutfit(item: IOutfit) {
+        if (item.isSelectedInSubModal && !this.selectedOutfits.includes(item)) {
+            this.selectedOutfits.push(item);
         }
     }
 
-    public callSaveClothing() {
-        if (this.selectedClothing.length) {
-            this.clothingToAdd = this.selectedClothing.filter(clothing => clothing.isSelectedInSubModal);
+    callSave() {
+        let collection: ICollection = {
+            name: this.collectionForm.controls['name'].value,
+            outfits: [],
+            user: {}
+        }
+        if (this.selectedOutfits.length) {
+            collection.outfits = this.selectedOutfits;
+        }
 
-            if (this.clothingToAdd.length >= 2 && this.clothingToAdd.length <= 6) {
-                this.callSetClothing.emit(this.clothingToAdd);
-
-                this.toggleAddClothingModal.emit();
-            } else {
-                this.notyfService.error('Por favor selecciona entre 2 y 6 prendas.');
-            }
+        if (collection.id) {
+            this.callUpdateMethod.emit(collection);
         } else {
-            this.notyfService.error('Ha ocurrido un error, por favor intenta nuevamente.');
+            this.callSaveMethod.emit(collection);
         }
     }
 
+    callSetOutfits(outfit: IOutfit) {
+        this.selectedOutfits.push(outfit);
+    }
+
+    onSearchTermChanged(searchTerm: string): void {
+        this.filteredOutfits = this.outfits.filter(item =>
+            item.name?.toLowerCase().includes(searchTerm)
+        );
+    }
 }

@@ -54,3 +54,17 @@ body {
 .form-control{
     border-color: $accent-hovered;
 }
+
+.dashboard-card{
+    border-radius: 1.5vmin;
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+}
+
+.dashboard-card-button{
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+}

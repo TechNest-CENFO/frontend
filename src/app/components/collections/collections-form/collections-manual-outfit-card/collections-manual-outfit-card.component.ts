@@ -1,37 +1,47 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgClass} from "@angular/common";
-import {IClothing, IOutfit} from "../../../../interfaces";
-import {map} from "rxjs";
-import {untagTsFile} from "@angular/compiler-cli/src/ngtsc/shims";
+import {IOutfit} from "../../../../interfaces";
+import {
+    ConfirmationFormOutfitsComponent
+} from "../../../outfits/confirmation-form-outfits/confirmation-form-outfits.component";
+import {ModalComponent} from "../../../modal/modal.component";
+import {
+    OutfitsAddClothingFormComponent
+} from "../../../outfits/outfits-form/outfits-add-clothing-form/outfits-add-clothing-form.component";
+import {OutfitsEditComponent} from "../../../outfits/outfits-edit/outfits-edit.component";
 
 @Component({
     selector: 'app-collections-manual-outfit-card',
     standalone: true,
     imports: [
-        NgClass
+        NgClass,
+        ConfirmationFormOutfitsComponent,
+        ModalComponent,
+        OutfitsAddClothingFormComponent,
+        OutfitsEditComponent
     ],
     templateUrl: './collections-manual-outfit-card.component.html',
-    styleUrl: './collections-manual-outfit-card.component.scss'
+    styleUrl: './collections-manual-outfit-card.component.scss',
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CollectionsManualOutfitCardComponent implements OnInit{
-    @Input() item!: IClothing;
-    @Input() selectedClothing!: IClothing[];
-    @Output() clothingOutput = new EventEmitter<IClothing>();
+    @Output() outfitOutput = new EventEmitter<IOutfit>();
+    @Input() outfit!: IOutfit;
 
     ngOnInit(){
-        if(this.item.isSelectedInSubModal === undefined){
-            this.item.isSelectedInSubModal = false;
+        if(this.outfit.isSelectedInSubModal === undefined || this.outfit.isSelectedInSubModal){
+            this.outfit.isSelectedInSubModal = false;
         }
     }
 
     public toggleIsSelected() {
-        this.item.isSelectedInSubModal = !this.item.isSelectedInSubModal;
+        this.outfit.isSelectedInSubModal = !this.outfit.isSelectedInSubModal;
         this.emitClothing();
     }
 
     public emitClothing() {
-        if(this.item.isSelectedInSubModal){
-            this.clothingOutput.emit(this.item);
+        if(this.outfit.isSelectedInSubModal){
+            this.outfitOutput.emit(this.outfit);
         }
     };
 

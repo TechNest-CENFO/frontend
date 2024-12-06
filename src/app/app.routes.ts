@@ -99,7 +99,7 @@ export const routes: Routes = [
           ],
           name: 'Colecciones',
           showInSidebar: true,
-          icon: 'fa fa-object-group'
+          icon: 'bi bi-collection-fill'
         }
       },
       {
@@ -113,7 +113,7 @@ export const routes: Routes = [
           ],
           name: 'Outfits',
           showInSidebar: true,
-          icon: 'fa fa-camera'
+          icon: 'fa-solid fa-person-rays'
         }
       },
       {
@@ -127,7 +127,7 @@ export const routes: Routes = [
           ],
           name: 'Prendas',
           showInSidebar: true,
-          icon: 'fa fa-camera'
+          icon: 'fa-solid fa-shirt'
         }
       },
       {

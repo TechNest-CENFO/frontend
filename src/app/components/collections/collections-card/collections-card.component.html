@@ -1,20 +1,12 @@
-<div class="d-flex justify-content-center align-items-center mb-2">
-    <h5 class="title-format">{{ this.collection.name }}</h5>
-</div>
-
-
-<div class="card-custom shadow-sm">
-    <div class="d-flex justify-content-center align-items-center bg-gradient" ng>
+<div class="card-custom shadow-sm bg-gradient" style="background-color: #cd6969">
+    <div class="d-flex justify-content-center align-items-center bg-gradient w-100 h-100">
+        <h2 class="inner-text-styles">{{this.collection.name}}</h2>
     </div>
-        <button (click)="modalService.displayModal('md', EditCollectionModal)">
-            <i class="bi bi-pencil-square edit"></i>
-        </button>
-
-    <button (click)="toggleIsFav()">
-        <i [class]="isFav ? 'bi bi-star-fill favourite filled' : 'bi bi-star favourite'"></i>
+    <button (click)="modalService.displayModal('md', EditCollectionModal)">
+        <i class="bi bi-pencil-square edit"></i>
     </button>
-        <button (click)="modalService.displayModal('md', DeleteCollectionModal)"><i
-                class="bi bi-trash3 custom-icon delete"></i></button>
+    <button (click)="modalService.displayModal('md', DeleteCollectionModal)"><i
+            class="bi bi-trash3 custom-icon delete"></i></button>
 </div>
 
 <ng-template #EditCollectionModal>
@@ -24,11 +16,10 @@
 </ng-template>
 
 
-
 <ng-template #DeleteCollectionModal>
     <app-modal [hideFooter]="true">
         <div>
-            <app-confirmation-form-collections [collection]="collection" />
+            <app-confirmation-form-collections [collection]="collection"/>
         </div>
     </app-modal>
 </ng-template>

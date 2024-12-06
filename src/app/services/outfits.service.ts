@@ -30,7 +30,7 @@ export class OutfitsService extends BaseService<IOutfit> {
     private notyfService: NotyfService = inject(NotyfService);
 
     getAllFavoritesByUser() {
-        this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/outfit/favorites`, {
+        this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/favorites`, {
             page: this.search.page,
             size: this.search.size
         }).subscribe({

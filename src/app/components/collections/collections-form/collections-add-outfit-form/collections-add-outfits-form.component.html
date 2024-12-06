@@ -1,46 +1,44 @@
-<div class="container">
-    <div class="row">
-        <div class="col-12 d-flex justify-content-center">
-            <div class="d-flex align-items-center justify-content-between mt-4 mb-5">
-                <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='all'}" (click)="setGetBy('all')">Todos</a>
-                <a class="custom-underline me-3" [ngClass]="{'isActive': getBy ==='favorite'}"
-                   (click)="setGetBy('favorite')">Favoritos</a>
-                <div class="ms-2 p-1 dropdown">
-                    <button class="btn button-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                        {{ dropdownOptionSelected }}
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" (click)="setGetBy('SUPERIOR')">Superiores</a></li>
-                        <li><a class="dropdown-item" (click)="setGetBy('INFERIOR')">Inferiores</a></li>
-                        <li><a class="dropdown-item" (click)="setGetBy('ABRIGO')">Abrigo</a></li>
-                        <li><a class="dropdown-item" (click)="setGetBy('CALZADO')">Calzado</a></li>
-                        <li><a class="dropdown-item" (click)="setGetBy('CUERPO_COMPLETO')">Cuerpo Entero</a></li>
-                        <li><a class="dropdown-item" (click)="setGetBy('ACCESORIO')">Accesorios</a></li>
-                    </ul>
+<form [formGroup]="collectionForm" class="py-5" (ngSubmit)="callSave()">
+    <div class="container">
+        <div class="row my-5">
+            <div class="col-6 mb-3 d-flex justify-content-center align-items-center">
+                <div class="px-5">
+                    <small><label for="name">Nombre</label></small>
+                    <input formControlName="name" type="text" class="form-control" id="name" placeholder="Nombre de la prenda">
                 </div>
             </div>
+            <div class="col-6"></div>
         </div>
-    </div>
-    <div class="row mb-4 px-5">
-        <div class="col-12">
-            <small class="ms-5 small-text-format">Seleccione las prendas que desea añadir al outfit:</small>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+                    <app-search
+                            (searchTermChanged)="onSearchTermChanged($event)"
+                    />
+            </div>
         </div>
-    </div>
-    <div class="row scrollable px-5 mb-5 rounded-5">
-        <div class="fade-top"></div>
-        @for (item of clothingList; track $index) {
-            <app-collections-manual-outfit-card class="col-3 mb-4"
-                                              
-            />
-        }
-        <div class="fade-bottom"></div>
-    </div>
-    <div class="row mb-4">
-        <div class="col-12 d-flex align-items-center justify-content-center">
-            <button class="btn button-default" (click)="callSaveClothing()"><i class="bi bi-plus-lg"></i> Agregar prendas</button>
+        <div class="row mt-5 mb-3 px-5">
+            <div class="col-12">
+                <small class="ms-5 small-text-format">Seleccione los outfits que desea añadir a la colección:</small>
+            </div>
         </div>
-    </div>
+        <div class="row scrollable px-5 mb-5 rounded-5">
+            <div class="fade-top col-12"></div>
+            @for (item of filteredOutfits; track $index) {
+                <app-collections-manual-outfit-card class="col-4"
+                                                    [outfit]="item"
+                                                    (outfitOutput)="callSetOutfits($event)"
+                />
+            }
+            <div class="fade-bottom col-12"></div>
+        </div>
 
-</div>
+        <div class="row mb-4">
+            <div class="col-12 d-flex align-items-center justify-content-center">
+                <button class="btn button-default" (click)="callSave()"><i class="bi bi-plus-lg"></i> Agregar outfits
+                </button>
+            </div>
+        </div>
+
+    </div>
+</form>
 

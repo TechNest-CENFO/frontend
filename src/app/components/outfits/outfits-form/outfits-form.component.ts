@@ -226,6 +226,7 @@ export class OutfitsFormComponent {
         } else {
             this.callSaveMethod.emit(outfit);
         }
+
     }
 
     setOutfitCategory(category: string) {
