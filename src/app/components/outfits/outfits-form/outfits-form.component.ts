@@ -200,7 +200,7 @@ export class OutfitsFormComponent {
             }
 
             this.outfitByCategory = outfit;
-
+            this.isButtonDisabled= false;
         }
     }
 
