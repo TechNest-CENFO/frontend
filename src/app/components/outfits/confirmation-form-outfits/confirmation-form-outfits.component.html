@@ -1,0 +1,13 @@
+<form [formGroup]="confirmationForm" class="row delete-container">
+  <div>
+    <h2>Eliminar Outfit</h2>
+  </div>
+  <div>
+    <p>¿Está seguro que desea eliminar el outfit?</p>
+  </div>
+
+  <div class="d-flex btn-container">
+    <button (click)="handleDelete()" class="btn btn-outline-primary mx-3" type="button">Sí</button>
+    <button (click)="closeModal()" class="btn button-default" type="button">No</button>
+  </div>
+</form>

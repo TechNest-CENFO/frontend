@@ -2,21 +2,23 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { AppLayoutComponent } from './components/app-layout/app-layout.component';
 import { SigUpComponent } from './pages/auth/sign-up/signup.component';
-import { UsersComponent } from './pages/users/users.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AccessDeniedComponent } from './pages/access-denied/access-denied.component';
-import { AdminRoleGuard } from './guards/admin-role.guard';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { GuestGuard } from './guards/guest.guard';
 import { IRoleType } from './interfaces';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { OrdersComponent } from './pages/orders/orders.component';
-import { ProductsComponent } from './pages/products/products.component';
 import {PasswordRecoveryComponent} from "./pages/auth/password-recovery/password-recovery.component";
 import {PasswordResetComponent} from "./pages/auth/password-reset/password-reset.component";
 import { PrendasComponent } from './pages/prendas/prendas.component';
 import {OutfitsComponent} from "./pages/outfits/outfits.component";
 import {NotFoundComponent} from "./components/not-found/not-found.component";
+import { CollectionsComponent } from './pages/collections/collections.component';
+import { LoansComponent } from './pages/loans/loans.component';
+import { RecommendationsComponent } from './pages/recommendations/recommendations.component';
+import { ReportsComponent } from './pages/reports/reports.component';
+
+
 
 export const routes: Routes = [
   {
@@ -88,7 +90,7 @@ export const routes: Routes = [
       },
       {
         path: 'colecciones',
-        component: OutfitsComponent,
+        component: CollectionsComponent,
         data: { 
           authorities: [
             IRoleType.admin, 
@@ -130,7 +132,7 @@ export const routes: Routes = [
       },
       {
         path: 'recomendaciones',
-        component: OutfitsComponent,
+        component: RecommendationsComponent,
         data: { 
           authorities: [
             IRoleType.admin, 
@@ -144,7 +146,7 @@ export const routes: Routes = [
       },
       {
         path: 'prestamos',
-        component: OutfitsComponent,
+        component: LoansComponent,
         data: { 
           authorities: [
             IRoleType.admin, 
@@ -158,7 +160,7 @@ export const routes: Routes = [
       },
       {
         path: 'reportes',
-        component: OutfitsComponent,
+        component: ReportsComponent,
         data: {
           authorities: [
             IRoleType.admin, 

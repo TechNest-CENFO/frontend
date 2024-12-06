@@ -31,6 +31,9 @@ export class ModalComponent{
   @Output() callCancelMethod = new EventEmitter();
   @Output() callConfirmationMethod = new EventEmitter();
 
+  @Output() callSetIsAddClothingModalActive = new EventEmitter<boolean>();
+  @Input() isAddClothingModalSelected: boolean = false;
+
   public modalService: NgbModal = inject(NgbModal)
 
   public hide() {
@@ -40,6 +43,11 @@ export class ModalComponent{
   public hideModal() {
     this.hide();
     this.callCancelMethod.emit();
+  }
+
+  callSetIsAddClothingModal(status:boolean) {
+    this.isAddClothingModalSelected = !this.isAddClothingModalSelected
+    this.callSetIsAddClothingModalActive.emit(this.isAddClothingModalSelected);
   }
 
 }

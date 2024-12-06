@@ -1,0 +1,111 @@
+@import "../../../assets/functions/functions.scss";
+
+.custom-underline {
+  position: relative;
+  cursor: pointer;
+  padding: 7px 25px;
+  color: black;
+  text-decoration: none;
+
+  &:hover,
+  &:active {
+    color: vcloset-color(accent-hovered);
+  }
+
+  &:hover::after,
+  &:active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background-color: vcloset-color(accent-default);
+    border-radius: 5px 5px 0 0;
+  }
+}
+
+.isActive{
+  color: vcloset-color(accent-hovered);
+}
+
+.isActive::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background-color: vcloset-color(accent-default);
+  border-radius: 5px 5px 0 0;
+}
+
+
+.custom-divider {
+  border-top: 1px solid;
+  border-color: #e6e4e4;
+}
+
+.text-bold{
+  font-weight: bolder;
+}
+
+.info-quantity{
+  color: gray;
+}
+
+.btn-custom{
+  color: gray;
+  border: none;
+  background-color: transparent;
+}
+
+.swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.swiper-slide:nth-child(1n) {
+  background-color: rgb(206, 17, 17);
+}
+
+.swiper-slide:nth-child(2n) {
+  background-color: rgb(0, 140, 255);
+}
+
+.swiper-slide:nth-child(3n) {
+  background-color: rgb(10, 184, 111);
+}
+
+.swiper-slide:nth-child(4n) {
+  background-color: rgb(211, 122, 7);
+}
+
+.swiper-slide:nth-child(5n) {
+  background-color: rgb(118, 163, 12);
+}
+
+.swiper-slide:nth-child(6n) {
+  background-color: rgb(180, 10, 47);
+}
+
+.swiper-slide:nth-child(7n) {
+  background-color: rgb(35, 99, 19);
+}
+
+.swiper-slide:nth-child(8n) {
+  background-color: rgb(0, 68, 255);
+}
+
+.swiper-slide:nth-child(9n) {
+  background-color: rgb(218, 12, 218);
+}
+
+.swiper-slide:nth-child(10n) {
+  background-color: rgb(54, 94, 77);
+}

@@ -19,9 +19,13 @@ export class BaseService<T> {
   }
 
   public findAllTypes(): Observable<IResponse<T[]>> {
-
     return this.http.get<IResponse<T[]>>(this.source);
   }
+
+  public getCustomUrl(customUrlSource: string): Observable<IResponse<T[]>> {
+    return this.http.get<IResponse<T[]>>(`${this.source}/${customUrlSource}`);
+  }
+
 
   public findAllWithParams(params: any = {}): Observable<IResponse<T[]>> {
     return this.http.get<IResponse<T[]>>(this.source, {params: this.buildUrlParams(params)});

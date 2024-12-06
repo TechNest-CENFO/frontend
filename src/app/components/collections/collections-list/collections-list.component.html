@@ -1,0 +1,16 @@
+<div class="row mt-4">
+    @for (item of collections; track $index) {
+        <div class="col-6 d-flex justify-content-center align-content-center mb-5">
+            <app-collections-card
+                [collection]="item"
+                data-aos="zoom-in"
+                data-aos-duration="600"
+                class="rounded-lg"
+            />
+        </div>
+    } @empty {
+        <div class="col-12 d-flex align-content-center justify-content-center">
+            <h5 class="">No tienes colecciones</h5>
+        </div>
+    }
+</div>

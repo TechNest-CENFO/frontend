@@ -1,0 +1,65 @@
+@defer {
+<section id="clothing-section">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 px-4 py-5 d-flex justify-content-between">
+                <h2>Recomendaciones</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-between px-4">
+                <div class="d-flex align-items-center">
+                    <a class="custom-underline me-3" [ngClass]="{'isActive': recommendationOption ==='weekly'}"
+                        (click)="setRecommendationOption('weekly')">Semanal</a>
+                    <a class="custom-underline me-3" [ngClass]="{'isActive': recommendationOption ==='trend'}"
+                        (click)="setRecommendationOption('trend')">Tendencia</a>
+                </div>
+
+                <div>
+                    <button class="btn button-secondary" (click)="generateRecommendation()"><i class="bi bi-stars"></i>
+                        Generar
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 px-4 mt-1">
+            <div class="custom-divider"></div>
+        </div>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-between px-4 mt-4">
+                <p class="info-quantity"><span class="text-bold">{{ outfitsService.outfit$().length }}</span>
+                    @if (this.outfitsService.outfit$().length > 1 || this.outfitsService.outfit$().length === 0) {
+                    <span> outfits</span>
+                    } @else {
+                    <span> outfit</span>
+                    }
+                </p>
+            </div>
+        </div>
+
+        @if (recommendationOption === 'weekly') {
+        <swiper-container navigation="true" grab-cursor="false" class="mb-5">
+            @for (item of outfits; track $index) {
+            <swiper-slide class="d-flex justify-content-center align-items-center">
+                <app-recommendation-card [outfit]="item" />
+            </swiper-slide>
+            }
+        </swiper-container>
+        } @else {
+        <swiper-container navigation="true" grab-cursor="false" class="mb-5">
+            @for (item of filteredOutfits; track $index) {
+            <swiper-slide class="d-flex justify-content-center align-items-center">
+                <app-recommendation-card [outfit]="item" />
+            </swiper-slide>
+            }
+        </swiper-container>
+        }
+
+
+
+        @if (outfitsService.outfit$().length) {
+        <app-pagination [service]="outfitsService" [customCall]="true" />
+        }
+    </div>
+</section>
+} 

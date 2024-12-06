@@ -4,6 +4,10 @@ export interface ILoginResponse {
 }
 
 export interface IResponse<T> {
+  Active?: number;
+  Clothing?: number;
+  Outfit?: number;
+  Inactive?: number;
   data: T;
 }
 
@@ -97,6 +101,11 @@ export interface IClothing {
   isPublic?: boolean;
   clothingType?:IClothingType;
   imageUrl?:string;
+  categories?:ICategory[];
+  //Para cambiar el estado en el modal mas facil. No viaja hacia el endpoint
+  isSelectedInSubModal?: boolean;
+  isClothingItemActive?: boolean;
+  user?: IUser;
 }
 
 export interface IClothingType {
@@ -112,12 +121,34 @@ export interface IOutfit{
   clothing:IClothing[];
   isPublic?: boolean;
   isFavorite?: boolean;
-  category?:ICategory
-  user:IUser;
+  category?:ICategory;
+  user?:IUser;
   imageUrl?:string;
+  isDeleted?: boolean;
 }
 
 export interface ICategory{
   id?: number;
   name: string;
+}
+
+export interface ICollection{
+  id?: number;
+  name?: string;
+  outfit:IOutfit[];
+  isPublic?: boolean;
+  isFavorite?: boolean;
+  user:IUser;
+  imageUrl?:string;
+  isDeleted?: boolean;
+}
+
+export interface IWeather{
+  lon?: string;
+  lat?: string;
+  id?: string;
+  main?: string;
+  feels_like?: string;
+  description?:string;
+  name?:string;
 }
