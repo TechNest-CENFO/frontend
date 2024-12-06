@@ -1,0 +1,27 @@
+<form [formGroup]="requestStatusForm" class="row">
+    <div class="col-12 mb-3">
+        <h2 class="mb-0">Estado de la solicitud</h2>
+    </div>
+
+    <div class="loan-profile">
+        <span class="mt-3">Nombre de la prenda: {{loanData.clothing?.name }}</span>
+
+        <span class="mt-3">Dueño: {{ associatedUser?.name }} {{ associatedUser?.lastname }}</span>
+        <span class="mt-3">Ubicación de la prenda: {{ associatedUser?.direction }}</span>
+        <p>Estado de la solicitud: <span class="{{statusClass}}">{{statusMessage}}</span></p>
+        <span>Fecha en que se solicitó la prenda: {{  loanData.createdAt | date: 'dd/MM/yyyy, hh:mm a' }}</span>
+    </div>
+
+
+    <div class="form-group my-4">
+        <label for="exampleFormControlTextarea1">Mensaje:</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+    </div>
+
+    <!-- Botón de envío -->
+    <div class="justify-content-center">
+    <button type="button" (click)="callClose()"
+        class="btn col-md-4">Cerrar</button>
+    </div>
+
+</form>

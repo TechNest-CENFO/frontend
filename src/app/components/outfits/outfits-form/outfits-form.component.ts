@@ -1,23 +1,26 @@
 import {ChangeDetectorRef, Component, EventEmitter, Inject, Input, Output, SimpleChanges} from '@angular/core';
-import {IClothing, IOrder, IOutfit} from "../../../interfaces";
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {IClothing, IOutfit} from "../../../interfaces";
+import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {UploadService} from '../../../services/upload.service';
 import {NgxDropzoneModule} from 'ngx-dropzone';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import Aos from "aos";
 import {LottieComponentComponent} from "../../../pages/lottie-component/lottie-component.component";
 import {OutfitsComponent} from '../../../pages/outfits/outfits.component';
 
+
 @Component({
     selector: 'app-outfits-form',
     standalone: true,
-    imports: [NgxDropzoneModule, ReactiveFormsModule, CommonModule, NgOptimizedImage, LottieComponentComponent],
+    imports: [NgxDropzoneModule, ReactiveFormsModule, CommonModule, ReactiveFormsModule, LottieComponentComponent],
     templateUrl: './outfits-form.component.html',
     styleUrl: './outfits-form.component.scss',
     providers: [UploadService]
+   
 })
 export class OutfitsFormComponent {
     fb: FormBuilder = Inject(FormBuilder);
+   
     @Input() outfitsForm!: FormGroup;
     @Input() manualClothing?: IClothing[];
     @Output() callSaveMethod = new EventEmitter<IOutfit>();
@@ -28,6 +31,7 @@ export class OutfitsFormComponent {
     @Output() refreshClothingContext = new EventEmitter<void>();
 
     files: File[] = [];
+
 
     //Para el tipo de creacion de outfit
     outfitCreationOption: string = 'manual';
@@ -52,14 +56,26 @@ export class OutfitsFormComponent {
     outfitsRandom?: IClothing[] = [];
 
     outfitByCategory?: IOutfit;
+    isButtonDisabled: boolean = true;
+    
 
     constructor(private _uploadService: UploadService,
                 private _outfitsComponent: OutfitsComponent
     ) {
     }
 
+
+
     ngOnInit() {
         Aos.init();
+        this.outfitsForm = new FormGroup({
+            name: new FormControl('', [Validators.required]), 
+            
+        });
+        this.checkButtonStatus();
+    }
+    checkButtonStatus() {
+        this.isButtonDisabled = this.manualClothing!.length === 0;  
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -67,6 +83,7 @@ export class OutfitsFormComponent {
             // @ts-ignore
             this.previewImage = this.manualClothing.at(0).imageUrl;
         }
+        this.checkButtonStatus(); 
     }
 
     private uploadImage() {
@@ -120,6 +137,7 @@ export class OutfitsFormComponent {
         if(this.outfitCreationOption==='random') {
             console.log(this.outfitCreationOption);
             this.getOutfitRandom();
+
         } else {
             console.log(this.outfitCreationOption);
             this.generateOutfitByCategory(this.outfitCreationOption);
@@ -130,7 +148,8 @@ export class OutfitsFormComponent {
             // Esperamos a que la promesa devuelta por callGetOutfitByUserRandom se resuelva
             this.outfitsRandom = await this._outfitsComponent.callGetOutfitByUserRandom();
             console.log("Outfits capturados:", this.outfitsRandom);
-            // Ahora puedes usar la variable `outfits` que contiene la lista de outfits
+            this.isButtonDisabled= false;
+            
         } catch (error) {
             console.error("Error al obtener los outfits", error);
         }
@@ -142,7 +161,7 @@ export class OutfitsFormComponent {
     }
 
     public generateOutfitByCategory(categoryName: string) {
-        this._outfitsComponent.clothingService.getAllByUser();
+        this._outfitsComponent.clothingService.getAllByUserByCategory();
         this.manualClothing = this._outfitsComponent.clothingService.clothing$()
         const filteredByCategory: IClothing[] = this.manualClothing!.filter(c =>
             c.categories?.some(cat => cat.name === categoryName)
@@ -184,16 +203,15 @@ export class OutfitsFormComponent {
                 outfit.clothing.push(this.getRandomItem(byFootwear));
             }
 
-
             this.outfitByCategory = outfit;
-            console.log(this.outfitByCategory)
+            this.isButtonDisabled= false;
         }
     }
 
     callSetIsAddClothingModal() {
 
         this.callSetIsAddClothingModalActive.emit();
-
+        this.checkButtonStatus();
     }
 
     public loadPreview(imageUrl: string) {
@@ -201,36 +219,44 @@ export class OutfitsFormComponent {
     }
 
     callSave() {
-        let outfit: IOutfit = {
-            clothing: [],
-            user: {},
-            name: this.outfitsForm.controls['name'].value,
-            category: {
-                name: this.reformat(this.outfitCategory)
+        if (this.outfitsForm.valid && !this.isButtonDisabled) {
+        
+            let outfit: IOutfit = {
+                clothing: [],
+                user: {},
+                name: this.outfitsForm.controls['name'].value,
+                category: {
+                    name: this.reformat(this.outfitCategory)
+                }
             }
-        }
-        if (this.manualClothing?.length) {
-            outfit.clothing = this.manualClothing;
-        }
+            if (this.manualClothing?.length) {
+                outfit.clothing = this.manualClothing;
+            }
 
-        if (this.outfitsRandom?.length) {
-            outfit.clothing = this.outfitsRandom;
-        }
+            if (this.outfitsRandom?.length) {
+                outfit.clothing = this.outfitsRandom;
+            }
 
-        if (this.outfitByCategory?.clothing.length) {
-            outfit.clothing = this.outfitByCategory.clothing;
-        }
+            if (this.outfitByCategory?.clothing.length) {
+                outfit.clothing = this.outfitByCategory.clothing;
+            }
 
-        if (outfit.id) {
-            this.callUpdateMethod.emit(outfit);
-        } else {
-            this.callSaveMethod.emit(outfit);
+            if (outfit.id) {
+                this.callUpdateMethod.emit(outfit);
+            } else {
+                this.callSaveMethod.emit(outfit);
+            }
+            
+                
         }
+        
+       
     }
 
     setOutfitCategory(category: string) {
         this.outfitCategory = this.capitalizeAndReplace(category);
-        console.log(this.outfitCategory);
+        this.outfitsForm.get('outfitCategory')?.setValue(category);
+        
     }
 
     public reformat(text: string) {
