@@ -12,7 +12,7 @@ import {
 
 import {PaginationComponent} from "../../components/pagination/pagination.component";
 import {ModalService} from "../../services/modal.service";
-import {CommonModule, NgClass} from "@angular/common";
+import {NgClass} from "@angular/common";
 import {OutfitsService} from "../../services/outfits.service";
 import {AuthService} from "../../services/auth.service";
 import {FormBuilder, Validators} from "@angular/forms";
@@ -30,7 +30,6 @@ import {
         PaginationComponent,
         NgClass,
         RecommendationCardComponent,
-        CommonModule
     ],
     templateUrl: './recommendations.component.html',
     styleUrl: './recommendations.component.scss',
@@ -51,14 +50,10 @@ export class RecommendationsComponent implements OnInit {
     lat: string = '';
     lon: string = '';
     weatherData!: IWeather;
-
     outfit? = [1, 2, 3, 4, 5]
-
-    outfitTrendingData:  IOutfit = {
-    clothing:[]
-    };
-
-    outfitTrendings: IOutfit[] = [];
+    usertemp: { _temp: string }| null = null;
+    tempCache:string | undefined;
+    
 
 
     //INICIO - METODOS Y VARIABLES PARA EL SUBMODAL
@@ -99,34 +94,15 @@ export class RecommendationsComponent implements OnInit {
     recommendationOption: string = "weekly";
 
     ngOnInit(): void {
-        this.callGet();
-        this.setClothingSignalForSubModal();
 
-        runInInjectionContext(this.injector, () => {
-            effect(() => {
-                this.outfits = this.outfitsService.outfit$();
-                this.filteredOutfits = [...this.outfits];
-            });
-        });
-        this.clothingService.getAllByUser();
-        this.getTrendingOutfits();
 
+        this.usertemp= this.weatherService.getWeatherCache();
+        const weatherData=sessionStorage.getItem('userTempreatureWithGeolocation');
+        const parsedData = weatherData ? JSON.parse(weatherData):null;
+        this.tempCache = parsedData!.temperature;
     }
 
 
-    onSearchTermChanged(searchTerm: string): void {
-        this.filteredOutfits = this.outfits.filter(item =>
-            item.name?.toLowerCase().includes(searchTerm)
-        );
-    }
-
-    callGet() {
-    if (this.getBy === 'weekly') {
-        this.outfitsService.getAllByUser();
-    } else if (this.getBy === 'Tendencias') {
-        
-    } 
-}
 
     capitalizeAndReplace(text: string): string {
         if (!text) return ''; // Manejo de valores vacíos o nulos
@@ -144,6 +120,28 @@ export class RecommendationsComponent implements OnInit {
         this.manualOutfitClothing = []
     }
 
+
+    setIsFavorite(outfit: IOutfit) {
+        console.log(outfit)
+        if (outfit.isFavorite) {
+            this.outfitsService.isFavorite(outfit, true, this.getBy);
+        } else {
+            this.outfitsService.isFavorite(outfit, false, this.getBy);
+        }
+    }
+
+    setIsPublic(outfit: IOutfit) {
+        console.log(outfit);
+
+        console.log(outfit.isPublic);
+        if (outfit.isPublic) {
+            console.log('enter ispublic if');
+            this.outfitsService.isPublic(outfit, true);
+        } else {
+            console.log('enter ispublic else');
+            this.outfitsService.isPublic(outfit, false);
+        }
+    }
  
 
     setRecommendationOption(recommendationOption: string) {
@@ -152,20 +150,52 @@ export class RecommendationsComponent implements OnInit {
     }
 
     generateRecommendation() {
-        if (this.recommendationOption==='weekly'){
-        } else  {
-            
-        }
+    if (this.recommendationOption === 'weekly') {
+        this.getWeeklyOutfits();
+    } else if (this.recommendationOption === 'trend') {
+        this.getTrendingOutfits();
     }
+}
 
-        getTrendingOutfits(): void {
-        this.outfitsService.getTrendigOutfits().subscribe({
-            next: (response) => {
-                this.outfitTrendings = response.data; 
-            },
-            error: (err) => console.error(err),
+getTrendingOutfits(): void {
+    this.outfitsService.getTrendigOutfits().subscribe({
+        next: (response) => {
+            
+            this.filteredOutfits = response.data.map(outfit => ({
+                ...outfit,
+                clothing: outfit.clothing.length ? outfit.clothing : [{ imageUrl: outfit.imageUrl, name: '', season: '', color: '' } as IClothing]
+            }));
+
+            console.log("Outfit generado por tendencias:", this.outfits);
+        },
+        error: (err) => {
+            console.error("Error al obtener outfits de tendencias:", err);
+        },
+    });
+}
+
+    getWeeklyOutfits(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            console.log("llama al servicio");
+            this.outfitsService.getWeeklyOutfitByUser(this.tempCache ?? '22').subscribe({
+                next: (response) => {                    
+                    this.outfits = response.data;
+                    
+                    this.outfits[0].name = "Lunes";
+                    this.outfits[1].name = "Martes";
+                    this.outfits[2].name = "Miercoles";
+                    this.outfits[3].name = "Jueves";
+                    this.outfits[4].name = "Viernes";
+                    this.outfits[5].name = "Sabado";
+                    this.outfits[6].name = "Domingo";
+                    console.log("this.outfits", this.outfits);                 
+                    
+                },
+                error: (err) => {
+                    console.error("Error", err);
+                    reject(err);
+                }
+            });
         });
     }
-
-    
 }
