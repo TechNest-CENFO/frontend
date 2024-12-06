@@ -121,6 +121,12 @@ export class OutfitsEditComponent  {
         this.previewImage = imageUrl;
     }
 
+  ngOnInit(): void {
+    if (this.outfit) {
+      this.initializeFormWithOutfitData();
+    }
+  }
+
     ngOnChanges(changes: SimpleChanges): void {
   if (changes['outfit']?.currentValue) {
     this.initializeFormWithOutfitData();
@@ -128,22 +134,16 @@ export class OutfitsEditComponent  {
 }
 
 private initializeFormWithOutfitData(): void {
-  if (!this.outfitsEditForm) {
-    this.outfitsEditForm = this.fb.group({
-      id: [this.outfit?.id || null],
-      name: [this.outfit?.name || '', Validators.required],
-      category: [this.outfit?.category?.name || '', Validators.required],
-      imageUrl: [this.outfit?.imageUrl || '', Validators.required],
-    });
-  } else {
-    this.outfitsEditForm.patchValue({
-      id: this.outfit?.id || null,
-      name: this.outfit?.name || '',
-      category: this.outfit?.category?.name || '',
-      imageUrl: this.outfit?.imageUrl || '',
-    });
+    if (!this.outfitsEditForm || !this.outfitsEditForm.get('name')?.value) {
+      this.outfitsEditForm = this.fb.group({
+        id: [this.outfit?.id || null],
+        name: [this.outfit?.name || '', Validators.required],
+        category: [this.outfit?.category?.name || '', Validators.required],
+        imageUrl: [this.outfit?.imageUrl || '', Validators.required],
+      });
+
+      this.outfitCategory = this.capitalizeAndReplace(this.outfit?.category?.name || 'Categoría');
+    }
   }
-  this.outfitCategory = this.capitalizeAndReplace(this.outfit?.category?.name || 'Categoría');
-}
 
 }
