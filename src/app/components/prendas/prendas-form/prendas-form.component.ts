@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { IClothing, IClothingType } from '../../../interfaces';
 import { UploadService } from '../../../services/upload.service';
@@ -30,24 +30,60 @@ export class PrendasFormComponent implements OnInit{
   uniqueId: number = 0;
   form = this.fb.group({
     id: [''],
-    name: [''],
-    isFavorite: [false],    // Asegurarse de que sea booleano
-    isPublic: [false],      // Asegurarse de que sea booleano
-    imageUrl: [''],         // Cambiado para coincidir con el backend
-    season: [''],
-    color: [''],
-    subType:[''],
+    name: ['', Validators.required],
+    isFavorite: [false, Validators.required],    // Asegurarse de que sea booleano
+    isPublic: [false , Validators.required],      // Asegurarse de que sea booleano
+    imageUrl: ['' , Validators.required],         // Cambiado para coincidir con el backend
+    season: ['' , Validators.required],
+    color: ['' , Validators.required],
+    subType:['', Validators.required],
     clothingType: this.fb.group({
       id: [''],
+      name: ['', Validators.required],
+      subType: ['', Validators.required],
+      type: ['', Validators.required]
       
     })
   });
-
+  buttonDisabled:boolean = true;
 
   constructor(private _uploadService: UploadService,
   ) { }
 
+  private checkFormValidity(): void {
+    let clothingTypeValue = this.clothingForm.get('clothingType')?.value;
+    let clothingSubTypeValue = this.clothingForm.get('clothingSubType')?.value;
+    let clothingTypeNameValue = this.clothingForm.get('clothingTypeName')?.value;
+    let isValidDrop =false;
+   
+  
+    // Asegúrate de que la validación cubra todos los campos requeridos, por ejemplo:
+    const isAllRequiredFieldsFilled = 
+      this.clothingForm.get('name')?.valid &&
+      this.clothingForm.get('season')?.valid;
+        
+      if ((!clothingTypeValue     || clothingTypeValue.trim() === '')   ||
+          (!clothingSubTypeValue  || clothingSubTypeValue.trim() ==='') ||
+          (!clothingTypeNameValue || clothingTypeNameValue.trim() ==='') 
+      ) {
+        isValidDrop = false;
+      } else {
+        isValidDrop = true;
+      };
+       
+      
+    
 
+
+    const isImageSelected = this.files.length > 0;
+  
+    // El formulario es válido solo si todos los campos requeridos están llenos y la imagen está seleccionada
+    let isValid = isAllRequiredFieldsFilled && isImageSelected && isValidDrop;
+  
+    // Habilitar o deshabilitar el botón basado en la validación completa
+    this.buttonDisabled = !isValid;
+    console.log("Botón habilitado: ", !this.buttonDisabled);
+  }
 
   callSave() {
     this.uploadImage();
@@ -82,22 +118,26 @@ export class PrendasFormComponent implements OnInit{
 
 
   callGetSubTypes():void{
-    
+    const selectedType = this.clothingForm.get('clothingType')?.value;
     //Se filtran solo los elementos que tengan la categoría seleccionada
-    this.filterItems(this.selectedType, "subType", "type");
+    this.filterItems(selectedType, "subType", "type");
   }
 
   callGetNames():void{
+    const selectedSubType = this.clothingForm.get('clothingSubType')?.value;
     //Se filtran solo los elementos que tengan la categoría seleccionada
-    this.filterItems(this.selectedSubType, "name", "subType");
+    this.filterItems(selectedSubType, "name", "subType");
   }
 
   callGetItem():void{
+    const selectedName = this.clothingForm.get('clothingTypeName')?.value;
     //Se filtra por el nombre seleccionado para obtener el id
-    this.filterItems(this.selectedName, "id", "name");
+    this.filterItems(selectedName, "id", "name");
   }
 
-  private filterItems(itemSelected: string, filter:string, field:keyof IClothingType) {
+  private filterItems(itemSelected: string, filter:string, field:keyof IClothingType)
+   {
+    this.checkFormValidity();
     let filteredItems = [];
     if(filter !== "id"){
       this.uniqueNames =[];
@@ -109,6 +149,8 @@ export class PrendasFormComponent implements OnInit{
     
     if (filter === "subType") {   
       this.uniqueSubTypes = [...new Set(filteredItems.map(item => item.subType).filter((subType): subType is string => subType !== undefined))];
+      this.clothingForm.get('clothingSubType')?.setValue('');
+      this.clothingForm.get('clothingTypeName')?.setValue('')
     } else if (filter === "name") {     
       this.uniqueNames = [...new Set(filteredItems.map(item => item.name).filter((name): name is string => name !== undefined))];
     } else if (filter === "id") {
@@ -127,7 +169,10 @@ export class PrendasFormComponent implements OnInit{
   ngOnInit(): void {       
     // Extraemos los tipos y eliminamos los duplicados
     this.uniqueTypes = [...new Set(this.vclothingType.map(item => item.type).filter((type): type is string => type !== undefined))];
-    
+    this.clothingForm.valueChanges.subscribe(() => {
+      this.checkFormValidity();
+     });
+    this.checkFormValidity();
   }
 
   files: File[] = [];
