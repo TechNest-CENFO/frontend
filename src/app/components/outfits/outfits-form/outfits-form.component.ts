@@ -24,23 +24,19 @@ export class OutfitsFormComponent {
 
     @Output() callUpdateMethod = new EventEmitter<IOutfit>();
     @Output() callSetIsAddClothingModalActive = new EventEmitter<unknown>();
-    //Refrescar el contexto de prendas al cambiar el tipo de creacion
     @Output() refreshClothingContext = new EventEmitter<void>();
 
     files: File[] = [];
 
-    //Para el tipo de creacion de outfit
+
     outfitCreationOption: string = 'manual';
-    //Para modificar el texto dentro del dropdown
+
     dropdownOptionSelected: string = 'Estilo';
 
-
-    //Estas variables son para la creacion de outfits manuales
-    //Para modificar el texto dentro del dropdown de estilo (a la hora de crear outfits manuales)
     dropdownOptionSelectedManualOutfitStyle: string = 'Estilo';
-    //Para guardar la data de las prendas seleccionadas
+
     clothing: IClothing[] = [];
-    //Para guardar el url del la imagen a previsualizar
+
     previewImage: string = 'lottie';
     outfitCategory: string = 'Categoría';
     lottie = {
@@ -76,14 +72,14 @@ export class OutfitsFormComponent {
         data.append('file', file_data);
         data.append('upload_preset', 'technest-preset');
         data.append('cloud_name', 'dklipon9i');
-        //sube la imagen a Cloudinary
+
         this._uploadService.uploadImage(data).subscribe(async (response) => {
             if (response) {
-                //Guarda la prenda con el seteo de la imagen
+
                 this.outfitsForm.patchValue({
                     imageUrl: response.url
                 });
-                //await this.callSaveClothing();
+
             }
         });
     }
@@ -118,19 +114,18 @@ export class OutfitsFormComponent {
 
     getOutfit(){
         if(this.outfitCreationOption==='random') {
-            console.log(this.outfitCreationOption);
+
             this.getOutfitRandom();
         } else {
-            console.log(this.outfitCreationOption);
+
             this.generateOutfitByCategory(this.outfitCreationOption);
         }
     }
     async getOutfitRandom() {
         try {
-            // Esperamos a que la promesa devuelta por callGetOutfitByUserRandom se resuelva
+
             this.outfitsRandom = await this._outfitsComponent.callGetOutfitByUserRandom();
-            console.log("Outfits capturados:", this.outfitsRandom);
-            // Ahora puedes usar la variable `outfits` que contiene la lista de outfits
+
         } catch (error) {
             console.error("Error al obtener los outfits", error);
         }
@@ -147,7 +142,7 @@ export class OutfitsFormComponent {
         const filteredByCategory: IClothing[] = this.manualClothing!.filter(c =>
             c.categories?.some(cat => cat.name === categoryName)
         );
-        console.log(filteredByCategory);
+
         if (filteredByCategory.length) {
             const byUpper: IClothing[] = filteredByCategory.filter(c => c.clothingType?.type == 'SUPERIOR');
             const byBottom: IClothing[] = filteredByCategory.filter(c => c.clothingType?.type == 'INFERIOR');
@@ -186,7 +181,6 @@ export class OutfitsFormComponent {
 
 
             this.outfitByCategory = outfit;
-            console.log(this.outfitByCategory)
         }
     }
 
@@ -230,7 +224,7 @@ export class OutfitsFormComponent {
 
     setOutfitCategory(category: string) {
         this.outfitCategory = this.capitalizeAndReplace(category);
-        console.log(this.outfitCategory);
+
     }
 
     public reformat(text: string) {

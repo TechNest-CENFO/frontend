@@ -3,24 +3,8 @@
         <div class="col-12 d-flex justify-content-center">
             <div class="d-flex align-items-center">
                 <a class="custom-underline me-3" [ngClass]="{'isActive': outfitCreationOption ==='manual'}"
-                    (click)="setOutfitCreationOption('manual')">Manual</a>
-                <div class="ms-2 p-1 dropdown">
-                    <button class="btn button-dropdown dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        {{ dropdownOptionSelected }}
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('CASUAL')">Casual</a></li>
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('FORMAL')">Formal</a></li>
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('SEMI_FORMAL')">Semi Formal</a>
-                        </li>
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('SPORTSWEAR')">Deportivo</a></li>
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('BEACHWEAR')">Playero</a></li>
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('TRAVEL')">Viaje</a></li>
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('FESTIVAL')">Festival</a></li>
-                        <li><a class="dropdown-item" (click)="setOutfitCreationOption('STREETWEAR')">Callejero</a></li>
-                    </ul>
-                </div>
+                    (click)="setOutfitCreationOption('manual')">Editar</a>
+                
             </div>
         </div>
         <div class="col-12 px-4 mt-1">
