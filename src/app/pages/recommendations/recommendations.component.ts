@@ -183,10 +183,10 @@ getTrendingOutfits(): void {
                     
                     this.outfits[0].name = "Lunes";
                     this.outfits[1].name = "Martes";
-                    this.outfits[2].name = "Miercoles";
+                    this.outfits[2].name = "Miércoles";
                     this.outfits[3].name = "Jueves";
                     this.outfits[4].name = "Viernes";
-                    this.outfits[5].name = "Sabado";
+                    this.outfits[5].name = "Sábado";
                     this.outfits[6].name = "Domingo";
                     console.log("this.outfits", this.outfits);                 
                     

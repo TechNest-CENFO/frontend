@@ -1,8 +1,7 @@
 import {inject, Injectable, signal} from '@angular/core';
 import {BaseService} from './base-service';
-import {IClothing, IClothingType, IResponse, ISearch} from '../interfaces';
+import {IClothing, IResponse, ISearch} from '../interfaces';
 import {AuthService} from './auth.service';
-import {AlertService} from './alert.service';
 import {Observable} from 'rxjs';
 import {NotyfService} from "./notyf.service";
 
@@ -30,7 +29,6 @@ export class ClothingService extends BaseService<IClothing> {
 
     public totalItems: any = [];
     private authService: AuthService = inject(AuthService);
-    private alertService: AlertService = inject(AlertService);
     private notyfService: NotyfService = inject(NotyfService);
 
     save(clothing: IClothing) {
@@ -60,6 +58,23 @@ export class ClothingService extends BaseService<IClothing> {
         this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/clothing`, {
             page: this.search.page,
             size: this.search.size
+        }).subscribe({
+            next: (response: any) => {
+                this.search = {...this.search, ...response.meta};
+                this.totalItems = Array.from({length: this.search.totalPages ? this.search.totalPages : 0}, (_, i) => i + 1);
+                this.clothingListSignal.set(response.data);
+            },
+            error: (err: any) => {
+                console.error('error', err);
+                this.notyfService.error('Ha ocurrido un error al cargar tus prendas.')
+            }
+        });
+    }
+
+    getAllByUserByCategory() {
+        this.findAllWithParamsAndCustomSource(`user/${this.authService.getUser()?.id}/clothing`, {
+            page: this.search.page,
+            size: 100
         }).subscribe({
             next: (response: any) => {
                 this.search = {...this.search, ...response.meta};
