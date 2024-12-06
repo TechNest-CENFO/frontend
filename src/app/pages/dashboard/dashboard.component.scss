@@ -45,6 +45,11 @@ body {
     margin-right: 0;
 }
 
+.left-align {
+    margin-left: 0;
+    margin-right: auto;
+}
+
 .input-group-text{
     background-color: $accent-disabled;
     color: $accent-default;
