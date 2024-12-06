@@ -8,7 +8,6 @@ import Aos from "aos";
 import {LottieComponentComponent} from "../../../pages/lottie-component/lottie-component.component";
 import {OutfitsComponent} from '../../../pages/outfits/outfits.component';
 
-
 @Component({
     selector: 'app-outfits-form',
     standalone: true,
@@ -16,35 +15,29 @@ import {OutfitsComponent} from '../../../pages/outfits/outfits.component';
     templateUrl: './outfits-form.component.html',
     styleUrl: './outfits-form.component.scss',
     providers: [UploadService]
-   
 })
 export class OutfitsFormComponent {
     fb: FormBuilder = Inject(FormBuilder);
-   
+
     @Input() outfitsForm!: FormGroup;
     @Input() manualClothing?: IClothing[];
     @Output() callSaveMethod = new EventEmitter<IOutfit>();
 
     @Output() callUpdateMethod = new EventEmitter<IOutfit>();
     @Output() callSetIsAddClothingModalActive = new EventEmitter<unknown>();
-    //Refrescar el contexto de prendas al cambiar el tipo de creacion
     @Output() refreshClothingContext = new EventEmitter<void>();
 
     files: File[] = [];
-
 
     //Para el tipo de creacion de outfit
     outfitCreationOption: string = 'manual';
     //Para modificar el texto dentro del dropdown
     dropdownOptionSelected: string = 'Estilo';
 
-
-    //Estas variables son para la creacion de outfits manuales
-    //Para modificar el texto dentro del dropdown de estilo (a la hora de crear outfits manuales)
     dropdownOptionSelectedManualOutfitStyle: string = 'Estilo';
-    //Para guardar la data de las prendas seleccionadas
+
     clothing: IClothing[] = [];
-    //Para guardar el url del la imagen a previsualizar
+
     previewImage: string = 'lottie';
     outfitCategory: string = 'Categoría';
     lottie = {
@@ -57,7 +50,7 @@ export class OutfitsFormComponent {
 
     outfitByCategory?: IOutfit;
     isButtonDisabled: boolean = true;
-    
+
 
     constructor(private _uploadService: UploadService,
                 private _outfitsComponent: OutfitsComponent
@@ -69,13 +62,13 @@ export class OutfitsFormComponent {
     ngOnInit() {
         Aos.init();
         this.outfitsForm = new FormGroup({
-            name: new FormControl('', [Validators.required]), 
-            
+            name: new FormControl('', [Validators.required]),
+
         });
         this.checkButtonStatus();
     }
     checkButtonStatus() {
-        this.isButtonDisabled = this.manualClothing!.length === 0;  
+        this.isButtonDisabled = this.manualClothing!.length === 0;
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -83,7 +76,7 @@ export class OutfitsFormComponent {
             // @ts-ignore
             this.previewImage = this.manualClothing.at(0).imageUrl;
         }
-        this.checkButtonStatus(); 
+        this.checkButtonStatus();
     }
 
     private uploadImage() {
@@ -93,14 +86,14 @@ export class OutfitsFormComponent {
         data.append('file', file_data);
         data.append('upload_preset', 'technest-preset');
         data.append('cloud_name', 'dklipon9i');
-        //sube la imagen a Cloudinary
+
         this._uploadService.uploadImage(data).subscribe(async (response) => {
             if (response) {
-                //Guarda la prenda con el seteo de la imagen
+
                 this.outfitsForm.patchValue({
                     imageUrl: response.url
                 });
-                //await this.callSaveClothing();
+
             }
         });
     }
@@ -135,21 +128,22 @@ export class OutfitsFormComponent {
 
     getOutfit(){
         if(this.outfitCreationOption==='random') {
-            console.log(this.outfitCreationOption);
+
             this.getOutfitRandom();
 
         } else {
-            console.log(this.outfitCreationOption);
+
             this.generateOutfitByCategory(this.outfitCreationOption);
         }
     }
     async getOutfitRandom() {
         try {
-            // Esperamos a que la promesa devuelta por callGetOutfitByUserRandom se resuelva
+
             this.outfitsRandom = await this._outfitsComponent.callGetOutfitByUserRandom();
-            console.log("Outfits capturados:", this.outfitsRandom);
+
+
             this.isButtonDisabled= false;
-            
+
         } catch (error) {
             console.error("Error al obtener los outfits", error);
         }
@@ -166,7 +160,7 @@ export class OutfitsFormComponent {
         const filteredByCategory: IClothing[] = this.manualClothing!.filter(c =>
             c.categories?.some(cat => cat.name === categoryName)
         );
-        console.log(filteredByCategory);
+
         if (filteredByCategory.length) {
             const byUpper: IClothing[] = filteredByCategory.filter(c => c.clothingType?.type == 'SUPERIOR');
             const byBottom: IClothing[] = filteredByCategory.filter(c => c.clothingType?.type == 'INFERIOR');
@@ -220,7 +214,7 @@ export class OutfitsFormComponent {
 
     callSave() {
         if (this.outfitsForm.valid && !this.isButtonDisabled) {
-        
+
             let outfit: IOutfit = {
                 clothing: [],
                 user: {},
@@ -246,17 +240,17 @@ export class OutfitsFormComponent {
             } else {
                 this.callSaveMethod.emit(outfit);
             }
-            
-                
+
+
         }
-        
-       
+
+
     }
 
     setOutfitCategory(category: string) {
         this.outfitCategory = this.capitalizeAndReplace(category);
         this.outfitsForm.get('outfitCategory')?.setValue(category);
-        
+
     }
 
     public reformat(text: string) {

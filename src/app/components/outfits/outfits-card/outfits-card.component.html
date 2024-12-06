@@ -11,10 +11,10 @@
 
 <div class="card-custom shadow-sm">
     <div class="w-100 h-100 d-flex justify-content-center align-items-center">
-        <swiper-container [pagination]="{type: 'bullets', clickable:true}" grab-cursor="true" loop="true" slides-per-view="1" speed="600" navigation="true" autoplay="true" effect="slide" rewind="true" allowP>
+        <swiper-container [pagination]="{type: 'bullets', clickable:true}" grab-cursor="true" slides-per-view="1" navigation="true" effect="slide">
             @for (item of outfit.clothing; track $index){
-                <swiper-slide class="w-100 d-flex justify-content-center">
-                    <img src="{{item.imageUrl}}" class="w-75 h-75" alt="clothing-image">
+                <swiper-slide class="w-100 d-flex justify-content-center align-items-center swiper-slider-style">
+                    <img src="{{item.imageUrl}}" class="image-format" alt="clothing-image">
                 </swiper-slide>
             }
         </swiper-container>

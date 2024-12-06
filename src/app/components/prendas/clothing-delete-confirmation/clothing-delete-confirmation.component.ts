@@ -25,6 +25,8 @@ export class ClothingDeleteConfirmationComponent implements OnInit{
 
   ngOnInit() {
     this.deleteClothingConfirmationForm = this.fb.group({});
+
+    console.log(this.clothing)
   }
 
 

@@ -19,7 +19,7 @@ export class OutfitsManualClothingCardComponent implements OnInit{
     @Output() clothingOutput = new EventEmitter<IClothing>();
 
     ngOnInit(){
-        if(this.item.isSelectedInSubModal === undefined){
+        if(this.item.isSelectedInSubModal === undefined || this.item.isSelectedInSubModal){
             this.item.isSelectedInSubModal = false;
         }
     }
