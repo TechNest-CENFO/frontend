@@ -116,9 +116,9 @@ export class DashboardComponent implements OnInit {
 
     public async getLocation(): Promise<void> {
         await this._placesService.getUserLocation();
-        this.location = this._placesService.getLocation();
-        this.lat = this.location[1].toString();
-        this.lon = this.location[0].toString();
+        // this.location = this._placesService.getLocation();
+        this.lat = '10.0072727';
+        this.lon = '-84.1385609';
         this.getWeatherBylatAndlon();
 
     }

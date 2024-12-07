@@ -75,20 +75,6 @@ export const routes: Routes = [
         }
       },
       {
-        path: 'tendencias',
-        component: OutfitsComponent,
-        data: { 
-          authorities: [
-            IRoleType.admin, 
-            IRoleType.superAdmin,
-            IRoleType.user,
-          ],
-          name: 'Tendencias',
-          showInSidebar: true,
-          icon: 'fa fa-line-chart'
-        }
-      },
-      {
         path: 'colecciones',
         component: CollectionsComponent,
         data: { 
