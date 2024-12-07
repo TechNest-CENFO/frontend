@@ -1,30 +1,19 @@
 @import "../../../../assets/functions/functions.scss";
 
-$colors: (
+/*$colors: (
         #cd6969,
         #55a6bb,
         #c6bd58,
         #60bb7b
-);
+);*/
 
 .card-custom {
-  button{
-    color: white;
-    &:hover{
-      color: #f3f3f3;
-    }
-  }
-
-  .favourite{
-    color: white;
-    &:hover{
-      color: #f3f3f3;
-    }
-  }
-  width: 600px;
+  width: 700px;
   height: 200px;
   border-radius: 1vmin;
   position: relative;
+  background-color: white;
+
   &:hover {
     .image-format {
       transition: transform 0.2s ease-in-out, max-width 0.2s ease-in-out, max-height 0.2s ease-in-out;
@@ -43,7 +32,7 @@ button {
   border: none;
   padding: 0;
   margin: 0;
-  color: grey;
+  color: white;
   transition: color 0.3s ease, transform 0.3s ease;
 
   &:hover {
@@ -129,10 +118,37 @@ button {
   border-radius: 50%;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: #FF4C3C;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   transform: translateX(14px);
+}
+
+swiper-container::part(bullet-active){
+  background-color: vcloset-color(accent-default);
+}
+
+swiper-container::part(button-next){
+  color: darkgray;
+  width: 15%;
+  height: 15%;
+  &:hover{
+    color: gray;
+  }
+}
+
+swiper-container::part(button-prev){
+  color: darkgray;
+  width: 15%;
+  height: 15%;
+  &:hover{
+    color: dimgrey;
+  }
+}
+
+.inner-text-styles{
+  color: white;
+  font-weight: lighter;
 }

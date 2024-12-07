@@ -125,6 +125,9 @@ export interface IOutfit{
   user?:IUser;
   imageUrl?:string;
   isDeleted?: boolean;
+
+  //Los siguientes atributos no viajan hacia el endpoint
+  isSelectedInSubModal?:boolean;
 }
 
 export interface ICategory{
@@ -134,13 +137,10 @@ export interface ICategory{
 
 export interface ICollection{
   id?: number;
-  name?: string;
-  outfit:IOutfit[];
-  isPublic?: boolean;
-  isFavorite?: boolean;
-  user:IUser;
-  imageUrl?:string;
+  name: string;
   isDeleted?: boolean;
+  outfits?:IOutfit[];
+  user:IUser;
 }
 
 export interface IWeather{
@@ -151,4 +151,17 @@ export interface IWeather{
   feels_like?: string;
   description?:string;
   name?:string;
+}
+
+export interface ILoan{
+  id?: number;
+  itemRequested?: boolean;
+  itemBorrowed?: boolean;
+  lenderScore?: number;
+  loanerScore?: number;
+  clothing?: IClothing;
+  lenderUser?:IUser;
+  loanerUser?:IUser;
+  createdAt?: Date;
+  requestStatus?: string;
 }

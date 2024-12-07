@@ -75,20 +75,6 @@ export const routes: Routes = [
         }
       },
       {
-        path: 'tendencias',
-        component: OutfitsComponent,
-        data: { 
-          authorities: [
-            IRoleType.admin, 
-            IRoleType.superAdmin,
-            IRoleType.user,
-          ],
-          name: 'Tendencias',
-          showInSidebar: true,
-          icon: 'fa fa-line-chart'
-        }
-      },
-      {
         path: 'colecciones',
         component: CollectionsComponent,
         data: { 
@@ -99,7 +85,7 @@ export const routes: Routes = [
           ],
           name: 'Colecciones',
           showInSidebar: true,
-          icon: 'fa fa-object-group'
+          icon: 'bi bi-collection-fill'
         }
       },
       {
@@ -113,7 +99,7 @@ export const routes: Routes = [
           ],
           name: 'Outfits',
           showInSidebar: true,
-          icon: 'fa fa-camera'
+          icon: 'fa-solid fa-person-rays'
         }
       },
       {
@@ -127,7 +113,7 @@ export const routes: Routes = [
           ],
           name: 'Prendas',
           showInSidebar: true,
-          icon: 'fa fa-camera'
+          icon: 'fa-solid fa-shirt'
         }
       },
       {

@@ -94,7 +94,6 @@ export class PrendasComponent implements OnInit {
     saveClothing(clothing: IClothing) {
         this.clothingService.save(clothing);
         this.ModalService.closeAll();
-
     }
 
 

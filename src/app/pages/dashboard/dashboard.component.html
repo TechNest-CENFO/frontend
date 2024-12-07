@@ -1,14 +1,14 @@
 <div>
     <div class="px-4 py-5 d-flex justify-content-between">
-        <h1> Clima</h1>
+        <h2> Clima</h2>
     </div>
-    
+
     <form>
         <div class="row">
             <div class="col-5 offset-3">
                 <div class="input-group mx-5">
                     <div class="input-group-prepend">
-   
+
                     </div>
                         <input
                         type="text"
@@ -17,28 +17,30 @@
                         aria-label="Search"
                         name="cityName"
                         [(ngModel)]="city"
-                        
+
                     />
                     <button type="button" class="btn button-default" style="margin-left: 50px;" (click)="getWeather()">Obtener clima</button>
                 </div>
-                
+
             </div>
 
         </div>
-        
+
     </form>
 
 </div>
 
-<div class="container-fluid px-1 px-md-4 py-5 mx-auto colorFont">
+<div class="container colorFont">
     <div class="row d-flex justify-content-center px-3">
-        <div class="card right-align" [style.background-image]="'url(' + imageUrl + ')'">
-            <div *ngIf="weatherData">
-                <h2 class="ml-auto mr-4 mt-3 mb-0">{{weatherData.name}}</h2>
-                <p class="ml-auto mr-4 mb-0 med-font">{{weatherData.description}}</p>
-                <h1 class="ml-auto mr-4 large-font">{{weatherData.feels_like}}&#176;</h1>
-                <p class="time-font mb-0 ml-4 mt-5">{{militaryTime}}</p>
-                <p class="sm-font ml-4 mb-4">{{formattedDate}}</p>
+        <div class="col-6">
+            <div class="card right-align p-4" [style.background-image]="'url(' + imageUrl + ')'">
+                <div *ngIf="weatherData">
+                    <h2 class="ml-auto mr-4 mt-3 mb-0">{{weatherData.name}}</h2>
+                    <p class="ml-auto mr-4 mb-0 med-font">{{weatherData.description}}</p>
+                    <h1 class="ml-auto mr-4 large-font">{{weatherData.feels_like}}&#176;</h1>
+                    <p class="time-font mb-0 ml-4 mt-5">{{militaryTime}}</p>
+                    <p class="sm-font ml-4 mb-4">{{formattedDate}}</p>
+                </div>
             </div>
         </div>
     </div>

@@ -26,14 +26,12 @@
             <div class="custom-divider"></div>
         </div>
         <div class="row">
-            <div class="col-12 d-flex justify-content-between px-4 mt-4">
-                <p class="info-quantity"><span class="text-bold">{{ outfitsService.outfit$().length }}</span>
-                    @if (this.outfitsService.outfit$().length > 1 || this.outfitsService.outfit$().length === 0) {
-                    <span> outfits</span>
-                    } @else {
-                    <span> outfit</span>
+            <div class="col-12 d-flex justify-cont8ent-between px-4 mt-4">
+                    @if (this.getBy==='weekly') {
+                    <span> ¡Estos son tus outfit semanales!</span>
+                    } @else if (this.getBy === 'trend'){
+                    <span> Tendencias basadas en las prendas de nuestro usuarios.</span>
                     }
-                </p>
             </div>
         </div>
 

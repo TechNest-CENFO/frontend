@@ -6,7 +6,7 @@
     <!-- Categoría -->
     <div class="col-md-6 mb-3">
         <label for="type">Categoría</label>
-        <select (change)="callGetSubTypes()" [(ngModel)]="selectedType" formControlName="clothingType" class="form-control"
+        <select (change)="callGetSubTypes()" formControlName="clothingType" class="form-control"
             id="type" >
             <option value="" disabled selected>Selecciona una categoría</option>
             <option *ngFor="let item of uniqueTypes" [value]="item">{{ item }}</option>
@@ -16,7 +16,7 @@
     <!-- Subcategoría -->
     <div class="col-md-6 mb-3">
         <label for="subType">Subcategoría</label>
-        <select (change)="callGetNames()" [(ngModel)]="selectedSubType"  formControlName="clothingSubType" class="form-control"
+        <select (change)="callGetNames()" formControlName="clothingSubType" class="form-control"
             id="subType">
             <option value="" selected>Selecciona una subcategoría</option>
             <option *ngFor="let item of uniqueSubTypes" [value]="item">
@@ -28,7 +28,7 @@
     <!-- Nombre -->
     <div class="col-md-6 mb-3">
         <label for="name">Tipo de prenda</label>
-        <select (change)="callGetItem()" formControlName="clothingTypeName" [(ngModel)]="selectedName" class="form-control" id="clothingTypeName">
+        <select (change)="callGetItem()" formControlName="clothingTypeName"  class="form-control" id="clothingTypeName">
             <option value="" disabled selected>Seleccione un tipo</option>
             <option *ngFor="let item of uniqueNames" [value]="item">{{ item }}</option>
         </select>
@@ -76,7 +76,7 @@
 
     <!-- Botón de envío -->
 
-    <button [disabled]="clothingForm.invalid" type="submit"
+    <button [disabled]="buttonDisabled" type="submit"
         class="btn">Guardar</button>
 
 

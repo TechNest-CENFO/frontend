@@ -9,50 +9,50 @@ import {NgClass} from "@angular/common";
 import {AuthService} from "../../services/auth.service";
 import { CollectionsListComponent } from '../../components/collections/collections-list/collections-list.component';
 import {FormBuilder, Validators} from "@angular/forms";
-import {IClothing, ICollection} from "../../interfaces";
+import {IClothing, ICollection, IOutfit} from "../../interfaces";
 import {ClothingService} from "../../services/clothing.service";
 import { SearchComponent } from '../../components/search/search.component';
-import { CollectionsFormComponent } from '../../components/collections/collections-form/collections-form.component';
 import { CollectionsService } from '../../services/collections.service';
 import { CollectionsAddOutfitsFormComponent } from '../../components/collections/collections-form/collections-add-outfit-form/collections-add-outfits-form.component';
+import {OutfitsService} from "../../services/outfits.service";
+import {OutfitsCardComponent} from "../../components/outfits/outfits-card/outfits-card.component";
 @Component({
   selector: 'app-collections',
   standalone: true,
-  imports: [ClothingListComponent,
+    imports: [ClothingListComponent,
         LoaderComponent,
         ModalComponent,
         PaginationComponent,
         PrendasFormComponent,
         NgClass,
         CollectionsListComponent,
-        CollectionsFormComponent,
         SearchComponent,
-        CollectionsAddOutfitsFormComponent],
+        CollectionsAddOutfitsFormComponent, OutfitsCardComponent],
   templateUrl: './collections.component.html',
   styleUrl: './collections.component.scss'
 })
 export class CollectionsComponent implements OnInit{
     public collectionsService: CollectionsService = inject(CollectionsService);
     public clothingService: ClothingService = inject(ClothingService);
+    public outfitsService: OutfitsService = inject(OutfitsService);
     public ModalService: ModalService = inject(ModalService);
     public AuthService: AuthService = inject(AuthService);
-    outfitRandomData:ICollection[]=[];
     private injector = inject(Injector);
     collections: ICollection[] = [];
     filteredCollections: ICollection[] = [];
 
 
+    getBy: string = "all";
+    protected optionSelected: string = 'Tipo';
+    gridSelected: boolean = true;
+    isAddClothingModalActive: boolean = false;
 
-
-    //INICIO - METODOS Y VARIABLES PARA EL SUBMODAL
-    //Variable para parametrizar la busqueda de prendas desde el submodal
     getByOption: string = 'all';
-    //Funcion para settear la variable de busqueda de prendas en el submodal
+
     public setGetByOption(getByOption: string) {
         this.getByOption = getByOption;
-        this.setClothingSignalForSubModal();
     }
-    //Settear el signal de prendas para traer todas las prendas por usuario y settear el allClothingByUser con el signal
+
     public setClothingSignalForSubModal() {
         if (this.getByOption==='all'){
             this.clothingService.getAllByUserLongPagination();
@@ -75,14 +75,8 @@ export class CollectionsComponent implements OnInit{
         user: this.AuthService.getUser()
     });
 
-    getBy: string = "all";
-    protected optionSelected: string = 'Tipo';
-    gridSelected: boolean = true;
-    isAddClothingModalActive: boolean = false;
-
     ngOnInit(): void {
         this.callGet();
-        this.setClothingSignalForSubModal();
 
         runInInjectionContext(this.injector, () => {
             effect(() => {
@@ -91,6 +85,8 @@ export class CollectionsComponent implements OnInit{
             });
           });
           this.clothingService.getAllByUser();
+
+          this.outfitsService.getAllByUser();
     }
 
 
@@ -136,18 +132,12 @@ export class CollectionsComponent implements OnInit{
     saveCollection(collection: ICollection) {
         collection.user.id = this.AuthService.getUser()?.id;
         this.collectionsService.save(collection);
+        this.ModalService.closeAll();
+        this.collectionForm.reset();
     }
 
     toggleAddClothingModal() {
         this.isAddClothingModalActive = !this.isAddClothingModalActive;
-    }
-
-    public setClotingAddToCollection(clothing: IClothing[]) {
-        this.manualCollectionClothing = clothing;
-    }
-
-    refreshClothingContext() {
-        this.manualCollectionClothing = []
     }
 
 }

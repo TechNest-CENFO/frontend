@@ -1,11 +1,8 @@
-import { ClothingTypeService } from './../../services/clothing-type.service';
-import {Component, effect, inject, Injector, OnInit, runInInjectionContext, ViewChild} from '@angular/core';
-import {ModalService} from './../../services/modal.service';
+import {Component, effect, inject, Injector, OnInit, runInInjectionContext} from '@angular/core';
 import {PrendasFormComponent} from "../../components/loans/prendas-form/prendas-form.component";
 import {ModalComponent} from "../../components/modal/modal.component";
-import {FormBuilder} from '@angular/forms';
 import {LoaderComponent} from '../../components/loader/loader.component';
-import {IClothing, IClothingType} from '../../interfaces';
+import {IClothing, ILoan} from '../../interfaces';
 import {NgClass} from "@angular/common";
 import {ClothingListComponent} from "../../components/loans/clothing-list/clothing-list.component";
 import {PaginationComponent} from "../../components/pagination/pagination.component";
@@ -13,6 +10,7 @@ import { SearchComponent } from '../../components/search/search.component';
 import { ClothingCardComponent } from '../../components/loans/clothing-card/clothing-card.component';
 import { CommonModule } from '@angular/common'; 
 import { LoansService } from '../../services/loans.service';
+import { of, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-prendas',
@@ -33,50 +31,44 @@ import { LoansService } from '../../services/loans.service';
 })
 export class LoansComponent implements OnInit {
     public loansService: LoansService = inject(LoansService);
-    public clothtingTypeService: ClothingTypeService = inject(ClothingTypeService);
-    public ModalService: ModalService = inject(ModalService);
+    private injector = inject(Injector);
 
-    @ViewChild('AddClothingModal')
-    public fb: FormBuilder = inject(FormBuilder);
-    clothingForm = this.fb.group({
-        name: [''],
-        isFavorite: [false],
-        isPublic: [false],
-        imageUrl: [''],
-        season: [''],
-        color: [''],
-        clothingTypeName: [''],
-        clothingSubType: [''],
-        clothingType: ['']
-    });
-    clothingTypeData: IClothingType[] = [];
     gridSelected: boolean = true;
-    protected getBy: string = 'all';
+    public getBy: string = 'all';
     protected optionSelected: string = 'Tipo';
     searchTerm: string = '';
     filteredClothing: IClothing[] = [];
-    clothingList: IClothing[] = [];
     clothing: IClothing[] = [];
-    private injector = inject(Injector);
-
-
-    constructor() {
-        this.getAllTypeClothing();
-    }
-
+    loan: ILoan[]= [];
+    loanSubscription: Subscription | undefined;
+    loanObj: ILoan = {}
 
     ngOnInit(): void {
-        this.callGet();
-
+        
         runInInjectionContext(this.injector, () => {
             effect(() => {
+                this.loanSubscription = of(this.loansService.loan$()).subscribe((data) => {
+                    this.loan = data;
+                  });
               this.clothing = this.loansService.clothing$();
               this.filteredClothing = [...this.clothing];
             });
           });
-          this.loansService.getAllPublicClothingLongPagination();
+          this.callGet();
     }
+    
 
+    searchClothing(searchTerm: string): void {
+        if (!searchTerm.trim()) {
+            this.filteredClothing = [...this.clothing];
+            return;
+        }
+    
+        this.filteredClothing = this.clothing.filter((item) =>
+            item.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }
+    
 
     onSearchTermChanged(searchTerm: string): void {
         this.filteredClothing = this.clothing.filter(item =>
@@ -85,49 +77,40 @@ export class LoansComponent implements OnInit {
     }
 
 
-    saveClothing(clothing: IClothing) {
-        this.loansService.save(clothing);
-        this.ModalService.closeAll();
-
-    }
-
-
-    getAllTypeClothing(): void {
-        this.clothtingTypeService.getAll().subscribe({
-            next: (response) => {
-                this.clothingTypeData = response.data;
-            },
-            error: (err) => {
-                err = "Ocurrió un error al cargar los datos.";
-            }
-        });
-    }
-
     callGet() {
         if (this.getBy == 'all') {
-            this.loansService.getAllByUser();
-            this.optionSelected = 'Tipo';
+            this.loansService.getAllPublicClothing();
+           // this.loansService.getMyRelatedLoans();
 
-        } else if (this.getBy == 'favorite') {
-            this.loansService.getAllFavoritesByUser();
-            this.optionSelected = 'Tipo';
+        } else if (this.getBy == 'requestSent') {
+            this.loansService.getRequestsSent();
+            this.loan = this.loansService.loan$();
+     
+        }  else if (this.getBy == 'requestReceived') {
+            this.loansService.getRequestsReceived();
+            this.loan = this.loansService.loan$();
+     
+        } else if (this.getBy == 'myLoans') {
+            this.loansService.getMyLoans();
+            this.loan = this.loansService.loan$();
 
-        } else {
-            this.loansService.getAllByType(this.getBy);
-            this.optionSelected = this.capitalizeAndReplace(this.getBy);
+        } else{
+            this.loansService.getMyLends();
         }
-    }
+}
 
-    //Función para formatear string
+
     capitalizeAndReplace(text: string): string {
-        if (!text) return ''; // Manejo de valores vacíos o nulos
-        const formattedText = text.replace(/_/g, ' '); // Reemplaza '_' por espacios
+        if (!text) return '';
+        const formattedText = text.replace(/_/g, ' ');
         return formattedText.charAt(0).toUpperCase() + formattedText.slice(1).toLowerCase();
     }
 
-    toggleGirdSelected() {
+
+    toggleGridSelected() {
         this.gridSelected = !this.gridSelected;
     }
+
 
     setGetBy(type: string) {
         this.getBy = type;

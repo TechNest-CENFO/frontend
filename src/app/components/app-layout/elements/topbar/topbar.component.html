@@ -2,8 +2,8 @@
   <div class="header-wrapper row m-0">
     <div class="header-logo-wrapper col-auto p-0">
       <div class="logo-wrapper">
-        <a routerLink="/">
-          <img class="img-fluid" src="../../../../../assets/icons/logo.svg" alt="Logo" />
+        <a routerLink="/" class="w-100 h-100">
+          <img src="../../../../../assets/icons/logo.svg" alt="Logo" width="100%" height="100%"/>
         </a>
       </div>
 
@@ -17,12 +17,7 @@
     >
       <ul class="nav-menus mb-0">
         <li class="topbar-custom profile-nav onhover-dropdown pe-2 py-0">
-          <span style="font-size: 1.2em; color: Tomato;">
-            <i class="fa fa-bell"></i>
-          </span>
-        </li>
-        <li class="topbar-custom profile-nav onhover-dropdown pe-2 py-0">
-          <app-button></app-button>
+            <a routerLink="/app/outfits" class="btn button-tertiary">Crear Outfit</a>
         </li>
         <li class="profile-pipe">
           |

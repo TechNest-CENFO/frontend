@@ -37,7 +37,7 @@ export class ConfirmationFormCollectionsComponent {
   }
 
   deleteCollectionItem(collection: ICollection){
-      this.CollectionsService.callDelete(collection.id!);
+      this.CollectionsService.delete(collection);
       this.closeModal();
   }
 

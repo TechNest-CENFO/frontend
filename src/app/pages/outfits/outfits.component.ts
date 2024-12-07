@@ -154,6 +154,8 @@ export class OutfitsComponent implements OnInit{
         console.log(outfit);
         this.outfitsService.save(outfit);
         this.ModalService.closeAll();
+        this.outfitForm.reset();
+        this.manualOutfitClothing = [];
     }
 
     toggleAddClothingModal() {

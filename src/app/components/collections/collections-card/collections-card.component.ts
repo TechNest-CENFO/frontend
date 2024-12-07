@@ -24,20 +24,10 @@ export class CollectionsCardComponent {
     colors: string [] = ['#c447a5', '#cd6969', '#55a6bb', '#c6bd58', '#60bb7b'];
     constructor(private collectionsService: CollectionsService) {}
 
-    toggleIsFav() {
-        this.isFav = !this.isFav;
+     public getRandomItem<T>(array: T[]): T {
+        const randomIndex = Math.floor(Math.random() * array.length);
+        return array[randomIndex];
     }
 
-    toggleIsPublic(): void {
-        this.collection.isPublic = !this.collection.isPublic;
-    }
-
-
-    toggleDelete() {
-    if (confirm('¿Estás seguro de que deseas eliminar esta colección?')) {
-        this.collectionsService.callDelete(this.collection.id!);
-    }
 }
 
-  protected readonly refCount = refCount;
-}
